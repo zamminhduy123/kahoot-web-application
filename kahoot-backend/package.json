@@ -1,0 +1,11 @@
+{
+  "name": "kahoot-backend",
+  "version": "1.0.0",
+  "description": "api server - socket server for kahoot app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Duy, Lam, Kin",
+  "license": "ISC"
+}
