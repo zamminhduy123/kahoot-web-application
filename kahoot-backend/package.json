@@ -2,10 +2,18 @@
   "name": "kahoot-backend",
   "version": "1.0.0",
   "description": "api server - socket server for kahoot app",
-  "main": "app.js",
+  "main": "dist/app.js",
+  "types": "dist/app.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./dist/app.js",
+    "build": "tsc",
+    "dev": "nodemon --config nodemon.json ./src/app.ts"
   },
-  "author": "Duy, Lam, Kin",
-  "license": "ISC"
+  "author": "Duy, Lam, Kim",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  }
 }
