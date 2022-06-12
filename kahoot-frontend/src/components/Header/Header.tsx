@@ -25,8 +25,8 @@ const DesktopNav = () => {
   return (
     <Stack direction={"row"} h="100%">
       {NAV_ITEMS.map((navItem) => (
-        <Box className="nav-item-link" >
-          <Flex key={navItem.label} h="100%" alignItems="center">
+        <Box className="nav-item-link" key={navItem.label} >
+          <Flex  h="100%" alignItems="center">
             <Link
               p={2}
               href={navItem.href ?? "#"}
