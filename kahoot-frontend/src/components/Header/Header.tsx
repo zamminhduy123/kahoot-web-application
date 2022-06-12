@@ -14,9 +14,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import RightSideDrawer from "./RightSideDrawer";
 import { IUser } from "../../model/interface/user.model";
-import { RiAddCircleLine } from "react-icons/ri";
+import { RiAddCircleLine,RiHome4Line,RiListUnordered } from "react-icons/ri";
 
 import "./Header.scss";
+import { IconType } from "react-icons";
 
 const DesktopNav = () => {
   const linkColor = useColorModeValue("gray.900", "brand.200");
@@ -27,16 +28,14 @@ const DesktopNav = () => {
       {NAV_ITEMS.map((navItem) => (
         <Box className="nav-item-link" key={navItem.label} >
           <Flex  h="100%" alignItems="center">
+            {navItem.icon && <Icon h="100%" w="25%" as={navItem.icon}/>}
             <Link
-              p={2}
+              px={2}
               href={navItem.href ?? "#"}
               fontSize={"sm"}
-              fontWeight={500}
+              fontWeight={"semibold"}
               color={linkColor}
-              _hover={{
-                textDecoration: "none",
-                color: linkHoverColor,
-              }}
+              style={{textDecoration:"none"}}
             >
               {navItem.label}
             </Link>
@@ -49,18 +48,19 @@ const DesktopNav = () => {
 
 interface NavItem {
   label: string;
-  subLabel?: string;
-  children?: Array<NavItem>;
+  icon?: IconType;
   href?: string;
 }
 
 const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Home",
+    icon: RiHome4Line,
     href: "#",
   },
   {
-    label: "My Question Collection",
+    label: "Library",
+    icon: RiListUnordered,
     href: "#",
   },
 ];
