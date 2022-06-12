@@ -6,9 +6,18 @@
   text-transform:uppercase; 
   padding: 0px 10px;
 }
-.nav-item-link.active::after {
+.nav-item-link.selected::after {
   opacity: 1;
   border-bottom: 3px solid #0058C3;
+  color: #0058C3;
+}
+.nav-item-link.selected > div {
+  opacity: 1;
+  color: #0058C3;
+}
+.nav-item-link.selected > div > a {
+  opacity: 1;
+  color: #0058C3;
 }
 .nav-item-link:after {
   content: "";
@@ -35,7 +44,6 @@
 .nav-item-link:hover > div > svg {
   color: #0058C3;
 }
-
 .nav-item-link:hover > div > a {
   color: #0058C3;
 }
