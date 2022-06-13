@@ -76,10 +76,9 @@ const LibraryList = () => {
     onChange: console.log,
   });
   const group = getRootProps();
-  console.log(group);
 
   return (
-    <Stack w="100%">
+    <Stack w="100%" maxW={"1280px"}>
       <Flex direction={"row"} margin="10px 0px">
         <HStack {...group} p="0">
           {options.map((value, index) => {
