@@ -37,16 +37,15 @@ const DesktopNav = ({selectedNav,onNavClick} : DesktopNavProps ) => {
           <Box className={className} key={navItem.label} onClick={() => onNavClick(navItem.label)}>
             <Flex h="100%" alignItems="center">
               {navItem.icon && <Icon h="100%" w="25%" as={navItem.icon} />}
-              <Link
+              <Box
                 px={2}
-                href={navItem.href ?? "#"}
                 fontSize={"sm"}
                 fontWeight={"semibold"}
                 color={linkColor}
                 style={{ textDecoration: "none" }}
               >
                 {navItem.label}
-              </Link>
+              </Box>
             </Flex>
           </Box>
         );
