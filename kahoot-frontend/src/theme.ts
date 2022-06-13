@@ -40,7 +40,7 @@ const theme = extendTheme({
   components: {
     Button: {
       baseStyle: {
-        borderRadius: '10px',
+        borderRadius: '4px',
         _focus: {
           boxShadow: 'none',
         },
