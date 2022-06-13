@@ -9,7 +9,7 @@ interface IUser {
 }
 interface IUserMethods {
   hashPassword(): Promise<void>;
-  getTest(): number;
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 type UserModel = Model<IUser, {}, IUserMethods>;
 
@@ -25,9 +25,21 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
   }
 );
 
-UserSchema.method("hashPassword", async function () {
+UserSchema.methods.hashPassword =  async function () {
   const salt = await bcrypt.genSalt(10);
-  this.customerPassword = await bcrypt.hash(this.customerPassword, salt);
-});
+  this.password = await bcrypt.hash(this.password, salt);
+};
+
+UserSchema.methods.comparePassword = async function (
+  candidatePassword: string,
+) {
+  const isMatch = await bcrypt.compare(
+    candidatePassword,
+    this.password,
+  );
+  return isMatch;
+};
+
+UserSchema.index({ email: 1 }, { unique: true });
 
 export default model<IUser, UserModel>("User", UserSchema);
