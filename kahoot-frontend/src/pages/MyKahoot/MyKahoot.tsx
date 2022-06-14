@@ -1,13 +1,13 @@
 import { Box, Button, Flex, HStack, VStack } from "@chakra-ui/react";
-import QuestionList from "../../../components/QuestionList";
+import QuestionList from "../../components/QuestionList";
 
 interface MyKahootProps {}
 
 const MyKahoot = ({}: MyKahootProps) => {
   //fetch data here
   return (
-    <Flex flexGrow={1} direction={"row"}>
-      <Flex w="23rem" boxShadow={"rgb(0 0 0 / 5%) 0.25rem 0px 0.5rem 0px"} direction={'column'}>
+    <Flex w={"100%"} direction={"row"}>
+      <Flex w="23rem" h={"100%"} boxShadow={"rgb(0 0 0 / 5%) 0.25rem 0px 0.5rem 0px"} direction={'column'}>
         <img
           style={{ width: "368px" }}
           src="https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
@@ -22,7 +22,7 @@ const MyKahoot = ({}: MyKahootProps) => {
           <Box>Updated ...</Box>
         </Flex>
       </Flex>
-      <Flex flexGrow={1} bg={"gray.100"} flex="7 1 0px" p={"16px"}>
+      <Flex flexGrow={1} bg={"gray.100"} flex="7 1 0px" p={"16px"} style={{height: "calc(100%-60px)"}}>
         <QuestionList />
       </Flex>
     </Flex>

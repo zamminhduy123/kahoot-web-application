@@ -12,20 +12,25 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { RiPencilFill, RiMore2Fill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 interface LibraryItemProps {
+  id: number;
   name: string;
   totalQuestion: number;
   last_modified: Date;
 }
 
 const LibraryItem = ({
+  id,
   name,
   totalQuestion,
   last_modified,
 }: LibraryItemProps) => {
+  const navigate = useNavigate();
   return (
     <Flex
+      onClick={()=>{navigate(`../details/${id}`,{replace: true})}}
       w="100%"
       direction={"row"}
       maxW="1280px"

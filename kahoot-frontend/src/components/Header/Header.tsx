@@ -11,7 +11,7 @@ import {
   Button,
   Icon,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { Link as ReachLink } from "react-router-dom";
 import RightSideDrawer from "./RightSideDrawer";
 import { IUser } from "../../model/interface/user.model";
 import { RiAddCircleLine, RiHome4Line, RiListUnordered } from "react-icons/ri";
@@ -21,31 +21,35 @@ import { IconType } from "react-icons";
 import { Dispatch, SetStateAction } from "react";
 
 interface DesktopNavProps {
-  selectedNav: "Home" | "Library"
-  onNavClick: Dispatch<SetStateAction<"Home" | "Library">>;
+  activePath: string;
 }
 
-const DesktopNav = ({selectedNav,onNavClick} : DesktopNavProps ) => {
+const DesktopNav = ({ activePath }: DesktopNavProps) => {
   const linkColor = useColorModeValue("gray.900", "brand.200");
   const linkHoverColor = useColorModeValue("brand.600", "white");
 
   return (
     <Stack direction={"row"} h="100%">
       {NAV_ITEMS.map((navItem) => {
-        const className = ["nav-item-link", selectedNav==navItem.label && "selected"].join(" ");
+        const className = [
+          "nav-item-link",
+          activePath == navItem.href && "selected",
+        ].join(" ");
         return (
-          <Box className={className} key={navItem.label} onClick={() => onNavClick(navItem.label)}>
+          <Box className={className} key={navItem.label}>
             <Flex h="100%" alignItems="center">
               {navItem.icon && <Icon h="100%" w="25%" as={navItem.icon} />}
-              <Box
+              <Link
+                as={ReachLink}
                 px={2}
                 fontSize={"sm"}
                 fontWeight={"semibold"}
                 color={linkColor}
                 style={{ textDecoration: "none" }}
+                to={navItem.href ?? "#"}
               >
                 {navItem.label}
-              </Box>
+              </Link>
             </Flex>
           </Box>
         );
@@ -55,7 +59,7 @@ const DesktopNav = ({selectedNav,onNavClick} : DesktopNavProps ) => {
 };
 
 interface NavItem {
-  label: "Home" | "Library";
+  label: string;
   icon?: IconType;
   href?: string;
 }
@@ -75,14 +79,10 @@ const NAV_ITEMS: Array<NavItem> = [
 
 export interface PublicHeaderProps {
   user: IUser | null;
-  selectedNav: "Home" | "Library";
-  onNavClick: Dispatch<SetStateAction<"Home" | "Library">>;
+  activePath: string;
 }
 
 const Header = (props: PublicHeaderProps) => {
-  const { isOpen, onToggle } = useDisclosure();
-  const navigate = useNavigate();
-
   return (
     <Box
       borderBottom={1}
@@ -100,7 +100,7 @@ const Header = (props: PublicHeaderProps) => {
           flex={{ base: 1 }}
           justify={{ base: "center", md: "start" }}
         >
-          <Link href="#">
+          <Link href="/">
             <Center h="100%">
               <Image
                 w="100px"
@@ -109,7 +109,7 @@ const Header = (props: PublicHeaderProps) => {
             </Center>
           </Link>
           <Flex justifyContent="center" alignItems="center" ml={10}>
-            <DesktopNav selectedNav={props.selectedNav} onNavClick={props.onNavClick}/>
+            <DesktopNav activePath={props.activePath} />
           </Flex>
           <Spacer />
 

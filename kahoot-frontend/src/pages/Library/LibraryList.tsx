@@ -13,12 +13,16 @@ import {
   useRadioGroup,
 } from "@chakra-ui/react";
 import React from "react";
-import RadioCard from "../../../components/RadioCard";
+import RadioCard from "../../components/RadioCard";
 import LibraryItem from "./LibraryItem";
 import { RiSearchLine } from "react-icons/ri";
 import { SearchIcon } from "@chakra-ui/icons";
 
-const LibraryList = () => {
+interface LibraryListProps {
+ 
+}
+
+const LibraryList = ({} : LibraryListProps) => {
   //fetch data here
   const fakeData = [
     {
@@ -104,6 +108,7 @@ const LibraryList = () => {
       {fakeData.map((data, index) => {
         return (
           <LibraryItem
+            id={index}
             key={`${data.name}-${index}`}
             name={data.name}
             totalQuestion={data.totalQuestion}
