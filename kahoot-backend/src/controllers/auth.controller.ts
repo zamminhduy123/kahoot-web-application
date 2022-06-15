@@ -6,25 +6,42 @@ import * as ErrorMessage from "../error-messsage";
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body as { email: string; password: string };
-  
+
   const user = await UserModel.findOne({ email });
 
-  if(!user) {
+  if (!user) {
     throw new UnauthenticatedError(ErrorMessage.ERROR_LOGIN_FAILED);
   }
 
   const isTruePassword = await user.comparePassword(password);
-  if(!isTruePassword) {
+  if (!isTruePassword) {
     throw new UnauthenticatedError(ErrorMessage.ERROR_LOGIN_FAILED);
   }
-  
-  return res.status(StatusCodes.OK).json(user?.toJSON());
+
+  const accessToken = user.createJWT();
+  const userObjToSend = {
+    ...user.toJSON(),
+    __v: undefined,
+    password: undefined,
+  };
+  return res.status(StatusCodes.OK).json({ ...userObjToSend, accessToken });
 };
 
 export const register = async (req: Request, res: Response) => {
   const user = new UserModel(req.body);
+
   await user.hashPassword();
+  await user.createRefreshToken();
   await user.save();
-  
-  return res.json(user.toJSON());
+
+  const accessToken = user.createJWT();
+
+  const userObjToSend = {
+    ...user.toJSON(),
+    __v: undefined,
+    password: undefined,
+  };
+  return res
+    .status(StatusCodes.CREATED)
+    .json({ ...userObjToSend, accessToken });
 };
