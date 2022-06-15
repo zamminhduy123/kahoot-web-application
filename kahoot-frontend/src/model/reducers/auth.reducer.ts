@@ -1,16 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../store';
 
 // Define a type for the slice state
 interface Auth {
-  token: string;
+  user: string;
   loading: Boolean;
   error: string;
 }
 
 // Define the initial state using that type
 const initialState: Auth = {
-  token: "",
+  user: "",
   loading: false,
   error: ""
 };
@@ -27,19 +26,15 @@ export const authSlice = createSlice({
     authSuccess(state, action : PayloadAction<string>) {
       state.loading = false;
       state.error = "";
-      state.token = action.payload;
+      state.user = action.payload;
     },
     authFailure(state, action : PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
-      state.token = ""
+      state.user = ""
     }
   },
 });
 
-export const { } = authSlice.actions;
-
-// Other code such as selectors can use the imported `RootState` type
-export const selectAuth = (state: RootState) => state.auth.token
-
+export const {authStart,authFailure,authSuccess } = authSlice.actions;
 export default authSlice.reducer;

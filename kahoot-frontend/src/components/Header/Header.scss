@@ -8,16 +8,16 @@
 }
 .nav-item-link.selected::after {
   opacity: 1;
-  border-bottom: 3px solid #0058C3;
-  color: #0058C3;
+  border-bottom: 3px solid #FF6B00;
+  color: #FF6B00;
 }
 .nav-item-link.selected > div {
   opacity: 1;
-  color: #0058C3;
+  color: #FF6B00;
 }
 .nav-item-link.selected > div > a {
   opacity: 1;
-  color: #0058C3;
+  color: #FF6B00;
 }
 .nav-item-link:after {
   content: "";
@@ -35,15 +35,15 @@
   border-top-style: initial;
   border-top-color: initial;
   border-bottom-style: solid;
-  border-bottom-color: #0058C3;
+  border-bottom-color: #FF6B00;
   opacity: 0;
   transition: opacity 0.2s ease 0s;
 }
 .nav-item-link:hover:after {  opacity: 1; }
 
 .nav-item-link:hover > div > svg {
-  color: #0058C3;
+  color: #FF6B00;
 }
 .nav-item-link:hover > div > a {
-  color: #0058C3;
+  color: #FF6B00;
 }

@@ -1,12 +1,14 @@
 import { Box, Button, Flex, HStack, VStack } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
 import QuestionList from "../../components/QuestionList";
 
 interface MyKahootProps {}
 
 const MyKahoot = ({}: MyKahootProps) => {
+  const {id} = useParams();
   //fetch data here
   return (
-    <Flex w={"100%"} direction={"row"}>
+    <Flex w={"100%"} h="100%" direction={"row"}>
       <Flex w="23rem" h={"100%"} boxShadow={"rgb(0 0 0 / 5%) 0.25rem 0px 0.5rem 0px"} direction={'column'}>
         <img
           style={{ width: "368px" }}

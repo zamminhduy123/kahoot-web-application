@@ -1,9 +1,14 @@
-import { Flex, SlideFade } from "@chakra-ui/react";
+import { Box, Flex, SlideFade } from "@chakra-ui/react";
 import React, { Suspense } from "react";
-import { useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import FallbackUI from "../../components/FallbackUI";
 import Header from "../../components/Header";
+import PageTransition from "../../components/PageTransition";
 import { IUser } from "../../model/interface";
+import Home from "../../pages/Home";
+import { Library } from "../../pages/Library";
+import MyKahoot from "../../pages/MyKahoot";
+import AuthGuard from "../AuthGuard";
 
 interface LayoutProps {
   children: React.ReactElement | React.ReactElement[];
@@ -25,16 +30,23 @@ const Layout = ({ children }: LayoutProps) => {
   }, [location]);
 
   return (
-    <>
+    <AuthGuard>
       <Header user={user} activePath={activePath}></Header>
-      <div style={{ minHeight: "100vh" }}>
-        <Suspense fallback={<FallbackUI />}>
-          <SlideFade in={true} offsetY="20px">
-            <Flex w={"100%"} h="100%" justify="center">{children}</Flex>
-          </SlideFade>
-        </Suspense>
-      </div>
-    </>
+      <Box
+        ml={{ base: 0, lg: 80 }}
+        transition=".3s ease"
+        px={{ base: 3, lg: 6 }}
+        flex={1}
+      >
+        <Box minH={"100vh"}>
+          <PageTransition>
+            <Suspense fallback={<FallbackUI />}>
+              {children}
+            </Suspense>
+          </PageTransition>
+        </Box>
+      </Box>
+    </AuthGuard>
   );
 };
 

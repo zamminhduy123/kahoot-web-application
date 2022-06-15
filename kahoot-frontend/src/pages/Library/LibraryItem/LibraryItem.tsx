@@ -75,7 +75,7 @@ const LibraryItem = ({
           <HStack>
             <Box fontWeight={"600"}>Last update from {last_modified.toLocaleDateString()}</Box>
             <Button
-              bg={"brand.600"}
+              colorScheme="brand"
               color={"white"}
               _hover={{ backgroundColor: "brand.900" }}
             >

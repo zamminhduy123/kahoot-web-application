@@ -1,4 +1,5 @@
 import {
+  border,
   Box,
   Flex,
   Heading,
@@ -101,7 +102,7 @@ const LibraryList = ({} : LibraryListProps) => {
               pointerEvents="none"
               children={<SearchIcon color="gray.300" />}
             />
-            <Input variant="outline" placeholder={`Search`} />
+            <Input   focusBorderColor='brand.500' variant="outline" placeholder={`Search`} />
           </InputGroup>
         </Box>
       </Flex>

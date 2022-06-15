@@ -1,21 +1,17 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Route, useLocation } from "react-router-dom";
+import { useAppSelector } from "../../hook";
 
 interface AuthGuardProps {
   children: ReactElement | ReactElement[];
 }
 
 const AuthGuard = ({ children }: AuthGuardProps) => {
-  const [previousRoute, setPreviousRoute] = useState("");
-  const { pathname } = useLocation();
+  const {user} = useAppSelector(state => state.auth)
 
-  useEffect(() => {
-    if (!!previousRoute) setPreviousRoute(pathname);
-  }, [pathname, previousRoute]);
-
-  if (true) return <>{children}</>;
+  if (user) return <>{children}</>;
   else {
-    return <Navigate to={"/login"} state={previousRoute} />;
+    return <Navigate to={"/login"} />;
   }
 };
 
