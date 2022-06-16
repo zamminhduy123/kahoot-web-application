@@ -19,14 +19,12 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { HiOutlineMail } from 'react-icons/hi';
 import { RiAccountPinCircleLine, RiShieldKeyholeLine, RiShieldUserLine } from 'react-icons/ri';
-import { VscReferences } from 'react-icons/vsc';
+import { signUp } from '../../../api';
 
 interface IFormInput {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  referralCode: string;
+  name: string;
 }
 
 const registerFailureMessage = {
@@ -36,17 +34,13 @@ const registerFailureMessage = {
 
 const RegisterForm: React.FunctionComponent = () => {
   const { search } = useLocation();
-  const query = new URLSearchParams(search);
-  const refCode = query.get('ref');
 
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm<IFormInput>({
-    defaultValues: {
-      referralCode: refCode || '',
-    },
+
   });
 
   const navigate = useNavigate();
@@ -55,19 +49,21 @@ const RegisterForm: React.FunctionComponent = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (formValue) => {
     setFailureMessage('');
-    // const { status, data } = await registerApi(formValue);
-    let status = 200, data = {id: 1};
-    if (status === 200 && data.id) {
+    const signedUp = await signUp(formValue.email,formValue.password,formValue.name);
+    console.log(signedUp)
+
+    if (signedUp) {
       toast({
         title: 'Register successfully!',
         status: 'success',
         isClosable: true,
       });
-    } else if (status === 409) {
-      setFailureMessage(registerFailureMessage.emailExited);
-    } else {
-      setFailureMessage(registerFailureMessage.default);
     }
+    // } else if (signedUp.data === 409) {
+    //   setFailureMessage(registerFailureMessage.emailExited);
+    // } else {
+    //   setFailureMessage(registerFailureMessage.default);
+    // }
   };
 
   return (
@@ -80,9 +76,9 @@ const RegisterForm: React.FunctionComponent = () => {
           </Alert>
         )}
 
-        <FormControl id="register-first-name" isInvalid={!!errors.firstName} isRequired>
+        <FormControl id="register-first-name" isInvalid={!!errors.name} isRequired>
           <FormLabel fontSize="sm" color="muted" fontWeight="normal" pl={2}>
-            FIRST NAME
+            FULL NAME
           </FormLabel>
           <InputGroup>
             <InputLeftElement pointerEvents="none" children={<Icon as={RiShieldUserLine} color="black" />} />
@@ -92,31 +88,12 @@ const RegisterForm: React.FunctionComponent = () => {
               color={'black'}
               _focus={{ boxShadow: 'none', borderColor: 'semiHeading' }}
               isDisabled={isSubmitting}
-              {...register('firstName', {
+              {...register('name', {
                 required: 'First name is required',
               })}
             />
           </InputGroup>
-          <FormErrorMessage>{errors.firstName && errors.firstName.message}</FormErrorMessage>
-        </FormControl>
-        <FormControl id="register-last-name" isInvalid={!!errors.lastName} isRequired>
-          <FormLabel fontSize="sm" color="muted" fontWeight="normal" pl={2}>
-            LAST NAME
-          </FormLabel>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none" children={<Icon as={HiOutlineMail} color="black" />} />
-            <Input
-              type="text"
-              placeholder="Doe"
-              color={'black'}
-              _focus={{ boxShadow: 'none', borderColor: 'semiHeading' }}
-              isDisabled={isSubmitting}
-              {...register('lastName', {
-                required: 'Last name is required',
-              })}
-            />
-          </InputGroup>
-          <FormErrorMessage>{errors.lastName && errors.lastName.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.name && errors.name.message}</FormErrorMessage>
         </FormControl>
         <FormControl id="register-email" isInvalid={!!errors.email} isRequired>
           <FormLabel fontSize="sm" color="muted" fontWeight="normal" pl={2}>

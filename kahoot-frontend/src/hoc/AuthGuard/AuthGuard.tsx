@@ -7,9 +7,10 @@ interface AuthGuardProps {
 }
 
 const AuthGuard = ({ children }: AuthGuardProps) => {
-  const {user} = useAppSelector(state => state.auth)
+  const {id} = useAppSelector(state => state.auth)
+  console.log(id);
 
-  if (user) return <>{children}</>;
+  if (id) return <>{children}</>;
   else {
     return <Navigate to={"/login"} />;
   }

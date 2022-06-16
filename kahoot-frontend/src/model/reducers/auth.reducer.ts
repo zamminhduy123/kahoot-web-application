@@ -1,17 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import {AuthActionType} from '../actions/auth.action'
+import { IUser } from '../interface';
+
 // Define a type for the slice state
 interface Auth {
-  user: string;
-  loading: Boolean;
-  error: string;
+  id: string,
+  name: string,
+  email: string,
 }
 
 // Define the initial state using that type
 const initialState: Auth = {
-  user: "",
-  loading: false,
-  error: ""
+  id: "",
+  name: "",
+  email: "",
 };
 
 export const authSlice = createSlice({
@@ -20,18 +23,19 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     authStart(state) {
-      state.loading = true;
-      state.error = ""
+      state.id = ""
+      state.name = ""
+      state.email = ""
     },
-    authSuccess(state, action : PayloadAction<string>) {
-      state.loading = false;
-      state.error = "";
-      state.user = action.payload;
+    authSuccess(state, action : PayloadAction<IUser>) {
+      state.id = action.payload.id;
+      state.name =  action.payload.name;
+      state.email =  action.payload.email;
     },
     authFailure(state, action : PayloadAction<string>) {
-      state.loading = false;
-      state.error = action.payload;
-      state.user = ""
+      state.id = ""
+      state.name = ""
+      state.email = ""
     }
   },
 });

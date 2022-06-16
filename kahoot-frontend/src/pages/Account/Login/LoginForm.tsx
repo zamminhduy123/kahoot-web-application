@@ -19,9 +19,13 @@ import {
 } from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import {login} from '../../../api'
 import { RiShieldKeyholeLine } from 'react-icons/ri';
 import { HiArrowNarrowRight, HiOutlineMail } from 'react-icons/hi';
+
+import {login} from '../../../api'
+import { useAppDispatch } from '../../../hook';
+import { authStart, authSuccess } from '../../../model/reducers/auth.reducer';
+import { IUser } from '../../../model/interface';
 
 interface IFormInput {
   email: string;
@@ -37,21 +41,30 @@ const LoginForm: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [loginFailure, setLoginFailure] = useState('');
+  const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<IFormInput> = async ({ email, password }) => {
     setLoginFailure('');
     try {
-      const [loginSuccess, message] = await login(email, password);
-      if (loginSuccess) {
+      dispatch(authStart())
+      const response = await login(email, password);
+      const data = response.data;
+      if (data) {
         toast({
           title: 'Login successfully!',
           status: 'success',
           isClosable: true,
         });
 
+        const loginedUser : IUser = {
+          id: data._id,
+          name: data.name,
+          email: data.email
+        }
+        dispatch(authSuccess(loginedUser))
         navigate('/');
       } else {
-        // throw new Error(message);
+        throw new Error("Login failed!");
       }
     } catch (err : any) {
       setLoginFailure(err.message);

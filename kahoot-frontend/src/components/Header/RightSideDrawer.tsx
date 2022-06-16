@@ -89,7 +89,7 @@ const RightSideDrawer = ({ user }: { user: IUser | null }) => {
             <Avatar
               ml="4"
               size="md"
-              name={user?.fullName}
+              name={user?.name}
               cursor="pointer"
               icon={<RiUser3Line size="20px" />}
               background="active"
@@ -97,7 +97,7 @@ const RightSideDrawer = ({ user }: { user: IUser | null }) => {
             />
             <VStack ml="4" spacing="0px" align="flex-start">
               <Text fontWeight="bold" fontSize="sm" textAlign="left">
-                Hi, {user?.fullName}!
+                Hi, {user?.name}!
               </Text>
               <Text textAlign="left" fontSize="xs">
                 {user?.email}
@@ -132,7 +132,7 @@ const RightSideDrawer = ({ user }: { user: IUser | null }) => {
                 <Center>
                   <Avatar
                     size="2xl"
-                    name={user?.fullName}
+                    name={user?.name}
                     cursor="pointer"
                     icon={<RiUser3Line size="20px" />}
                     background="active"
@@ -145,7 +145,7 @@ const RightSideDrawer = ({ user }: { user: IUser | null }) => {
                   fontSize="2xl"
                   color="semiHeading"
                 >
-                  {user?.fullName}
+                  {user?.name}
                 </Box>
                 <Box>{user?.email}</Box>
 

@@ -8,6 +8,7 @@ import MyKahoot from "../MyKahoot";
 const Home = () => {
   return (
     <div
+      id="home"
       style={{
         width: "100%",
         height: "100%",
