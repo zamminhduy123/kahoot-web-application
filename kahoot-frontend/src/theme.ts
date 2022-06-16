@@ -89,6 +89,9 @@ const theme = extendTheme(
 						boxShadow: "none",
 					},
 				},
+				defaultProps: {
+					focusBorderColor: "brand.500",
+				},
 			},
 			NumberInput: {
 				baseStyle: {
