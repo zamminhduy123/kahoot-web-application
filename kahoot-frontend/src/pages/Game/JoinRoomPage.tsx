@@ -2,6 +2,7 @@
 
 import {
 	Box,
+	Button,
 	Center,
 	Circle,
 	Container,
@@ -12,16 +13,17 @@ import {
 	Text,
 } from "@chakra-ui/react"
 import { FunctionComponent } from "react"
+import { Link } from "react-router-dom"
 
 interface JoinRoomPageProps {}
 
 const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
 	return (
 		<div>
-			<Box bg="brand.500" minWidth="100vw" minHeight="100vh">
+			<Box bg="orange.800" minWidth="100vw" minHeight="100vh">
 				<Circle
 					position="fixed"
-					bg="black"
+					bg="white"
 					opacity="0.1"
 					minWidth="75vmin"
 					minHeight="75vmin"
@@ -30,7 +32,7 @@ const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
 				/>
 				<Square
 					position="fixed"
-					bg="black"
+					bg="white"
 					opacity="0.1"
 					minWidth="75vmin"
 					minHeight="75vmin"
@@ -51,9 +53,14 @@ const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
 						QuizShare
 					</Text>
 					<Box bg="white" padding="5" borderRadius="lg">
-						<FormControl isRequired>
+						<FormControl colorScheme="brand" isRequired>
 							<FormLabel htmlFor="first-name">Enter Your Pin Code</FormLabel>
 							<Input id="first-name" placeholder="Pin Code" />
+							<Link to="/play">
+								<Button colorScheme="orange" type="submit" mt="4" mx="auto">
+									Join
+								</Button>
+							</Link>
 						</FormControl>
 					</Box>
 				</Container>
