@@ -43,7 +43,7 @@ const WaitingRoom: FunctionComponent<WaitingRoomProps> = (props) => {
 
 	useEffect(() => {
 		handleAddPlayer({ name: "Kim" })
-	}, [newPlayer])
+	}, [])
 
 	return (
 		<Box

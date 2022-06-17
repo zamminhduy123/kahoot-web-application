@@ -6,6 +6,8 @@ import { FunctionComponent, useState } from "react"
 interface AnswerListProps {
 	answers: any[]
 	correct: number
+	handleClick: any
+	isPlaying: any
 }
 
 interface AnswerProp {
@@ -13,11 +15,11 @@ interface AnswerProp {
 	isCorrect: boolean
 	color: string
 	onClick: any
-	isClicked?: boolean
+	isPlaying: boolean
 }
 
 const Answer: FunctionComponent<AnswerProp> = (props) => {
-	const { value, isCorrect, color, onClick, isClicked } = props
+	const { value, isCorrect, color, onClick, isPlaying } = props
 	const onAnswerClick = () => {
 		console.log("click answer")
 		onClick()
@@ -35,11 +37,12 @@ const Answer: FunctionComponent<AnswerProp> = (props) => {
 			mb="0.5rem"
 			color="white"
 			p="2"
-			bg={isClicked ? (isCorrect ? "green.600" : "red.500") : color}
+			bg={isPlaying ? color : isCorrect ? "green.600" : "red.500"}
 			fontSize="2xl"
 			alignItems="center"
 			onClick={onAnswerClick}
-			disabled={isClicked}
+			disabled={!isPlaying}
+			boxShadow="inner"
 		>
 			<Box flex="1">{value}</Box>
 		</Box>
@@ -47,11 +50,10 @@ const Answer: FunctionComponent<AnswerProp> = (props) => {
 }
 
 const AnswerList: FunctionComponent<AnswerListProps> = (props) => {
-	const [isClicked, setIsClicked] = useState<boolean>(false)
-
+	const { correct, isPlaying } = props
 	const handleClickAnswer = () => {
 		console.log("clicked")
-		setIsClicked(true)
+		props.handleClick()
 	}
 
 	return (
@@ -68,29 +70,29 @@ const AnswerList: FunctionComponent<AnswerListProps> = (props) => {
 				value={props.answers[0]}
 				color="red.400"
 				onClick={handleClickAnswer}
-				isCorrect={props.correct === 0}
-				isClicked={isClicked}
+				isCorrect={correct === 0}
+				isPlaying={isPlaying}
 			></Answer>
 			<Answer
 				value={props.answers[1]}
 				color="yellow.600"
 				onClick={handleClickAnswer}
-				isCorrect={props.correct === 1}
-				isClicked={isClicked}
+				isCorrect={correct === 1}
+				isPlaying={isPlaying}
 			></Answer>
 			<Answer
 				value={props.answers[2]}
 				color="blue.400"
 				onClick={handleClickAnswer}
-				isCorrect={props.correct === 2}
-				isClicked={isClicked}
+				isCorrect={correct === 2}
+				isPlaying={isPlaying}
 			></Answer>
 			<Answer
 				value={props.answers[3]}
 				color="green.500"
 				onClick={handleClickAnswer}
-				isCorrect={props.correct === 3}
-				isClicked={isClicked}
+				isCorrect={correct === 3}
+				isPlaying={isPlaying}
 			></Answer>
 		</Flex>
 	)
