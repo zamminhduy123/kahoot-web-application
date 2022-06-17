@@ -9,6 +9,7 @@ import {
 	FormLabel,
 	Input,
 	Button,
+	useBoolean,
 } from "@chakra-ui/react"
 import { Children, FunctionComponent } from "react"
 import { Link } from "react-router-dom"
@@ -16,6 +17,7 @@ import ViewQuestionPage from "./ViewQuestionPage/ViewQuestionPage"
 import WaitingRoom from "./WaitingRoom"
 
 const PlayingMode = (props: any) => {
+	const [isPlaying, setIsPlaying] = useBoolean(true)
 	const quiz = {
 		title:
 			"How Well Do You Know the U.S. Census Bureau? (Middle/high school version)",
@@ -31,7 +33,7 @@ const PlayingMode = (props: any) => {
 			py="6"
 			centerContent
 		>
-			<WaitingRoom quiz={quiz} />
+			{isPlaying ? <ViewQuestionPage /> : <WaitingRoom quiz={quiz} />}
 		</Container>
 	)
 }

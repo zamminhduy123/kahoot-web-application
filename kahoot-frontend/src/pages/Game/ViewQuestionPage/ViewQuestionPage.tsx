@@ -3,6 +3,7 @@
 import { Box, Center, Heading, Text } from "@chakra-ui/react"
 import { FunctionComponent } from "react"
 import { IQuestion } from "../../../model/interface/question.model"
+import AnswerList from "./AnswerList"
 
 interface ViewQuestionPageProps {}
 
@@ -15,13 +16,30 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
 		multipleChoice: "yes",
 		answer: 1,
 	}
+
+	let data2: IQuestion = {
+		id: "1",
+		question: "Next question",
+		time: "20",
+		multipleChoice: "yes",
+		answer: 1,
+	}
+
+	const answers = [
+		"this is not the correct answer",
+		"this is the correct answer",
+		"answer 3 very longg dummy omg",
+		"answer 4 very longg dummy omg",
+	]
+
 	return (
 		<>
-			<Center bg="white" boxShadow="base">
-				<Heading size="lg" color="black" mx="56" my="8" textAlign="center">
+			<Box bg="white" boxShadow="base">
+				<Heading size="lg" color="black" mx="4" my="8" textAlign="center">
 					{data.question}
 				</Heading>
-			</Center>
+			</Box>
+			<AnswerList answers={answers} correct={data.answer} />
 		</>
 	)
 }
