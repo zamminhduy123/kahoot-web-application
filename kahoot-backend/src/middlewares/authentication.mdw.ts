@@ -7,7 +7,7 @@ import UserModel from "../models/User.model";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-const compulsoryAuth = async (
+export const compulsoryAuth = async (
   req: IUserRequest,
   res: Response,
   next: NextFunction
@@ -26,16 +26,20 @@ const compulsoryAuth = async (
     };
     next();
   } catch (error) {
-
     await refreshAccessToken(req, token);
     next();
   }
 };
 
 const refreshAccessToken = async (req: IUserRequest, token: string) => {
-  const payload = jwt.verify(token, JWT_SECRET, {
-    ignoreExpiration: true,
-  }) as IPayload;
+  let payload;
+  try {
+    payload = jwt.verify(token, JWT_SECRET, {
+      ignoreExpiration: true,
+    }) as IPayload;
+  } catch (error) {
+    throw new UnauthenticatedError(ErrorMessage.ERROR_AUTHENTICATION_INVALID);
+  }
 
   const user = await UserModel.findById(payload.userId);
   if (!user) {
@@ -47,5 +51,5 @@ const refreshAccessToken = async (req: IUserRequest, token: string) => {
     throw new BadRequestError(ErrorMessage.ERROR_AUTHENTICATION_INVALID);
   }
 
-  req.user.accessToken = user.createJWT();
+  req.user!.accessToken = user.createJWT();
 };

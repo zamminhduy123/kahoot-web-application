@@ -6,7 +6,7 @@ interface IPayloadUser extends IPayload {
 }
 
 interface IUserRequest extends Request {
-    user: IPayloadUser;
+    user?: IPayloadUser;
 }
 
 export default IUserRequest;
