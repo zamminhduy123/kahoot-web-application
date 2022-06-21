@@ -20,6 +20,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { HiOutlineMail } from 'react-icons/hi';
 import { RiAccountPinCircleLine, RiShieldKeyholeLine, RiShieldUserLine } from 'react-icons/ri';
 import { signUp } from '../../../api';
+import { AxiosError } from 'axios';
 
 interface IFormInput {
   email: string;
@@ -49,21 +50,30 @@ const RegisterForm: React.FunctionComponent = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (formValue) => {
     setFailureMessage('');
-    const signedUp = await signUp(formValue.email,formValue.password,formValue.name);
-    console.log(signedUp)
-
-    if (signedUp) {
-      toast({
-        title: 'Register successfully!',
-        status: 'success',
-        isClosable: true,
-      });
+    try {
+      const signedUp = await signUp(formValue.email,formValue.password,formValue.name);
+      if (signedUp) {
+        toast({
+          title: 'Register successfully!',
+          status: 'success',
+          isClosable: true,
+        });
+        navigate('/login')
+      }
+    } catch (err : any) {
+      const res = err.response;
+      if (res.data){
+        switch(res.data.msg) {
+          case "key-duplicated":
+            toast({
+              title: 'Email existed!',
+              status: 'error',
+              isClosable: true,
+            });
+            break;
+        }
+      }
     }
-    // } else if (signedUp.data === 409) {
-    //   setFailureMessage(registerFailureMessage.emailExited);
-    // } else {
-    //   setFailureMessage(registerFailureMessage.default);
-    // }
   };
 
   return (

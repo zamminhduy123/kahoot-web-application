@@ -39,7 +39,7 @@ export const signUp = async (
     }
     axios(requestOptions).then((response : AxiosResponse) => {
       resolve(response);
-    }).catch(err => {
+    }).catch((err : AxiosError) => {
       reject(err);
     })
   })
