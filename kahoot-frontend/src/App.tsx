@@ -13,6 +13,7 @@ import MyKahoot from "./pages/MyKahoot"
 import { ViewQuestionPage, JoinRoomPage, PlayingMode } from "./pages/Game"
 import AuthGuard from "./hoc/AuthGuard"
 import PrivateRoutesLayout from "./hoc/PrivateRoutesLayout"
+import Creator from "./pages/Creator"
 
 function App() {
 	return (
@@ -30,6 +31,10 @@ function App() {
 					<Route
 						path="details/:id"
 						element={<PrivateRoutesLayout children={<MyKahoot />} />}
+					/>
+					<Route
+						path="creator"
+						element={<PrivateRoutesLayout header={false} children={<Creator />} />}
 					/>
 					<Route path="login" element={<Login />} />
 					<Route path="register" element={<Register />} />

@@ -12,10 +12,11 @@ import MyKahoot from "../../pages/MyKahoot";
 import AuthGuard from "../AuthGuard";
 
 interface LayoutProps {
+  header?: Boolean;
   children: React.ReactElement | React.ReactElement[];
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children,header = true }: LayoutProps) => {
   const user = useAppSelector((state) => state.auth);
   const location = useLocation();
   const [activePath, setActivePath] = React.useState("");
@@ -26,7 +27,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <AuthGuard>
-      <Header user={user} activePath={activePath}></Header>
+      {header && <Header user={user} activePath={activePath}></Header>}
       <Box transition=".3s ease" flex={1}>
         <Flex minH={"100vh"} justify="center" align={"center"}>
           <Suspense fallback={<FallbackUI />}>{children}</Suspense>

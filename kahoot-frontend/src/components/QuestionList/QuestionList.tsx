@@ -44,19 +44,18 @@ const QuestionList = ({}: QuestionListProps) => {
   ];
   return (
     <Flex direction={"column"} w={"100%"} h="100%">
-      <Flex direction={"row"} margin="4px 0px" align={"center"}>
+      <Flex direction={"row"} height='fit-content' margin="4px 0px" align={"center"}>
         <Box fontWeight={"600"} fontSize="16px">
           Question ({fakeQuestions.length})
         </Box>
       </Flex>
-      <Flex flexGrow={"1"} direction="column" padding={"8px 8px"}>
-        <Box maxH="100%" minH={"200px"} overflowX="hidden" overflowY={"auto"}>
+      <Flex flex={"1"} minH="0" direction="column" padding={"8px"} overflowY="scroll">
+        <Box>
           {fakeQuestions.map((q, id) => {
             return <QuestionItem key={"q.id" + id} {...q} />;
           })}
         </Box>
       </Flex>
-      <Box h="1px"></Box>
     </Flex>
   );
 };

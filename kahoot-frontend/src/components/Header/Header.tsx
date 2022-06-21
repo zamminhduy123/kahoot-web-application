@@ -11,7 +11,7 @@ import {
   Button,
   Icon,
 } from "@chakra-ui/react";
-import { Link as ReachLink } from "react-router-dom";
+import { Link as ReachLink, useNavigate } from "react-router-dom";
 import RightSideDrawer from "./RightSideDrawer";
 import { IUser } from "../../model/interface/user.model";
 import { RiAddCircleLine, RiHome4Line, RiListUnordered } from "react-icons/ri";
@@ -27,7 +27,6 @@ interface DesktopNavProps {
 const DesktopNav = ({ activePath }: DesktopNavProps) => {
   const linkColor = useColorModeValue("gray.900", "brand.200");
   const linkHoverColor = useColorModeValue("brand.600", "white");
-
   return (
     <Stack direction={"row"} h="100%">
       {NAV_ITEMS.map((navItem) => {
@@ -83,6 +82,7 @@ export interface PublicHeaderProps {
 }
 
 const Header = (props: PublicHeaderProps) => {
+  const navigate = useNavigate();
   return (
     <Box
       borderBottom={1}
@@ -121,7 +121,7 @@ const Header = (props: PublicHeaderProps) => {
                 colorScheme="brand"
                 fontSize={"sm"}
                 fontWeight={"bold"}
-                onClick={() => {}}
+                onClick={() => {navigate('/creator')}}
                 rightIcon={<Icon as={RiAddCircleLine} />}
               >
                 CREATE
