@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-import {AuthActionType} from '../actions/auth.action'
 import { IUser } from '../interface';
 
 // Define a type for the slice state

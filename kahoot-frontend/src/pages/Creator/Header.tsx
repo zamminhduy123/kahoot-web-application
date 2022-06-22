@@ -21,9 +21,12 @@ import { RiAddCircleLine, RiHome4Line, RiListUnordered } from "react-icons/ri";
 import { IconType } from "react-icons";
 import { Dispatch, SetStateAction } from "react";
 
-export interface PublicHeaderProps {}
+export interface PublicHeaderProps {
+  onSettingClick: Function;
+  title: string;
+}
 
-const Header = (props: PublicHeaderProps) => {
+const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
   return (
     <Box
       flex={0}
@@ -50,31 +53,42 @@ const Header = (props: PublicHeaderProps) => {
               />
             </Center>
           </Link>
-          <Flex justifyContent="center" alignItems="center" ml={10}>
-            <InputGroup size="md">
-              <Input
-                pr="4.5rem"
-                placeholder="Enter QuizShare title..."
+          <Flex
+            justifyContent="center"
+            alignItems="center"
+            ml={10}
+            onClick={() => onSettingClick()}
+          >
+            <Flex
+              padding={"5px 10px"}
+              border="1px solid"
+              borderColor={"gray.200"}
+              borderRadius="4px"
+            >
+              <Box
+                minW={"100px"}
+                paddingTop={"4px"}
                 fontWeight={"600"}
                 _hover={{
                   cursor: "pointer",
                 }}
-              />
-              <InputRightElement width="4.5rem" marginRight={"4px"}>
-                <Button
-                  h="1.75rem"
-                  size="sm"
-                  fontWeight={"600"}
-                  color={"gray.700"}
-                  backgroundColor={"gray.200"}
-                  _hover={{
-                    backgroundColor: "gray.200",
-                  }}
-                >
-                  Settings
-                </Button>
-              </InputRightElement>
-            </InputGroup>
+                marginRight="10px"
+              >
+                {title || "Enter QuizShare title..."}
+              </Box>
+              <Button
+                h="1.75rem"
+                size="sm"
+                fontWeight={"600"}
+                color={"gray.700"}
+                backgroundColor={"gray.200"}
+                _hover={{
+                  backgroundColor: "gray.200",
+                }}
+              >
+                Settings
+              </Button>
+            </Flex>
           </Flex>
           <Spacer />
 
