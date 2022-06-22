@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react"
 import { Children, FunctionComponent } from "react"
 import { Link } from "react-router-dom"
+import Leaderboards from "./Leaderboards"
 import ViewQuestionPage from "./ViewQuestionPage/ViewQuestionPage"
 import WaitingRoom from "./WaitingRoom"
 
@@ -33,7 +34,8 @@ const PlayingMode = (props: any) => {
 			py="6"
 			centerContent
 		>
-			{isPlaying ? <ViewQuestionPage /> : <WaitingRoom quiz={quiz} />}
+			{/* {isPlaying ? <ViewQuestionPage /> : <WaitingRoom quiz={quiz} />} */}
+			<Leaderboards question={""} users={[]}></Leaderboards>
 		</Container>
 	)
 }
