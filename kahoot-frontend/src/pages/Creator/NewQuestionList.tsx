@@ -8,7 +8,12 @@ import {
   RiCheckboxMultipleBlankLine,
 } from "react-icons/ri";
 import { useAppDispatch } from "../../hook";
-import { addNewQuestion, deleteQuestionAtIndex, dublicateQuestionAtIndex } from "../../model/reducers/newQuiz.reducer";
+import {
+  addNewQuestion,
+  deleteQuestionAtIndex,
+  dublicateQuestionAtIndex,
+  selectQuestion,
+} from "../../model/reducers/newQuiz.reducer";
 
 interface NewQuestionListProps {
   list: IQuestion[];
@@ -18,11 +23,10 @@ const NewQuestionList = ({ list }: NewQuestionListProps) => {
   const dispatch = useAppDispatch();
   const deleteCheck = (index: number) => {
     if (list.length <= 1) {
-
     } else {
-      dispatch(deleteQuestionAtIndex(index))
+      dispatch(deleteQuestionAtIndex(index));
     }
-  }
+  };
   return (
     <>
       <Flex minHeight={"0"} direction={"column"} overflowY="auto" flex={1}>
@@ -54,7 +58,7 @@ const NewQuestionList = ({ list }: NewQuestionListProps) => {
                   marginBottom={"4px"}
                 >
                   <VStack>
-                  <Center
+                    <Center
                       onClick={() => dispatch(dublicateQuestionAtIndex(index))}
                       style={{
                         width: "24px",
@@ -100,6 +104,12 @@ const NewQuestionList = ({ list }: NewQuestionListProps) => {
                   backgroundColor={"brand.300"}
                   p="4px"
                   h="93px"
+                  cursor={"pointer"}
+                  _hover={{
+                    border: "2px solid gray",
+                    boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px"
+                  }}
+                  onClick={() => {dispatch(selectQuestion(index))}}
                 >
                   <Icon as={RiTimerLine}></Icon>
                   {question.time}
