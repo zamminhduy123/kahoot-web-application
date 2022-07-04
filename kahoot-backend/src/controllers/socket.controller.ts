@@ -1,3 +1,4 @@
+import { connect } from "http2";
 import { Server, Socket } from "socket.io";
 
 export default function(io: Server, socket: Socket) {
@@ -10,7 +11,7 @@ export default function(io: Server, socket: Socket) {
     }
 
     const onPlayerJoin = function (payload: string) {
-
+        console.log(payload)
     }
 
     const onPlayerJoinGame = function(payload: string) {
