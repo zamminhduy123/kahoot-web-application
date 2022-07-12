@@ -14,7 +14,7 @@ interface IGame {
 
 export const createGame = async (req: IUserRequest, res: Response) => {
   const owner = req.user?.userId;
-  const game = req.body as IGame;
+  const game = req.body.game as IGame;
 
   await GameModel.create({
     owner,
