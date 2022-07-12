@@ -1,16 +1,7 @@
 import { JSONSchemaType } from "ajv";
+import { IGameKahoot, IQuestionKahoot } from "../types";
 
-interface IQuestionSchema {
-  question: string;
-  solution: string[];
-  answer: number;
-}
-
-interface IGameSchema {
-  game: IQuestionSchema[];
-}
-
-const questionSchema: JSONSchemaType<IQuestionSchema> = {
+const questionSchema: JSONSchemaType<IQuestionKahoot> = {
   type: "object",
   properties: {
     question: {
@@ -31,14 +22,14 @@ const questionSchema: JSONSchemaType<IQuestionSchema> = {
   additionalProperties: false,
 };
 
-const schema: JSONSchemaType<IGameSchema> = {
+const schema: JSONSchemaType<IGameKahoot> = {
   type: "object",
   properties: {
     game: {
-        type: "array",
-        items: questionSchema,
-        minItems: 1
-    }
+      type: "array",
+      items: questionSchema,
+      minItems: 1,
+    },
   },
   required: ["game"],
   additionalProperties: false,
