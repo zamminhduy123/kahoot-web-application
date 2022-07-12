@@ -10,6 +10,7 @@ import { Server } from "socket.io";
 import notFoundMdw from "./middlewares/not-found.mdw";
 import errorHandlerMiddleware from "./middlewares/handle-errors.mdw";
 import socketHandler from "./controllers/socket.controller";
+import Kahoot from "./classes/Kahoot.class";
 
 const app = express();
 const server = http.createServer(app);
@@ -21,6 +22,7 @@ const io = new Server(server, {
   },
 });
 const PORT = process.env.PORT || 5000;
+const kahoot = new Kahoot();
 
 app.use(
   cors({
@@ -38,7 +40,7 @@ app.use(errorHandlerMiddleware);
 
 io.on("connection", (socket) => {
   console.log("User connected!", socket.id);
-  socketHandler(io, socket);
+  socketHandler(io, socket, kahoot);
 });
 
 const start = async () => {
