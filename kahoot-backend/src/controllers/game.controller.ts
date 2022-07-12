@@ -27,3 +27,16 @@ export const createGame = async (req: IUserRequest, res: Response) => {
     accessToken: req.user?.accessToken,
   });
 };
+
+export const getYourGames = async (req: IUserRequest, res: Response) => {
+  const owner = req.user?.userId;
+
+  const games = await GameModel.find({
+    owner,
+  });
+
+  res.json({
+    games: games, 
+    accessToken: req.user?.accessToken,
+  })
+}

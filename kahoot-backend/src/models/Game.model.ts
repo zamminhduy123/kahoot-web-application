@@ -41,4 +41,5 @@ const GameSchema = new Schema<IGame, GameModel, IGameMethods>({
   ],
 });
 
+GameSchema.index({ owner: 1 });
 export default model<IGame, GameModel>("Game", GameSchema);
