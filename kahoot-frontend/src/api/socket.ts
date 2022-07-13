@@ -63,8 +63,8 @@ class Socket {
     return this.socket.connected;
   };
 
-  emit = <T>(eventName: string, data: T) => {
-    this.socket.emit(eventName, data);
+  emit = <T>(eventName: string, data: T, ack? : Function) => {
+    this.socket.emit(eventName, data,ack);
   };
 
   registerListener<T>(eventName: string, callback: (data: T) => void) {

@@ -11,17 +11,19 @@ import {
   Input,
   Square,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import { FunctionComponent } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Socket from "../../api/socket";
 
 interface JoinRoomPageProps {}
 
 interface IFormInput {
   pincode: string;
+  name: string;
 }
 
 const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
@@ -31,15 +33,51 @@ const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
     formState: { errors, isSubmitting },
   } = useForm<IFormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = async ({pincode }) => {
-	Socket.getInstance().emit<string>('player-join',pincode);
+  const navigate = useNavigate();
+
+  const onJoinRoomSuccess = () => {
+    console.log("JOIN ROOM SUCCESS")
+    toast.closeAll();
+    toast({
+      title: "Joined!",
+      status: "success",
+      isClosable: true,
+      duration: 2000,
+    });
+    navigate(
+      '/play'
+    )
   }
+
+  const onSubmit: SubmitHandler<IFormInput> = async ({ pincode }) => {
+    Socket.getInstance().emit("player-join", pincode,onJoinRoomSuccess);
+  };
+
+  const gamePinNotFound = () => 
+  {
+    toast.closeAll();
+    toast({
+      title: "Pin Not Found!",
+      description: "No game was found with given pin code",
+      status: "error",
+      isClosable: false,
+      duration: 2000,
+    });
+  };
   // join room submit
   React.useEffect(() => {
-    Socket.getInstance().registerListener("move-to-room", () => {
+    Socket.getInstance().registerListener("move-to-room", () => {});
+    Socket.getInstance().registerListener("noGameFound", () => {
+      gamePinNotFound();
+    });
 
-	})
+    return () => {
+      Socket.getInstance().removeRegisteredListener("move-to-room");
+      Socket.getInstance().removeRegisteredListener("noGameFound");
+    };
   }, []);
+
+  const toast = useToast();
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <Box bg="orange.800" minWidth="100vw" minHeight="100vh">
@@ -76,21 +114,45 @@ const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
           </Text>
           <Box bg="white" padding="5" borderRadius="lg">
             <FormControl colorScheme="brand" isRequired>
-              <FormLabel htmlFor="first-name">Enter Your Pin Code</FormLabel>
-              <Input
-                {...register("pincode", {
-                  required: "PinCode is required",
-                })}
-                id="pin-code"
-                placeholder="Pin Code"
-              />
-			  <Button colorScheme="orange" type="submit" mt="4" mx="auto">
-                  Join
-                </Button>
-              <Link to="/play">
-                
-              </Link>
+              <Box marginBlockEnd={"10px"}>
+                <FormLabel htmlFor="name">Your Name</FormLabel>
+                <Input
+                  {...register("name", {
+                    required: "Name is required",
+                  })}
+                  textAlign="center"
+                  id="name"
+                  placeholder="Your NAME"
+                />
+              </Box>
+              <Box>
+                <FormLabel htmlFor="pin-code">Enter Pin Code</FormLabel>
+                <Input
+                  {...register("pincode", {
+                    required: "PinCode is required",
+                  })}
+                  textAlign="center"
+                  id="pin-code"
+                  placeholder="Game PIN"
+                />
+              </Box>
+              <Button
+                colorScheme="orange"
+                fontWeight={600}
+                type="submit"
+                mt="4"
+                mx="auto"
+                w={"100%"}
+              >
+                Join
+              </Button>
             </FormControl>
+            <Box marginBlockStart={"10px"} textAlign="center">
+              Create your own Game?
+              <Link to="/">
+                <Text fontWeight={600}>QuizShare.com</Text>
+              </Link>
+            </Box>
           </Box>
         </Container>
       </Box>

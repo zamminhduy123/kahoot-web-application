@@ -74,14 +74,15 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     }
   };
 
-  const onPlayerJoin = function (payload: { pin: string; name: string }) {
+  const onPlayerJoin = function (payload: { pin: string; name: string}, onSuccess: Function ) {
     const { pin, name } = payload;
+    onSuccess();
     let gameFound = false;
-
     for (let i = 0; i < kahoot.games.length; i++) {
       const game = kahoot.games[i];
       if (pin == game.pin) {
         console.log("Player connected to game");
+        onSuccess();
         const hostId = game.hostId;
 
         //Add player to the game
