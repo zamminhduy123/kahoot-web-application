@@ -8,6 +8,7 @@ interface IQuestion {
 
 interface IGame {
   owner: Types.ObjectId;
+  title: string;
   game: IQuestion[];
 }
 
@@ -20,6 +21,10 @@ const GameSchema = new Schema<IGame, GameModel, IGameMethods>({
     type: Schema.Types.ObjectId,
     ref: "User",
     required: [true, "Please provide user id"],
+  },
+  title: {
+    type: String,
+    required: [true, "Please provide quiz name"],
   },
   game: [
     {

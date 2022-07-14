@@ -5,6 +5,7 @@ import { IUserRequest } from "../types";
 
 interface IGame {
   owner: string;
+  title: string;
   game: {
     question: string;
     solution: string[];
@@ -14,16 +15,18 @@ interface IGame {
 
 export const createGame = async (req: IUserRequest, res: Response) => {
   const owner = req.user?.userId;
-  const game = req.body.game as IGame;
+  const {game, title} = req.body as IGame;
 
   await GameModel.create({
     owner,
+    title,
     game,
   });
 
   res.json({
     game,
     owner,
+    title,
     accessToken: req.user?.accessToken,
   });
 };

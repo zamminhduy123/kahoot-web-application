@@ -30,8 +30,11 @@ const schema: JSONSchemaType<IGameKahoot> = {
       items: questionSchema,
       minItems: 1,
     },
+    title: {
+      type: "string",
+    }
   },
-  required: ["game"],
+  required: ["game", "title"],
   additionalProperties: false,
 };
 
