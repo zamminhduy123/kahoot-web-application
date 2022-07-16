@@ -1,6 +1,6 @@
 /** @format */
 
-import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Circle, Flex, Heading, Square, Text } from "@chakra-ui/react";
 import { FunctionComponent, useState } from "react";
 import { IQuestion } from "../../../../model/interface/question.model";
 import AnswerList from "../AnswerList";
@@ -9,6 +9,7 @@ interface PlayerWaitingRoomProps {}
 
 const PlayerWaitingRoom: FunctionComponent<PlayerWaitingRoomProps> = () => {
   return (
+    
     <Flex
       minW={"100%"}
       minH="100%"
