@@ -11,7 +11,7 @@ import {
   Button,
   Icon,
 } from "@chakra-ui/react";
-import { Link as ReachLink, useNavigate } from "react-router-dom";
+import { Link as ReachLink, useLocation, useNavigate } from "react-router-dom";
 import RightSideDrawer from "./RightSideDrawer";
 import { IUser } from "../../model/interface/user.model";
 import { RiAddCircleLine, RiHome4Line, RiListUnordered } from "react-icons/ri";
@@ -78,11 +78,12 @@ const NAV_ITEMS: Array<NavItem> = [
 
 export interface PublicHeaderProps {
   user: IUser | null;
-  activePath: string;
 }
 
 const Header = (props: PublicHeaderProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const activePath = location.pathname;
   return (
     <Box
       borderBottom={1}
@@ -109,7 +110,7 @@ const Header = (props: PublicHeaderProps) => {
             </Center>
           </Link>
           <Flex justifyContent="center" alignItems="center" ml={10}>
-            <DesktopNav activePath={props.activePath} />
+            <DesktopNav activePath={activePath} />
           </Flex>
           <Spacer />
 

@@ -16,36 +16,24 @@ import { Children, FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import Socket from "../../api/socket";
 import { useAppDispatch, useAppSelector } from "../../hook";
-import { setPlayers } from "../../model/reducers/players.reducer";
+import { newPlayerJoin } from "../../model/reducers/game.reducer";
 import Leaderboards from "./Leaderboards";
 import ViewQuestionPage from "./ViewQuestionPage/ViewQuestionPage";
 import WaitingRoom from "./WaitingRoom";
 
-Socket.getInstance().emit("host-join", { id: "62cdc28797a048b061cc295f" });
 
-const PlayingMode = (props: any) => {
+const HostingMode = (props: any) => {
   const [isPlaying, setIsPlaying] = useBoolean(false);
-  const quiz = {
-    title:
-      "How Well Do You Know the U.S. Census Bureau? (Middle/high school version)",
-    author: "ngduytkim",
-    totalQuestions: 24,
-    maxPlayers: 50,
-  };
-  const { players } = useAppSelector((state) => state.player);
+  const {title,ownerName,players,totalQuestions,pin} = useAppSelector((state) => state.game)
   const dispatch = useAppDispatch();
   React.useEffect(() => {
     Socket.getInstance().registerListener(
       "updatePlayerLobby",
-      (playersInGame: any) => {
+      (newPlayer: any) => {
         dispatch(
-          setPlayers(
-            playersInGame.map((p: any) => {
-              return {
-                name: p.name,
-                score: p.score,
-              };
-            })
+          newPlayerJoin(
+            {name: newPlayer.name,
+            score: newPlayer.score}
           )
         );
       }
@@ -57,7 +45,7 @@ const PlayingMode = (props: any) => {
   return (
     <Container
       bg="black"
-      minWidth="100vw"
+      minW={'100%'}
       minHeight="100vh"
       py="6"
       centerContent
@@ -65,11 +53,11 @@ const PlayingMode = (props: any) => {
       {isPlaying ? (
         <ViewQuestionPage />
       ) : (
-        <WaitingRoom quiz={quiz} players={players} />
+        <WaitingRoom title={title} ownerName={ownerName} totalQuestions={totalQuestions} players={players} gamePin ={pin} />
       )}
       {/* <Leaderboards question={""} users={[]}></Leaderboards> */}
     </Container>
   );
 };
 
-export default PlayingMode;
+export default HostingMode;

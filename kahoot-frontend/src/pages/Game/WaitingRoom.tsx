@@ -1,24 +1,29 @@
 /** @format */
 
 import { FunctionComponent } from "react";
-import React, { useState, useEffect } from "react";
-import { IQuestion } from "../../model/interface";
-import QuestionItem from "../../components/QuestionItem/QuestionItem";
+import React, {  useEffect } from "react";
 import QuizItem from "./QuizItem";
-import { Container, Box, Badge, Center, Wrap } from "@chakra-ui/react";
-import Socket from "../../api/socket";
+import {  Box, Badge,  Wrap, Button, Flex } from "@chakra-ui/react";
+
 import { useAppDispatch, useAppSelector } from "../../hook";
-import { setPlayers } from "../../model/reducers/players.reducer";
-import { useDispatch } from "react-redux";
 import { IPlayer } from "../../model/interface/player.model";
+import Socket from "../../api/socket";
 
 interface WaitingRoomProps {
-  quiz: any; //need model for quiz
-  players: IPlayer[]
+  title : string,
+  ownerName: string,
+  players: IPlayer[],
+  totalQuestions: number,
+  gamePin: string
 }
 
 const WaitingRoom: FunctionComponent<WaitingRoomProps> = (props) => {
 
+  const startGame = () => {
+    Socket.getInstance().emit(
+      "game-start",{}
+    )
+  }
   const dispatch = useAppDispatch();
   const renderPlayers = () => {
     return (
@@ -39,12 +44,6 @@ const WaitingRoom: FunctionComponent<WaitingRoomProps> = (props) => {
       </>
     );
   };
-
-  useEffect(() => {
-    // handleAddPlayer({ name: "Kim" });
-    
-  }, []);
-
   return (
     <Box
       display="flex"
@@ -52,7 +51,9 @@ const WaitingRoom: FunctionComponent<WaitingRoomProps> = (props) => {
       maxW="lg"
       justifyContent="center"
       alignItems="center"
+      minW={'100%'}
     >
+
       <Box
         display="flex"
         flexDirection="column"
@@ -60,7 +61,8 @@ const WaitingRoom: FunctionComponent<WaitingRoomProps> = (props) => {
         justifyContent="center"
         alignItems="center"
       >
-        <QuizItem {...props.quiz}></QuizItem>
+        <QuizItem title={props.title} author={props.ownerName} totalQuestions={props.totalQuestions}></QuizItem>
+        <Flex direction={'row'}>
         <Badge
           borderRadius="full"
           px="2"
@@ -68,9 +70,35 @@ const WaitingRoom: FunctionComponent<WaitingRoomProps> = (props) => {
           fontSize="lg"
           my="4"
           textAlign="center"
+          marginRight={'10px'}
+          padding='10px 20px'
         >
-          {props.quiz.totalQuestions} Questions
+          GAME PIN: {props.gamePin}
         </Badge>
+        <Badge
+        padding='10px 20px'
+          borderRadius="full"
+          px="2"
+          colorScheme="orange"
+          fontSize="lg"
+          my="4"
+          textAlign="center"
+        >
+          Questions: {props.totalQuestions}
+        </Badge>
+        </Flex>
+        
+      </Box>
+      <Box
+        w={"100%"}
+        display="flex"
+        flexDirection="row"
+        maxW="md"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box padding={"10px 20px"} bgColor="#FFF" borderRadius={'10px'} margin='0px 10px' fontWeight={600}>Players: {props.players.length}</Box>
+        <Button onClick={()=>startGame()}>Start Game</Button>
       </Box>
       <Wrap width="100%" mt="8" spacing="8" justify="center">
         {renderPlayers()}

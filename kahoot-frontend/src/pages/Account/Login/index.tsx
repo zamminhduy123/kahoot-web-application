@@ -7,9 +7,9 @@ import logo from "../../../assets/logo.png";
 import React from "react";
 
 import * as API from "../../../api";
-import { useAppDispatch } from "../../../hook";
+import { useAppDispatch, useAppSelector } from "../../../hook";
 import { useNavigate } from "react-router-dom";
-import { authSuccess } from "../../../model/reducers/auth.reducer";
+import { authFailure, authStart, authSuccess } from "../../../model/reducers/auth.reducer";
 import { IUser } from "../../../model/interface";
 
 export interface LoginProps {}
@@ -19,44 +19,57 @@ const Login = (props: LoginProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const loginSuccess = (data: any) => {
-    const loginedUser: IUser = {
-      id: data._id,
-      name: data.name,
-      email: data.email,
-      refreshToken: data.refreshToken,
-    };
+  const loginSuccess = React.useCallback(
+    (data: any) => {
+      const loginedUser: IUser = {
+        id: data._id,
+        name: data.name,
+        email: data.email,
+        refreshToken: data.refreshToken,
+      };
 
-    //save accessToken to localstorage
-    window.localStorage.setItem("accessToken", data.accessToken);
-    window.localStorage.setItem("refreshToken", data.refreshToken);
+      //save accessToken to localstorage
+      window.localStorage.setItem("accessToken", data.accessToken);
+      window.localStorage.setItem("refreshToken", data.refreshToken);
 
-    //dispatch action login success
-    dispatch(authSuccess({ ...loginedUser, accessToken: data.accessToken }));
-    navigate("/");
-  };
+      //dispatch action login success
+      dispatch(authSuccess({ ...loginedUser, accessToken: data.accessToken, id: data._id }));
+      console.log(
+        data
+      )
+    },
+    [navigate]
+  );
 
-  const isMounted = React.useRef(false);
+  const {id,name} = useAppSelector((state) => state.auth)
+
   React.useEffect(() => {
-    //get access and refresh token
-    API.autoLogin()
-      .then((response) => {
-        const data = response.data;
-        console.log(data);
-        if (data) {
-          loginSuccess(data);
-        } else {
+    if(id) {
+      navigate(
+        '/'
+      )
+    } else {
+      dispatch(authStart())
+      // console.log("AUTO",id,name,isAutoLogin)
+      API.autoLogin()
+        .then((response) => {
+          const data = response.data;
+          if (data) {
+            loginSuccess(data);
+          } else {
+            setIsAutoLogin(false);
+            dispatch(authFailure())
+          }
+        })
+        .catch((err) => {
           setIsAutoLogin(false);
-        }
-      })
-      .catch((err) => {
-        setIsAutoLogin(false);
-      });
-
+          dispatch(authFailure())
+        });
+    }
     return () => {
-      isMounted.current = false;
-    };
-  }, []);
+      // console.log("UNMOUNT",id,name,isAutoLogin)
+    }
+  }, [id]);
   return (
     <AccountPageLayout>
       <Box w={{ base: "80%", md: "400px" }} maxW="400px">

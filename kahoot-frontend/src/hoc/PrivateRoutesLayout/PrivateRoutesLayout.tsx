@@ -18,16 +18,11 @@ interface LayoutProps {
 
 const Layout = ({ children,header = true }: LayoutProps) => {
   const user = useAppSelector((state) => state.auth);
-  const location = useLocation();
-  const [activePath, setActivePath] = React.useState("");
 
-  React.useEffect(() => {
-    setActivePath(location.pathname);
-  }, [location]);
 
   return (
     <AuthGuard>
-      {header && <Header user={user} activePath={activePath}></Header>}
+      {header && <Header user={user}></Header>}
       <Box transition=".3s ease" flex={1}>
         <Flex minH={"100vh"} justify="center" align={"center"}>
           <Suspense fallback={<FallbackUI />}>{children}</Suspense>

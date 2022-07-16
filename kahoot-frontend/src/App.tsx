@@ -10,10 +10,12 @@ import Register from "./pages/Account/Register"
 import Home from "./pages/Home"
 import { Library } from "./pages/Library"
 import MyKahoot from "./pages/MyKahoot"
-import { ViewQuestionPage, JoinRoomPage, PlayingMode } from "./pages/Game"
+import { ViewQuestionPage, JoinRoomPage, HostingMode } from "./pages/Game"
 import AuthGuard from "./hoc/AuthGuard"
 import PrivateRoutesLayout from "./hoc/PrivateRoutesLayout"
 import {Creator} from "./pages/Creator"
+import GameEnter from "./hoc/GameEnter/GameEnter"
+import PlayingMode from "./pages/Game/ViewQuestionPage/PlayerGamePage"
 
 function App() {
 	return (
@@ -36,9 +38,18 @@ function App() {
 						path="creator"
 						element={<PrivateRoutesLayout header={false} children={<Creator />} />}
 					/>
+					<Route
+						path="host"
+						element={<PrivateRoutesLayout header={false} children={<HostingMode />} />}
+					/>
+					
 					<Route path="login" element={<Login />} />
 					<Route path="register" element={<Register />} />
-					<Route path="play" element={<PlayingMode />} />
+					<Route
+						path="play"
+						element={<GameEnter children={<PlayingMode />} />}
+					/>
+					
 					<Route path="join" element={<JoinRoomPage />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>

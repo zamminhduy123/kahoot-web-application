@@ -32,13 +32,14 @@ export const authSlice = createSlice({
       state.refreshToken = "";
     },
     authSuccess(state: Auth, action: PayloadAction<Auth>) {
+      console.log("PAYLOAD",action.payload)
       state.id = action.payload.id;
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     },
-    authFailure(state: Auth, action: PayloadAction<string>) {
+    authFailure(state: Auth) {
       state.id = "";
       state.name = "";
       state.email = "";

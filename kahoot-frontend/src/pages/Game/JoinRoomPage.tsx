@@ -18,6 +18,10 @@ import { FunctionComponent } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Socket from "../../api/socket";
+import { useAppDispatch } from "../../hook";
+import { IPlayer } from "../../model/interface/player.model";
+import { setNewGame } from "../../model/reducers/game.reducer";
+import { joinGame } from "../../model/reducers/play.reducer";
 
 interface JoinRoomPageProps {}
 
@@ -34,9 +38,9 @@ const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
   } = useForm<IFormInput>();
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const onJoinRoomSuccess = () => {
-    console.log("JOIN ROOM SUCCESS");
+  const onJoinRoomSuccess = (payload: any) => {
     toast.closeAll();
     toast({
       title: "Joined!",
@@ -44,6 +48,8 @@ const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
       isClosable: true,
       duration: 2000,
     });
+    dispatch(joinGame(payload))
+    console.log("JOINED",payload)
     navigate("/play");
   };
 
