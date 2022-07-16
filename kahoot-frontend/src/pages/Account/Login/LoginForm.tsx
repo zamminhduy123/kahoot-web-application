@@ -26,7 +26,6 @@ import { login } from "../../../api";
 import { useAppDispatch } from "../../../hook";
 import { authStart, authSuccess } from "../../../model/reducers/auth.reducer";
 import { IUser } from "../../../model/interface";
-import { AxiosError } from "axios";
 
 interface IFormInput {
   email: string;
@@ -61,8 +60,16 @@ const LoginForm: React.FunctionComponent = () => {
           id: data._id,
           name: data.name,
           email: data.email,
+          refreshToken: data.refreshToken,
         };
-        dispatch(authSuccess(loginedUser));
+
+        //save accessToken to localstorage
+        window.localStorage.setItem("accessToken", data.accessToken);
+
+        //dispatch action login success
+        dispatch(
+          authSuccess({ ...loginedUser, accessToken: data.accessToken })
+        );
         navigate("/");
       } else {
         console.log(data);
