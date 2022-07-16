@@ -20,6 +20,7 @@ export const login = async (req: Request, res: Response) => {
     throw new UnauthenticatedError(ErrorMessage.ERROR_LOGIN_FAILED);
   }
 
+  await user.createRefreshToken();
   const accessToken = user.createJWT();
   const userObjToSend = {
     ...user.toJSON(),
