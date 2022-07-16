@@ -107,7 +107,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         );
 
         //Player is joining room based on pin
-        socket.join(pincode);
+        socket.join(game.hostId);
         onSuccess({ pin: pincode });
         //Sending players data to display
         io.to(game.hostId).emit("updatePlayerLobby", {
@@ -147,8 +147,23 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     const game = kahoot.getGame(socket.id);
     game.isLive = true;
     //Tell player and host that game has started
-
     io.to(socket.id).emit("gameStarted");
+
+    setTimeout(() => {
+      game.gameData.playersAnswered = 0;
+      game.isLive = true;
+
+      let questionNum = game.gameData.question;
+      const question = game.gameData.game[questionNum].question;
+      const answers = game.gameData.game[questionNum].solution;
+      const correctAnswer = game.gameData.game[questionNum].answer;
+
+      io.to(socket.id).emit("question", {
+        question,
+        answers,
+        correct: correctAnswer,
+      });
+    }, 5000);
   };
 
   const onPlayerAnswer = function (payload: { num: number }) {

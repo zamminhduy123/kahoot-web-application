@@ -18,7 +18,6 @@ export const compulsoryAuth = async (
     throw new UnauthenticatedError(ErrorMessage.ERROR_AUTHENTICATION_INVALID);
   }
   const token = authHeader.split(" ")[1];
-  console.log(token);
 
   try {
     const payload = jwt.verify(token, JWT_SECRET) as IPayload;
