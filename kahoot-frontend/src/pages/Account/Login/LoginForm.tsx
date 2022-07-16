@@ -32,13 +32,16 @@ interface IFormInput {
   password: string;
 }
 
-const LoginForm: React.FunctionComponent = () => {
+interface LoginFormProps {
+  loginSuccess: Function;
+}
+
+const LoginForm = ({ loginSuccess }: LoginFormProps) => {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
   } = useForm<IFormInput>();
-  const navigate = useNavigate();
   const toast = useToast();
   const [loginFailure, setLoginFailure] = useState("");
   const dispatch = useAppDispatch();
@@ -55,22 +58,8 @@ const LoginForm: React.FunctionComponent = () => {
           status: "success",
           isClosable: true,
         });
-
-        const loginedUser: IUser = {
-          id: data._id,
-          name: data.name,
-          email: data.email,
-          refreshToken: data.refreshToken,
-        };
-
-        //save accessToken to localstorage
-        window.localStorage.setItem("accessToken", data.accessToken);
-
-        //dispatch action login success
-        dispatch(
-          authSuccess({ ...loginedUser, accessToken: data.accessToken })
-        );
-        navigate("/");
+        console.log(data);
+        loginSuccess(data);
       } else {
         console.log(data);
         throw new Error("Login failed!");
