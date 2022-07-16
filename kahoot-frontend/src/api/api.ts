@@ -77,3 +77,28 @@ export const signUp = async (
       });
   });
 };
+
+
+export const addNewGame = async (
+  title: string,
+	gameQuestions: any[]
+): Promise<AxiosResponse> => {
+  return new Promise<AxiosResponse>(async (resolve, reject) => {
+    const requestOptions = {
+      method: "POST",
+      url: `${DEFAULT_URL}/game`,
+      data: {
+        title,
+        gameQuestions
+      },
+      headers: requestHeader(),
+    };
+    axios(requestOptions)
+      .then((response: AxiosResponse) => {
+        resolve(response);
+      })
+      .catch((err: AxiosError) => {
+        reject(err);
+      });
+  });
+};

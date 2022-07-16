@@ -13,7 +13,7 @@ import MyKahoot from "./pages/MyKahoot"
 import { ViewQuestionPage, JoinRoomPage, PlayingMode } from "./pages/Game"
 import AuthGuard from "./hoc/AuthGuard"
 import PrivateRoutesLayout from "./hoc/PrivateRoutesLayout"
-import Creator from "./pages/Creator"
+import {Creator} from "./pages/Creator"
 
 function App() {
 	return (

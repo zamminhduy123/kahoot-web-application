@@ -20,13 +20,28 @@ import { IUser } from "../../model/interface/user.model";
 import { RiAddCircleLine, RiHome4Line, RiListUnordered } from "react-icons/ri";
 import { IconType } from "react-icons";
 import { Dispatch, SetStateAction } from "react";
+import { addNewGame } from "../../api/api";
 
 export interface PublicHeaderProps {
   onSettingClick: Function;
   title: string;
 }
 
-const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
+
+const Header = ({ onSettingClick, title}: PublicHeaderProps) => {
+  
+  const onSave = () =>{
+    let newGame = {
+      title: "newGame",
+      gameQuestions: []
+    }
+    try{addNewGame(newGame.title, newGame.gameQuestions)}catch (error) {
+      console.log(error)
+    }
+
+    console.log("add game")
+  }
+
   return (
     <Box
       flex={0}
@@ -114,7 +129,7 @@ const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
                 colorScheme={"brand"}
                 fontSize={"sm"}
                 fontWeight={"bold"}
-                onClick={() => {}}
+                onClick={onSave}
               >
                 Save
               </Button>

@@ -36,9 +36,12 @@ const Creator = () => {
   const titleInputRef = React.useRef<HTMLInputElement>(null);
 
   const onSubmit = () => {
-    if (titleInputRef.current && titleInputRef.current.value != "")
+    if (titleInputRef.current && titleInputRef.current.value != ""){
       dispatch(setTitle(titleInputRef.current.value));
+    }
   };
+
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -85,7 +88,7 @@ const Creator = () => {
         style={{ minHeight: "100vh", maxHeight: "100vh" }}
         direction={"column"}
       >
-        <Header onSettingClick={onOpen} title={title} />
+        <Header onSettingClick={onOpen} title={title}/>
         <Flex direction={"row"} width={"100%"} flex={1} minHeight="0px">
           <Flex
             direction={"column"}
