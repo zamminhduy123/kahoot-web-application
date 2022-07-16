@@ -74,13 +74,15 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     }
   };
 
-  const onPlayerJoin = function (payload: { pin: string; name: string}, onSuccess: Function ) {
-    const { pin, name } = payload;
-    onSuccess();
+  const onPlayerJoin = async function (
+    payload: { pincode: string; name: string },
+    onSuccess: Function
+  ) {
+    const { pincode, name } = payload;
     let gameFound = false;
     for (let i = 0; i < kahoot.games.length; i++) {
       const game = kahoot.games[i];
-      if (pin == game.pin) {
+      if (pincode == game.pin) {
         console.log("Player connected to game");
         onSuccess();
         const hostId = game.hostId;
@@ -89,11 +91,22 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         kahoot.addPlayer(hostId, socket.id, name, game.gameData.gameId);
 
         //Player is joining room based on pin
-        socket.join(pin);
+        socket.join(pincode);
+
+        const title = game.gameData.title;
+        const gameObj = (await GameModel.findById(
+          game.gameData.gameId
+        ).populate("owner", "name")) as any;
+        const ownerName = gameObj?.toJSON().owner.name;
 
         //Sending players data to display
         const playersInGame = kahoot.getPlayersInRoom(hostId);
-        io.to(pin).emit("updatePlayerLobby", playersInGame);
+        io.to(pincode).emit(
+          "updatePlayerLobby",
+          playersInGame,
+          title,
+          ownerName
+        );
 
         gameFound = true; //Game has been found
       }
@@ -109,18 +122,18 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     const { id } = payload;
     const player = kahoot.getPlayer(id);
 
-    if(player) {
+    if (player) {
       const game = kahoot.getGame(player.hostId);
       socket.join(game.pin);
 
       // update player id with socket id
-      player.playerId = socket.id; 
+      player.playerId = socket.id;
 
       const playerData = kahoot.getPlayersInRoom(game.hostId);
-      socket.emit('playerGameData', playerData);
+      socket.emit("playerGameData", playerData);
     } else {
       //No player found
-      socket.emit('noGameFound');
+      socket.emit("noGameFound");
     }
   };
 
@@ -128,44 +141,42 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     const game = kahoot.getGame(socket.id);
     game.isLive = true;
     //Tell player and host that game has started
-    socket.emit('gameStarted', game.hostId);
+    socket.emit("gameStarted", game.hostId);
   };
 
-  const onPlayerAnswer = function (payload: {
-    num: number,
-  }) {
-    const {num} = payload;
+  const onPlayerAnswer = function (payload: { num: number }) {
+    const { num } = payload;
     const player = kahoot.getPlayer(socket.id);
     const hostId = player.hostId;
     const playerNum = kahoot.getPlayersInRoom(hostId);
     const game = kahoot.getGame(hostId);
 
-    if(game.isLive) {
+    if (game.isLive) {
       player.gameData.answer = num;
       game.gameData.playersAnswered += 1;
-      
+
       const gameQuestion = game.gameData.question;
       const correctAnswer = game.gameData.game[gameQuestion].answer;
-      
+
       //Check player answer with correct answer
-      if(num == correctAnswer) {
+      if (num == correctAnswer) {
         player.gameData.score += 100;
-        io.to(game.pin).emit('getTime', socket.id);
-        socket.emit('answerResult', true);
+        io.to(game.pin).emit("getTime", socket.id);
+        socket.emit("answerResult", true);
       }
 
       //Check if all players answered
-      if(game.gameData.playersAnswered == playerNum.length) {
+      if (game.gameData.playersAnswered == playerNum.length) {
         //Question has been ended since players all answered
         game.isLive = false;
         const playerData = kahoot.getPlayersInRoom(game.hostId);
-        io.to(game.pin).emit('questionOver', playerData, correctAnswer);
+        io.to(game.pin).emit("questionOver", playerData, correctAnswer);
       } else {
         //update host screen of num players answered
-        io.to(game.pin).emit('updatePlayersAnswered', {
+        io.to(game.pin).emit("updatePlayersAnswered", {
           playersInGame: playerNum.length,
           playersAnswerd: game.gameData.playersAnswered,
-        })
+        });
       }
     }
   };
@@ -174,8 +185,8 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     const playerData = kahoot.getPlayersInRoom(socket.id);
 
     //Reset players current answer to 0
-    for(let i = 0; i < kahoot.players.length; i++) {
-      if(kahoot.players[i].hostId == socket.id) {
+    for (let i = 0; i < kahoot.players.length; i++) {
+      if (kahoot.players[i].hostId == socket.id) {
         kahoot.players[i].gameData.answer = 0;
       }
     }
@@ -184,26 +195,25 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     game.gameData.playersAnswered = 0;
     game.isLive = true;
     game.gameData.question += 1;
-    
-    if(game.gameData.game.length >= game.gameData.question) {
+
+    if (game.gameData.game.length >= game.gameData.question) {
       let questionNum = game.gameData.question;
       const question = game.gameData.game[questionNum].question;
       const answers = game.gameData.game[questionNum].solution;
       const correctAnswer = game.gameData.game[questionNum].answer;
-      
-      socket.emit('gameQuestions', {
+
+      socket.emit("gameQuestions", {
         question,
         answers,
         correct: correctAnswer,
         playersInGame: playerData.length,
       });
-    }
-    else {
+    } else {
       kahoot.updateRankingBoard(game.hostId);
-      io.to(game.pin).emit('GameOver', game.gameData.rankingBoard);
+      io.to(game.pin).emit("GameOver", game.gameData.rankingBoard);
     }
 
-    io.to(game.pin).emit('nextQuestionPlayer');
+    io.to(game.pin).emit("nextQuestionPlayer");
   };
 
   const onTimeUp = function (payload: string) {
@@ -213,20 +223,17 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     const gameQuestion = game.gameData.question;
 
     const correctAnswer = game.gameData.game[gameQuestion].answer;
-    io.to(game.pin).emit('questionOver', playerData, correctAnswer);
+    io.to(game.pin).emit("questionOver", playerData, correctAnswer);
   };
 
   const onDisconnect = function (payload: string) {};
 
-  const onGetScore = function() {
+  const onGetScore = function () {
     const player = kahoot.getPlayer(socket.id);
-    socket.emit('newScore', player.gameData.score);
+    socket.emit("newScore", player.gameData.score);
   };
 
-  const onTime = function (payload: {
-    time: number,
-    player: string,
-  }) {
+  const onTime = function (payload: { time: number; player: string }) {
     let time = payload.time / 20;
     time = time * 100;
     const playerId = payload.player;
@@ -258,8 +265,8 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
   //When time out for the question
   socket.on("time-up", onTimeUp);
 
-  socket.on('get-score', onGetScore);
-  socket.on('time', onTime);
+  socket.on("get-score", onGetScore);
+  socket.on("time", onTime);
 
   //When one socket disconnected
   socket.on("disconnect", onDisconnect);

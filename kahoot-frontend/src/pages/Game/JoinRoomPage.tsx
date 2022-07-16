@@ -36,7 +36,7 @@ const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
   const navigate = useNavigate();
 
   const onJoinRoomSuccess = () => {
-    console.log("JOIN ROOM SUCCESS")
+    console.log("JOIN ROOM SUCCESS");
     toast.closeAll();
     toast({
       title: "Joined!",
@@ -44,17 +44,18 @@ const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
       isClosable: true,
       duration: 2000,
     });
-    navigate(
-      '/play'
-    )
-  }
-
-  const onSubmit: SubmitHandler<IFormInput> = async ({ pincode }) => {
-    Socket.getInstance().emit("player-join", pincode,onJoinRoomSuccess);
+    navigate("/play");
   };
 
-  const gamePinNotFound = () => 
-  {
+  const onSubmit: SubmitHandler<IFormInput> = async ({ pincode, name }) => {
+    Socket.getInstance().emit(
+      "player-join",
+      { pincode, name },
+      onJoinRoomSuccess
+    );
+  };
+
+  const gamePinNotFound = () => {
     toast.closeAll();
     toast({
       title: "Pin Not Found!",
