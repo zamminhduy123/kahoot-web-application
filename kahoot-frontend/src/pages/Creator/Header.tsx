@@ -33,7 +33,11 @@ const Header = ({ onSettingClick, title}: PublicHeaderProps) => {
   const onSave = () =>{
     let newGame = {
       title: "newGame",
-      gameQuestions: []
+      gameQuestions: [{
+        "question": "abc",
+        "solution": ["1","2","3","4"],
+        "answer": 1
+      }]
     }
     try{addNewGame(newGame.title, newGame.gameQuestions)}catch (error) {
       console.log(error)

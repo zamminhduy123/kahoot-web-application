@@ -89,7 +89,7 @@ export const addNewGame = async (
       url: `${DEFAULT_URL}/game`,
       data: {
         title,
-        gameQuestions
+        game: gameQuestions
       },
       headers: requestHeader(),
     };
