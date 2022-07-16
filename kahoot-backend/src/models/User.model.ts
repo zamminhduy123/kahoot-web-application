@@ -14,7 +14,7 @@ interface IUserMethods {
   comparePassword(candidatePassword: string): Promise<boolean>;
   createJWT(): string;
   createRefreshToken(): Promise<string>;
-  compareRefreshToken(candidateToken: string): boolean;
+  compareRefreshToken(candidateToken: string): Promise<boolean>;
 }
 type UserModel = Model<IUser, {}, IUserMethods>;
 
@@ -68,8 +68,14 @@ UserSchema.methods.createRefreshToken = async function () {
   return token;
 };
 
-UserSchema.methods.compareRefreshToken = function (candidateToken: string) {
-  return candidateToken === this.refreshToken;
+UserSchema.methods.compareRefreshToken = async function (candidateToken: string) {
+  try {
+    const token = jwt.verify(this.refreshToken, process.env.JWT_SECRET!, )
+    return candidateToken === this.refreshToken;
+  }
+  catch(error) {
+    return false;
+  }
 };
 
 UserSchema.index({ email: 1 }, { unique: true });
