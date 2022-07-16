@@ -1,0 +1,14 @@
+{
+    "name": "kahoot-backend",
+    "version": "1.0.0",
+    "description": "api server - socket server for kahoot app",
+    "main": "kahoot-backend/dist/app.js",
+    "types": "kahoot-backend/dist/app.d.ts",
+    "scripts": {
+      "start": "cd kahoot-backend && node ./dist/app.js",
+      "build": "cd kahoot-backend && tsc",
+      "dev": "cd kahoot-backend && nodemon --config nodemon.json ./src/app.ts"
+    },
+    "author": "Duy, Lam, Kim"
+  }
+  
