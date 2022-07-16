@@ -8,7 +8,7 @@ const requestHeader = () => {
   const acc = window.localStorage.getItem("accessToken"),
     ref = window.localStorage.getItem("refreshToken");
   return {
-    authorization: acc || "",
+    authorization: `Bearer ${acc || ""}`,
     refresh: ref || "",
   };
 };
