@@ -90,7 +90,6 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
   ) {
     const { pincode, name } = payload;
     let gameFound = false;
-    console.log(pincode);
     for (let i = 0; i < kahoot.games.length; i++) {
       const game = kahoot.games[i];
       if (pincode == game.pin) {
@@ -100,11 +99,16 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         const hostId = game.hostId;
 
         //Add player to the game
-        const newPlayer = kahoot.addPlayer(hostId, socket.id, name, game.gameData.gameId);
+        const newPlayer = kahoot.addPlayer(
+          hostId,
+          socket.id,
+          name,
+          game.gameData.gameId
+        );
 
         //Player is joining room based on pin
         socket.join(pincode);
-        onSuccess({pin: pincode});
+        onSuccess({ pin: pincode });
         //Sending players data to display
         io.to(game.hostId).emit("updatePlayerLobby", {
           name: newPlayer.name,
@@ -228,7 +232,44 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     io.to(game.pin).emit("questionOver", playerData, correctAnswer);
   };
 
-  const onDisconnect = function (payload: string) {};
+  const onDisconnect = function (payload: string) {
+    const game = kahoot.getGame(socket.id); //Finding game with socket.id
+    //If a game hosted by that id is found, the socket disconnected is a host
+    if (game) {
+      //Checking to see if host was disconnected or was sent to game view
+      if (game.isLive == false) {
+        kahoot.removeGame(socket.id); //Remove the game from games class
+        console.log("Game ended with pin:", game.pin);
+
+        const playersToRemove = kahoot.getPlayersInRoom(game.hostId); //Getting all players in the game
+
+        //For each player in the game
+        for (let i = 0; i < playersToRemove.length; i++) {
+          kahoot.removePlayer(playersToRemove[i].playerId); //Removing each player from player class
+        }
+
+        io.to(game.pin).emit("hostDisconnect"); //Send player back to 'join' screen
+        socket.leave(game.pin); //Socket is leaving room
+      }
+    } else {
+      //No game has been found, so it is a player socket that has disconnected
+      const player = kahoot.getPlayer(socket.id); //Getting player with socket.id
+      //If a player has been found with that id
+      if (player) {
+        const hostId = player.hostId; //Gets id of host of the game
+        const game = kahoot.getGame(hostId); //Gets game data with hostId
+        const pin = game.pin; //Gets the pin of the game
+
+        if (game.isLive == false) {
+          kahoot.removePlayer(socket.id); //Removes player from players class
+          const playersInGame = kahoot.getPlayersInRoom(hostId); //Gets remaining players in game
+
+          io.to(pin).emit("updatePlayerLobby", playersInGame); //Sends data to host to update screen
+          socket.leave(pin); //Player is leaving the room
+        }
+      }
+    }
+  };
 
   const onGetScore = function () {
     const player = kahoot.getPlayer(socket.id);
