@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './reducers/auth.reducer'
 import newQuizReducer from './reducers/newQuiz.reducer'
+import playersReducer from './reducers/players.reducer'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    newQuiz: newQuizReducer
+    newQuiz: newQuizReducer,
+    player: playersReducer
   }
 })
 

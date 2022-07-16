@@ -66,13 +66,11 @@ const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
   };
   // join room submit
   React.useEffect(() => {
-    Socket.getInstance().registerListener("move-to-room", () => {});
     Socket.getInstance().registerListener("noGameFound", () => {
       gamePinNotFound();
     });
 
     return () => {
-      Socket.getInstance().removeRegisteredListener("move-to-room");
       Socket.getInstance().removeRegisteredListener("noGameFound");
     };
   }, []);
