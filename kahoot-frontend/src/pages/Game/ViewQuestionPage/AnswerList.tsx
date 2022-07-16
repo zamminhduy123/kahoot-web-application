@@ -2,9 +2,10 @@
 
 import { Box, Flex } from "@chakra-ui/react"
 import { FunctionComponent, useState } from "react"
+import { IMultipleChoice } from "../../../model/interface"
 
 interface AnswerListProps {
-	answers: any[]
+	answers: IMultipleChoice
 	correct: number
 	handleClick: any
 	isPlaying: any

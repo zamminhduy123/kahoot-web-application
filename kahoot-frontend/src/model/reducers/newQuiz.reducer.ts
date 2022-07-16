@@ -12,7 +12,7 @@ interface NewQuiz {
 const placeHolderQuestion: IQuestion = {
   id: "1",
   question: "",
-  multipleChoice: {},
+  multipleChoice: [],
   answer: 0,
   time: "20",
 };

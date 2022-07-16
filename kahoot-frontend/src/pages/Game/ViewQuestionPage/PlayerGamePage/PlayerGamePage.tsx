@@ -1,73 +1,59 @@
 /** @format */
 
-import { Box, Button, Center, Heading, Text } from "@chakra-ui/react"
-import { FunctionComponent, useState } from "react"
-import { IQuestion } from "../../../../model/interface/question.model"
-import AnswerList from "../AnswerList"
+import { Box, Button, Center, Heading, Text } from "@chakra-ui/react";
+import React from "react";
+import { FunctionComponent, useState } from "react";
+import Socket from "../../../../api/socket";
+import {
+  IMultipleChoice,
+  IQuestion,
+} from "../../../../model/interface/question.model";
+import AnswerList from "../AnswerList";
+import ReadyState from "./ReadyState";
 
 interface ViewQuestionPageProps {}
 
 const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
-	let data: any[] = [
-		{
-			id: "1",
-			question:
-				"Surveys help gather information about groups of people. How many surveys does the U.S. Census Bureau conduct each year?",
-			time: "20",
-			multipleChoice: "yes",
-			answer: 1,
-			answers: [
-				"this is not the correct answer",
-				"this is the correct answer",
-				"answer 3 very longg dummy omg",
-				"answer 4 very longg dummy omg",
-			],
-		},
-		{
-			id: "1",
-			question: "Next question",
-			time: "20",
-			multipleChoice: "yes",
-			answer: 2,
-			answers: [
-				"this is not the correct answer",
-				"this is not the correct answer",
-				"this is the correct answer",
-				"answer 4 very longg dummy omg",
-			],
-		},
-	]
-	const [currentIndex, setCurrentIndex] = useState<number>(0)
-	const [isPlaying, setIsPlaying] = useState<boolean>(true)
+  const [answers, setAnswers] = useState<IMultipleChoice | null>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
-	const handleTimeOut = () => {
-		setIsPlaying(false)
-	}
+  const handleTimeOut = () => {
+    setIsPlaying(false);
+  };
 
-	const handleNext = () => {
-		if (currentIndex < data.length - 1) {
-			setCurrentIndex(currentIndex + 1)
-			setIsPlaying(true)
-		} else {
-			console.log("game end. leaderboards")
-		}
-	}
+  const handleNext = () => {
+    
+  };
 
-	const handleClick = () => {
-		setIsPlaying(false)
-		console.log("clicked on parent")
-	}
-	return (
-		<>
-			
-			<AnswerList
-				answers={data[currentIndex].answers}
-				correct={data[currentIndex].answer}
-				handleClick={handleClick}
-				isPlaying={isPlaying}
-			/>
-		</>
-	)
-}
+  const handleClick = () => {
+    
+  };
 
-export default PlayerGamePage
+  React.useEffect(() => {
+    Socket.getInstance().registerListener(
+      "question",
+      ({ question, answers }: any) => {
+        console.log(answers)
+        setAnswers(answers);
+      }
+    );
+
+    return () => Socket.getInstance().removeRegisteredListener('question')
+  }, []);
+  return (
+    <>
+      {answers ? (
+        <AnswerList
+          answers={answers}
+          correct={-1}
+          handleClick={handleClick}
+          isPlaying={isPlaying}
+        />
+      ) : (
+        <ReadyState />
+      )}
+    </>
+  );
+};
+
+export default PlayerGamePage;

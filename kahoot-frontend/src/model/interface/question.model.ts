@@ -1,10 +1,8 @@
-export interface MultipleChoice {
-
-}
+export type IMultipleChoice = string[];
 export interface IQuestion {
     id: string;
     question: string;
-    multipleChoice : MultipleChoice;
+    multipleChoice : IMultipleChoice;
     answer: number;
     time: string;
 }

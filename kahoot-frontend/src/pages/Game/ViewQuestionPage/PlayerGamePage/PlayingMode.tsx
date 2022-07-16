@@ -9,23 +9,23 @@ import {
   FormLabel,
   Input,
   Button,
-  useBoolean,
   Center,
   Flex,
 } from "@chakra-ui/react";
 import React from "react";
+import PlayerGamePage from "./PlayerGamePage";
 import Socket from "../../../../api/socket";
 import { useAppSelector } from "../../../../hook";
 import PlayerWaitingRoom from "./PlayerWaitingRoom";
 
 const PlayingMode = (props: any) => {
-  const [isPlaying, setIsPlaying] = useBoolean(false);
+  const [isPlaying, setIsPlaying] = React.useState(false);
 
   const { pin } = useAppSelector((state) => state.play);
 
   React.useEffect(() => {
     Socket.getInstance().registerListener("gameStarted", () => {
-      console.log("lam loz");
+      setIsPlaying(true);
     });
     return () => Socket.getInstance().removeRegisteredListener("gameStarted");
   }, []);
@@ -68,7 +68,7 @@ const PlayingMode = (props: any) => {
           {`PINCODE: ${pin}`}
         </Box>
         <Flex w={"100%"} minH="100vh" direction="column" justify="center">
-          {isPlaying ? null : <PlayerWaitingRoom />}
+          {isPlaying ? <PlayerGamePage/> : <PlayerWaitingRoom />}
         </Flex>
       </Container>
     </Box>

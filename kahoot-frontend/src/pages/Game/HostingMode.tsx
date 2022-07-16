@@ -16,6 +16,7 @@ import { Children, FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import Socket from "../../api/socket";
 import { useAppDispatch, useAppSelector } from "../../hook";
+import { IQuestion } from "../../model/interface";
 import { newPlayerJoin } from "../../model/reducers/game.reducer";
 import Leaderboards from "./Leaderboards";
 import ViewQuestionPage from "./ViewQuestionPage/ViewQuestionPage";
@@ -23,8 +24,10 @@ import WaitingRoom from "./WaitingRoom";
 
 
 const HostingMode = (props: any) => {
-  const [isPlaying, setIsPlaying] = useBoolean(false);
+  const [isPlaying, setIsPlaying] = React.useState(false);
   const {title,ownerName,players,totalQuestions,pin} = useAppSelector((state) => state.game)
+
+  
   const dispatch = useAppDispatch();
   React.useEffect(() => {
     Socket.getInstance().registerListener(
@@ -38,9 +41,17 @@ const HostingMode = (props: any) => {
         );
       }
     );
+    Socket.getInstance().registerListener(
+      "gameStarted",
+      () => {
+        setIsPlaying(true)
+      }
+    );
     return () => {
       Socket.getInstance().removeRegisteredListener("updatePlayerLobby");
-    };
+      Socket.getInstance().removeRegisteredListener("gameStarted");
+    }
+
   }, []);
   return (
     <Container
