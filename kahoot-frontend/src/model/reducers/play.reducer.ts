@@ -18,8 +18,8 @@ export const playSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    joinGame(state : Play, action : PayloadAction<string>){
-        state.pin = action.payload;
+    joinGame(state : Play, action : PayloadAction<any>){
+        state.pin = action.payload.pin;
         state.score = 0;
     }
   },

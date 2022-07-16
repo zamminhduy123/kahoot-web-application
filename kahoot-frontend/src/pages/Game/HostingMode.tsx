@@ -45,7 +45,7 @@ const HostingMode = (props: any) => {
   return (
     <Container
       bg="black"
-      minW={'100%'}
+      minWidth="100%"
       minHeight="100vh"
       py="6"
       centerContent
