@@ -156,12 +156,10 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       let questionNum = game.gameData.question;
       const question = game.gameData.game[questionNum].question;
       const answers = game.gameData.game[questionNum].solution;
-      const correctAnswer = game.gameData.game[questionNum].answer;
 
       io.to(socket.id).emit("question", {
         question,
         answers,
-        correct: correctAnswer,
       });
     }, 5000);
   };
