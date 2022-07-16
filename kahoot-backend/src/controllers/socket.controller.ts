@@ -89,9 +89,12 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         const gameObj = (await GameModel.findById(
           game.gameData.gameId
         ).populate("owner", "name")) as any;
+
         const ownerName = gameObj?.toJSON().owner.name;
+        const totalQuestions = gameObj?.toJSON().game.length;
+        const gameId = game.gameData.gameId;
         
-        onSuccess({title, ownerName});
+        onSuccess({ title, ownerName, totalQuestions, gameId });
         const hostId = game.hostId;
 
         //Add player to the game
@@ -102,10 +105,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
         //Sending players data to display
         const playersInGame = kahoot.getPlayersInRoom(hostId);
-        io.to(pincode).emit(
-          "updatePlayerLobby",
-          playersInGame,
-        );
+        io.to(pincode).emit("updatePlayerLobby", playersInGame);
 
         gameFound = true; //Game has been found
       }
