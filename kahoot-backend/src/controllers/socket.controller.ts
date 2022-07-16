@@ -147,7 +147,8 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     const game = kahoot.getGame(socket.id);
     game.isLive = true;
     //Tell player and host that game has started
-    socket.emit("gameStarted", game.hostId);
+
+    io.to(socket.id).emit("gameStarted");
   };
 
   const onPlayerAnswer = function (payload: { num: number }) {
