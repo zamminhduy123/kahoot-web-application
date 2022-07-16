@@ -4,7 +4,10 @@ import GameModel from "../models/Game.model";
 import { gameSchema } from "../schemas";
 
 export default function (io: Server, socket: Socket, kahoot: Kahoot) {
-  const onHostJoin = async function (payload: { id: string }) {
+  const onHostJoin = async function (
+    payload: { id: string },
+    onSuccess: Function
+  ) {
     const { id } = payload;
     const _gameDoc = await GameModel.findById(id);
 
@@ -24,10 +27,18 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
       console.log("Game Created with pin: ", game.pin);
 
+      const title = game.gameData.title;
+      const gameObj = (await GameModel.findById(game.gameData.gameId).populate(
+        "owner",
+        "name"
+      )) as any;
+
+      const ownerName = gameObj?.toJSON().owner.name;
+      const totalQuestions = gameObj?.toJSON().game.length;
+      const gameId = game.gameData.gameId;
+
       //Sending game pin to host so they can display it for players to join
-      socket.emit("showGamePin", {
-        pin: game.pin,
-      });
+      onSuccess({ pin: game.pin, ownerName, totalQuestions, gameId });
     } else {
       socket.emit("noGameFound");
     }
@@ -93,7 +104,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         const ownerName = gameObj?.toJSON().owner.name;
         const totalQuestions = gameObj?.toJSON().game.length;
         const gameId = game.gameData.gameId;
-        
+
         onSuccess({ title, ownerName, totalQuestions, gameId });
         const hostId = game.hostId;
 
