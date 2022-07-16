@@ -143,9 +143,13 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     }
   };
 
-  const onGameStart = function () {
+  const onGameStart = async function () {
     const game = kahoot.getGame(socket.id);
     game.isLive = true;
+
+    const _gameDoc = await GameModel.findById(game.gameData.gameId).lean();
+    game.gameData.game = _gameDoc!.game;
+
     //Tell player and host that game has started
     io.to(socket.id).emit("gameStarted");
 
