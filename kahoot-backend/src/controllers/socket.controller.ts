@@ -90,32 +90,25 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
   ) {
     const { pincode, name } = payload;
     let gameFound = false;
+    console.log(pincode);
     for (let i = 0; i < kahoot.games.length; i++) {
       const game = kahoot.games[i];
       if (pincode == game.pin) {
         console.log("Player connected to game");
 
         const title = game.gameData.title;
-        const gameObj = (await GameModel.findById(
-          game.gameData.gameId
-        ).populate("owner", "name")) as any;
-
-        const ownerName = gameObj?.toJSON().owner.name;
-        const totalQuestions = gameObj?.toJSON().game.length;
-        const gameId = game.gameData.gameId;
-
-        onSuccess({ title, ownerName, totalQuestions, gameId });
         const hostId = game.hostId;
 
         //Add player to the game
-        kahoot.addPlayer(hostId, socket.id, name, game.gameData.gameId);
+        const newPlayer = kahoot.addPlayer(hostId, socket.id, name, game.gameData.gameId);
 
         //Player is joining room based on pin
         socket.join(pincode);
 
         //Sending players data to display
-        const playersInGame = kahoot.getPlayersInRoom(hostId);
-        io.to(pincode).emit("updatePlayerLobby", playersInGame);
+        io.to(game.hostId).emit("updatePlayerLobby", {
+          name: newPlayer.name,
+        });
 
         gameFound = true; //Game has been found
       }
