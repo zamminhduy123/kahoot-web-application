@@ -18,6 +18,7 @@ export const compulsoryAuth = async (
     throw new UnauthenticatedError(ErrorMessage.ERROR_AUTHENTICATION_INVALID);
   }
   const token = authHeader.split(" ")[1];
+  console.log(token);
 
   try {
     const payload = jwt.verify(token, JWT_SECRET) as IPayload;
@@ -40,6 +41,10 @@ const refreshAccessToken = async (req: IUserRequest, token: string) => {
   } catch (error) {
     throw new UnauthenticatedError(ErrorMessage.ERROR_AUTHENTICATION_INVALID);
   }
+
+  req.user = {
+    ...payload,
+  };
 
   const user = await UserModel.findById(payload.userId);
   if (!user) {

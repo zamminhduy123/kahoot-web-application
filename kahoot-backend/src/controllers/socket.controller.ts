@@ -104,7 +104,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
         //Player is joining room based on pin
         socket.join(pincode);
-
+        onSuccess();
         //Sending players data to display
         io.to(game.hostId).emit("updatePlayerLobby", {
           name: newPlayer.name,
