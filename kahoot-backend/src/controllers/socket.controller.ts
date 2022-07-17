@@ -187,19 +187,25 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       //Check player answer with correct answer
       if (num == correctAnswer) {
         player.gameData.score += 100;
-        io.to(game.pin).emit("getTime", socket.id);
-        socket.emit("answerResult", true);
+        // io.to(game.pin).emit("getTime", socket.id);
+        // socket.emit("answerResult", true);
       }
+
+      //update host screen of num players answered
+      io.to(game.hostId).emit("updatePlayersAnswered", {
+        playersInGame: playerNum.length,
+        playersAnswerd: game.gameData.playersAnswered,
+      });
 
       //Check if all players answered
       if (game.gameData.playersAnswered == playerNum.length) {
         //Question has been ended since players all answered
         game.isLive = false;
         const playerData = kahoot.getPlayersInRoom(game.hostId);
-        io.to(game.pin).emit("questionOver", playerData, correctAnswer);
+        io.to(game.hostId).emit("questionOver", playerData, correctAnswer);
       } else {
         //update host screen of num players answered
-        io.to(game.pin).emit("updatePlayersAnswered", {
+        io.to(game.hostId).emit("updatePlayersAnswered", {
           playersInGame: playerNum.length,
           playersAnswerd: game.gameData.playersAnswered,
         });
