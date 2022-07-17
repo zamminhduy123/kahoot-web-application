@@ -23,6 +23,8 @@ const PlayingMode = (props: any) => {
 
   const { pin } = useAppSelector((state) => state.play);
 
+  const [currentColor, setCurrentColor] = React.useState("orange.600");
+
   React.useEffect(() => {
     Socket.getInstance().registerListener("gameStarted", () => {
       setIsPlaying(true);
@@ -30,7 +32,7 @@ const PlayingMode = (props: any) => {
     return () => Socket.getInstance().removeRegisteredListener("gameStarted");
   }, []);
   return (
-    <Box bg="orange.800" minWidth="100vw" minHeight="100vh">
+    <Box bg={currentColor} minWidth="100vw" minHeight="100vh">
       <Circle
         position="fixed"
         bg="white"
@@ -52,13 +54,12 @@ const PlayingMode = (props: any) => {
       <Container
         minWidth="100%"
         minH={"100vh"}
-        py="6"
+        py="1"
         centerContent
         position={"relative"}
       >
         <Box
-          position={"absolute"}
-          fontSize={"3xl"}
+          fontSize={"xl"}
           color="#Fff"
           fontWeight={600}
           alignSelf="start"
@@ -67,8 +68,15 @@ const PlayingMode = (props: any) => {
         >
           {`PINCODE: ${pin}`}
         </Box>
-        <Flex w={"100%"} minH="100vh" direction="column" justify="center">
-          {isPlaying ? <PlayerGamePage/> : <PlayerWaitingRoom />}
+        <Flex
+          w={"100%"}
+          minH="100vh"
+          direction="column"
+          justify="center"
+          m="0"
+          paddingBottom={"10px"}
+        >
+          {isPlaying ? <PlayerGamePage /> : <PlayerWaitingRoom />}
         </Flex>
       </Container>
     </Box>
