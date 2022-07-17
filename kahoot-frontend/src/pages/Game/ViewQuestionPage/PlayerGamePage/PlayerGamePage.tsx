@@ -52,6 +52,7 @@ const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
             correct={-1}
             handleClick={handleClick}
             isPlaying={isSelecting}
+            displayAnswer={false}
           />
         ) : (
           <ReadyState message="Waiting for other player!" />

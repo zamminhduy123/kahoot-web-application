@@ -30,7 +30,13 @@ const ReadyState: FunctionComponent<ReadyStateProps> = ({
       justify={"center"}
       align="center"
     >
-      <Spinner size={"lg"} color="#FFF" speed="1s"></Spinner>
+      <Spinner
+        thickness="8px"
+        speed="1.5s"
+        color="#FFf"
+        emptyColor="gray.500"
+        size="xl"
+      />
       <Box fontSize={"2xl"} color="#Fff">
         {message}
       </Box>
