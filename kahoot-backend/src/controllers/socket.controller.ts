@@ -160,10 +160,12 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       let questionNum = game.gameData.question;
       const question = game.gameData.game[questionNum].question;
       const answers = game.gameData.game[questionNum].solution;
+      const timeUp = game.gameData.game[questionNum].timeUp;
 
       io.to(socket.id).emit("question", {
         question,
         answers,
+        timeUp
       });
     }, 5000);
   };
