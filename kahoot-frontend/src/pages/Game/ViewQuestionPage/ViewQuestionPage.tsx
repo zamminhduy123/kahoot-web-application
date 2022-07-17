@@ -54,9 +54,9 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     }
   };
 
-  const handleClick = () => {
+  const handleClick = (num: number) => {
     setIsPlaying(false);
-    console.log("clicked on parent");
+    Socket.getInstance().emit("player-answer", { num });
   };
   const [currentQuestion, setCurrentQuestion] =
     React.useState<IQuestion | null>(null);
