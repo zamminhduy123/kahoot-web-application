@@ -27,22 +27,25 @@ export const authSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    addNewQuestion(state) {
-      state.list.push({...placeHolderQuestion,id: `${state.list.length+1}`});
+    addNewQuestion(state: NewQuiz) {
+      state.list.push({
+        ...placeHolderQuestion,
+        id: `${state.list.length + 1}`,
+      });
     },
-    editQuestionAtIndex(state, action: PayloadAction<IQuestion>) {
+    editQuestionAtIndex(state: NewQuiz, action: PayloadAction<IQuestion>) {
       state.list[state.selected] = action.payload;
     },
-    deleteQuestionAtIndex(state, action: PayloadAction<number>) {
+    deleteQuestionAtIndex(state: NewQuiz, action: PayloadAction<number>) {
       if (state.list.length > 1) state.list.splice(action.payload, 1);
     },
-    dublicateQuestionAtIndex(state, action: PayloadAction<number>) {
+    dublicateQuestionAtIndex(state: NewQuiz, action: PayloadAction<number>) {
       state.list.splice(action.payload + 1, 0, state.list[action.payload]);
     },
-    selectQuestion(state, action: PayloadAction<number>) {
+    selectQuestion(state: NewQuiz, action: PayloadAction<number>) {
       state.selected = action.payload;
     },
-    setTitle(state, action: PayloadAction<string>) {
+    setTitle(state: NewQuiz, action: PayloadAction<string>) {
       state.title = action.payload;
     },
   },
