@@ -160,7 +160,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       let questionNum = game.gameData.question;
       const question = game.gameData.game[questionNum].question;
       const answers = game.gameData.game[questionNum].solution;
-      const timeUp = game.gameData.game[questionNum].timeUp;
+      const timeUp = game.gameData.game[questionNum].timeUp || 10;
 
       io.to(socket.id).emit("question", {
         question,
@@ -198,7 +198,8 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       if (game.gameData.playersAnswered == playerNum.length) {
         //Question has been ended since players all answered
         game.isLive = false;
-        const playerData = kahoot.getPlayersInRoom(game.hostId);
+        const playerData = kahoot.updateRankingBoard(game.hostId);
+        
         io.to(game.hostId).emit("questionOver", playerData, correctAnswer);
       } else {
         //update host screen of num players answered

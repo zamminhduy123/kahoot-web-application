@@ -147,5 +147,7 @@ export default class Kahoot {
     rankingBoard.sort((a: PlayerClass, b: PlayerClass) => {
       return b.gameData.score - a.gameData.score
     })
+
+    return rankingBoard;
   }
 }
