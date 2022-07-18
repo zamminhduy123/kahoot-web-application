@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 import Socket from "../../api/socket";
 import { useAppDispatch, useAppSelector } from "../../hook";
 import { IQuestion } from "../../model/interface";
-import { newPlayerJoin } from "../../model/reducers/game.reducer";
+import { newPlayerJoin, setPlayerLists } from "../../model/reducers/game.reducer";
 import Leaderboards from "./Leaderboards";
 import ViewQuestionPage from "./ViewQuestionPage/ViewQuestionPage";
 import WaitingRoom from "./WaitingRoom";
@@ -47,13 +47,6 @@ const HostingMode = (props: any) => {
         setIsPlaying(true)
       }
     );
-    Socket.getInstance().registerListener(
-      "questionOver",
-      ({ playerData, correctAnswer} : any) => {
-        console.log("playerData", playerData)
-        console.log("correctAnswer", correctAnswer)
-      }
-    );
     return () => {
       Socket.getInstance().removeRegisteredListener("updatePlayerLobby");
       Socket.getInstance().removeRegisteredListener("gameStarted");
@@ -73,7 +66,6 @@ const HostingMode = (props: any) => {
       ) : (
         <WaitingRoom title={title} ownerName={ownerName} totalQuestions={totalQuestions} players={players} gamePin ={pin} />
       )}
-      {/* <Leaderboards question={""} users={[]}></Leaderboards> */}
     </Container>
   );
 };

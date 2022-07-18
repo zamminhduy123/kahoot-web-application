@@ -11,8 +11,12 @@ import {
 import React from "react";
 import { FunctionComponent, useState } from "react";
 import Socket from "../../../api/socket";
+import { useAppDispatch, useAppSelector } from "../../../hook";
 import { IQuestion } from "../../../model/interface/question.model";
+import { setPlayerLists } from "../../../model/reducers/game.reducer";
+import Leaderboards from "../Leaderboards";
 import AnswerList from "./AnswerList";
+import CurrentResult from "./CurrentResult";
 import ReadyState from "./PlayerGamePage/ReadyState";
 
 interface ViewQuestionPageProps {}
@@ -48,12 +52,15 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     },
   ];
 
+  const dispatch = useAppDispatch();
+
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
   const [timeLeft, setTimeLeft] = React.useState(0);
 
   const [answered, setAnswered] = React.useState(0);
+  const [correctAnswer, setCorrectAnswer] = React.useState(-1);
 
   const handleTimeOut = () => {};
 
@@ -68,6 +75,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     Socket.getInstance().registerListener(
       "question",
       ({ question, answers, timeUp }: any) => {
+        setCorrectAnswer(-1);
         setCurrentQuestion({
           id: "",
           question: question,
@@ -82,6 +90,24 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
       "updatePlayersAnswered",
       ({ playersInGame, playersAnswered }: any) => {
         setAnswered(playersAnswered);
+      }
+    );
+
+    Socket.getInstance().registerListener(
+      "questionOver",
+      ({ playerData, correctAnswer }: any) => {
+        setIsPlaying(false);
+        dispatch(
+          setPlayerLists(
+            playerData.map((player: any) => {
+              return {
+                name: player.name,
+                score: player.gameData.score,
+              };
+            })
+          )
+        );
+        setCorrectAnswer(correctAnswer);
       }
     );
     return () => {
@@ -100,77 +126,96 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     }
     return () => clearTimeout(timeout);
   }, [timeLeft]);
+
+  const { players } = useAppSelector((state) => state.game);
   return (
-    <>
+    <Box h="100vh" w="100%">
       {currentQuestion ? (
-        <>
-          <Box bg="white" w="100%" boxShadow="base">
-            <Heading size="lg" color="black" mx="4" my="8" textAlign="center">
-              {currentQuestion.question}
-            </Heading>
-          </Box>
-          <Box width={"100%"}>
-            <Flex mt={1} position="relative">
-              <Flex
-                direction={"column"}
-                width={"100%"}
-                alignItems="center"
-                justify={"center"}
-              >
-                <Heading size="lg" color="white" textAlign="center">
-                  {timeLeft}
-                </Heading>
-                <Box color={"white"} margin="0">
-                  Second
-                </Box>
-              </Flex>
-
-              <img
-                alt="background"
-                width={"400px"}
-                height="20px"
-                src="https://images.ctfassets.net/hrltx12pl8hq/1fR5Y7KaK9puRmCDaIof7j/09e2b2b9eaf42d450aba695056793607/vector1.jpg"
-              />
-
-              <Flex
-                direction={"column"}
-                width={"100%"}
-                alignItems="center"
-                justify={"center"}
-              >
-                <Heading size="lg" color="white" textAlign="center">
-                  {answered}
-                </Heading>
-                <Box color={"white"} margin="0">
-                  Answered
-                </Box>
-              </Flex>
-              <Button
-                right={0}
-                position="absolute"
-                mt="4"
-                minW="100px"
-                onClick={handleNext}
-              >
-                Next
-              </Button>
+        <Flex h="100%" w="100%" justify={'center'} direction='column' align={'center'}>
+          {correctAnswer >= 0 ? (
+            <Flex w="100%" justify={'center'} flex={'1 0 60%'} marginBottom='20px'>
+              <Leaderboards
+                question={currentQuestion.question}
+                users={players}
+              ></Leaderboards>
             </Flex>
-          </Box>
+          ) : (
+            <>
+              <Box bg="white" w="100%" boxShadow="base" >
+                <Heading
+                  size="lg"
+                  color="black"
+                  mx="4"
+                  my="8"
+                  textAlign="center"
+                >
+                  {currentQuestion.question}
+                </Heading>
+              </Box>
+              <Box width={"100%"}>
+                <Flex mt={1} position="relative">
+                  <Flex
+                    direction={"column"}
+                    width={"100%"}
+                    alignItems="center"
+                    justify={"center"}
+                  >
+                    <Heading size="lg" color="white" textAlign="center">
+                      {timeLeft}
+                    </Heading>
+                    <Box color={"white"} margin="0">
+                      Second
+                    </Box>
+                  </Flex>
+
+                  <img
+                    alt="background"
+                    width={"400px"}
+                    height="20px"
+                    src="https://images.ctfassets.net/hrltx12pl8hq/1fR5Y7KaK9puRmCDaIof7j/09e2b2b9eaf42d450aba695056793607/vector1.jpg"
+                  />
+
+                  <Flex
+                    direction={"column"}
+                    width={"100%"}
+                    alignItems="center"
+                    justify={"center"}
+                  >
+                    <Heading size="lg" color="white" textAlign="center">
+                      {answered}
+                    </Heading>
+                    <Box color={"white"} margin="0">
+                      Answered
+                    </Box>
+                  </Flex>
+                  <Button
+                    right={0}
+                    position="absolute"
+                    mt="4"
+                    minW="100px"
+                    onClick={handleNext}
+                  >
+                    Next
+                  </Button>
+                </Flex>
+              </Box>
+            </>
+          )}
 
           <AnswerList
             answers={currentQuestion.multipleChoice}
-            correct={currentQuestion.answer}
+            correct={correctAnswer}
             handleClick={void 0}
             isPlaying={isPlaying}
             displayAnswer
           />
-        </>
+        </Flex>
       ) : (
         <Center w="100%" h="100vh">
           <ReadyState message="Get Ready!" />
         </Center>
       )}
-    </>
+    </Box>
   );
 };
 

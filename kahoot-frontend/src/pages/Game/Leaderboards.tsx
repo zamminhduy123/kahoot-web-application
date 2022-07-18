@@ -2,23 +2,20 @@
 
 import { Box, Image, Text } from "@chakra-ui/react"
 import { FunctionComponent } from "react"
+import { IPlayer } from "../../model/interface/player.model"
 import { IUser } from "../../model/interface/user.model"
-
-interface User {
-	username: string
-	points: number
-}
 
 interface LeaderboardsProps {
 	question: string
-	users: User[] //3rd place, 2ndplace, 1st place
+	users: IPlayer[] //3rd place, 2ndplace, 1st place
 }
 
-const Leaderboards: FunctionComponent<LeaderboardsProps> = (props) => {
+const Leaderboards: FunctionComponent<LeaderboardsProps> = ({question,users} : LeaderboardsProps) => {
+	
 	return (
 		<>
 			<Box
-				h="100vh"
+				h="100%"
 				w="100%"
 				maxW="80vmin"
 				display="flex"
@@ -38,7 +35,7 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = (props) => {
 					display="flex"
 					justifyContent="center"
 					alignItems="flex-end"
-					h="calc(100% - 20vmin)"
+					h="calc(80%)"
 					flex="0 1 calc(100% - 20vmin)"
 					textColor="white"
 					fontWeight="bold"
@@ -64,7 +61,8 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = (props) => {
 							h="12.5vmin"
 							m="3vmin auto 1.5vmin"
 						/>
-						13/13
+						
+						{users.length >= 2 ? `${users[1].name} : ${users[1].score}`: ""} points
 					</Box>
 					<Box
 						bg="yellow.500"
@@ -85,7 +83,7 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = (props) => {
 							h="12.5vmin"
 							m="3vmin auto 1.5vmin"
 						/>
-						13/13
+						{users[0].name} : {users[0].score} points
 					</Box>
 					<Box
 						bg="blue.500"
@@ -106,16 +104,10 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = (props) => {
 							h="12.5vmin"
 							m="3vmin auto 1.5vmin"
 						/>
-						13/13
+						{users.length >= 3 ? `${users[2].name} : ${users[2].score}`: ""} points
 					</Box>
 				</Box>
-				<Box
-					position="fixed"
-					zIndex="4"
-					h="calc(20vh - 1rem)"
-					w="100%"
-					bg="black"
-				></Box>
+
 			</Box>
 		</>
 	)

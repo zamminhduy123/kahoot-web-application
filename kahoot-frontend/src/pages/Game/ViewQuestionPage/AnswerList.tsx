@@ -58,6 +58,10 @@ const Answer: FunctionComponent<AnswerProp> = (props) => {
 const AnswerList: FunctionComponent<AnswerListProps> = (props) => {
   const { correct, isPlaying, handleClick, displayAnswer } = props;
 
+  if (correct > -1){
+
+  }
+
   return (
     <Flex
       width="100%"

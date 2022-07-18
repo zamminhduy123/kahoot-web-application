@@ -3,7 +3,7 @@ import { IPlayer } from "../interface/player.model";
 
 // Define a type for the slice state
 interface Game {
-  pin: string,
+  pin: string;
   players: IPlayer[];
   title: string;
   ownerName: string;
@@ -16,7 +16,7 @@ const initialState: Game = {
   players: [],
   title: "",
   ownerName: "",
-  totalQuestions: 0
+  totalQuestions: 0,
 };
 
 export const gameSlice = createSlice({
@@ -27,18 +27,18 @@ export const gameSlice = createSlice({
     newPlayerJoin(state, action: PayloadAction<IPlayer>) {
       state.players.push(action.payload);
     },
-    setNewGame(
-      state,
-      action: PayloadAction<Game>
-    ) {
-      state.pin = action.payload.pin
-      state.players = action.payload.players
-      state.title = action.payload.title
-      state.ownerName = action.payload.ownerName
-      state.totalQuestions = action.payload.totalQuestions
-    },  
+    setNewGame(state, action: PayloadAction<Game>) {
+      state.pin = action.payload.pin;
+      state.players = action.payload.players;
+      state.title = action.payload.title;
+      state.ownerName = action.payload.ownerName;
+      state.totalQuestions = action.payload.totalQuestions;
+    },
+    setPlayerLists(state, action: PayloadAction<IPlayer[]>) {
+      state.players = action.payload;
+    },
   },
 });
 
-export const { newPlayerJoin, setNewGame } = gameSlice.actions;
+export const { newPlayerJoin, setNewGame,setPlayerLists } = gameSlice.actions;
 export default gameSlice.reducer;
