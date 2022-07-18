@@ -15,42 +15,50 @@ interface ViewQuestionPageProps {}
 
 const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
   const [answers, setAnswers] = useState<IMultipleChoice | null>(null);
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isSelecting, setIsSelecting] = useState<boolean>(true);
 
   const handleTimeOut = () => {
-    setIsPlaying(false);
+    setIsSelecting(false);
   };
 
-  const handleNext = () => {
-    
+  const handleNext = () => {};
+
+  const handleClick = (num: number) => {
+    setIsSelecting(false);
+    Socket.getInstance().emit("player-answer", { num });
   };
 
-  const handleClick = () => {
-    
-  };
+  React.useEffect(() => {
+    console.log("hi");
+  }, [isSelecting]);
 
   React.useEffect(() => {
     Socket.getInstance().registerListener(
       "question",
       ({ question, answers }: any) => {
-        console.log(answers)
+        console.log(answers);
         setAnswers(answers);
       }
     );
 
-    return () => Socket.getInstance().removeRegisteredListener('question')
+    return () => Socket.getInstance().removeRegisteredListener("question");
   }, []);
   return (
     <>
       {answers ? (
-        <AnswerList
-          answers={answers}
-          correct={-1}
-          handleClick={handleClick}
-          isPlaying={isPlaying}
-        />
+        isSelecting ? (
+          <AnswerList
+            answers={answers}
+            correct={-1}
+            handleClick={handleClick}
+            isPlaying={isSelecting}
+            displayAnswer={false}
+          />
+        ) : (
+          <ReadyState message="Waiting for other player!" />
+        )
       ) : (
-        <ReadyState />
+        <ReadyState message="Get Ready!" />
       )}
     </>
   );

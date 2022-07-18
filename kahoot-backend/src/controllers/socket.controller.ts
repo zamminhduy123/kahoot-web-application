@@ -160,12 +160,17 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       let questionNum = game.gameData.question;
       const question = game.gameData.game[questionNum].question;
       const answers = game.gameData.game[questionNum].solution;
+      const timeUp = game.gameData.game[questionNum].timeUp || 10;
 
       io.to(socket.id).emit("question", {
         question,
         answers,
+        timeUp
       });
+      
+      game.startTimer(timeUp);
     }, 5000);
+
   };
 
   const onPlayerAnswer = function (payload: { num: number }) {
@@ -185,21 +190,22 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       //Check player answer with correct answer
       if (num == correctAnswer) {
         player.gameData.score += 100;
-        io.to(game.pin).emit("getTime", socket.id);
-        socket.emit("answerResult", true);
+        // io.to(game.pin).emit("getTime", socket.id);
+        // socket.emit("answerResult", true);
       }
 
       //Check if all players answered
       if (game.gameData.playersAnswered == playerNum.length) {
         //Question has been ended since players all answered
         game.isLive = false;
-        const playerData = kahoot.getPlayersInRoom(game.hostId);
-        io.to(game.pin).emit("questionOver",{ playerData, correctAnswer});
+        const playerData = kahoot.updateRankingBoard(game.hostId);
+        console.log(playerData);
+        io.to(game.hostId).emit("questionOver", {playerData, correctAnswer});
       } else {
         //update host screen of num players answered
-        io.to(game.pin).emit("updatePlayersAnswered", {
+        io.to(game.hostId).emit("updatePlayersAnswered", {
           playersInGame: playerNum.length,
-          playersAnswerd: game.gameData.playersAnswered,
+          playersAnswered: game.gameData.playersAnswered,
         });
       }
     }
@@ -211,7 +217,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     //Reset players current answer to 0
     for (let i = 0; i < kahoot.players.length; i++) {
       if (kahoot.players[i].hostId == socket.id) {
-        kahoot.players[i].gameData.answer = 0;
+        kahoot.players[i].gameData.answer = -1;
       }
     }
 

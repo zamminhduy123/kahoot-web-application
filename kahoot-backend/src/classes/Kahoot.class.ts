@@ -1,51 +1,74 @@
 import { IGameKahoot } from "../types";
 
 interface ILiveGameKahoot extends IGameKahoot {
-  gameId: string; //_id in database
+  /**_id in database */
+  gameId: string;
   question: number;
   playersAnswered: number;
-  rankingBoard?: {
-    first: {
-      name: string;
-      score: number;
-    };
-    second: {
-      name: string;
-      score: number;
-    };
-    third: {
-      name: string;
-      score: number;
-    };
-    fourth: {
-      name: string;
-      score: number;
-    };
-    fifth: {
-      name: string;
-      score: number;
-    };
+  rankingBoard?: PlayerClass[];
+}
+
+class PlayerClass {
+  hostId: string;
+  playerId: string; //socketId
+  name: string;
+  gameData: {
+    gameId: string;
+    score: number;
+    answer: number;
   };
+
+  constructor() {
+    this.hostId = "";
+    this.playerId = "";
+    this.name = "";
+    this.gameData = {
+      gameId: "",
+      score: 0,
+      answer: 0,
+    };
+  }
+}
+class GameClass {
+  pin: string;
+  hostId: string;
+  isLive: boolean;
+  gameData: ILiveGameKahoot;
+  timer: number;
+
+  constructor(pin?: string, hostId?: string, gameData?: ILiveGameKahoot) {
+    this.pin = pin? pin: "";
+    this.hostId = hostId? hostId : "";
+    this.isLive = false;
+    this.timer = 0;
+    this.gameData = {
+      gameId: "",
+      question: 0,
+      playersAnswered: 0,
+      title: "",
+      game: [],
+    }
+    if (gameData) {
+      this.gameData = gameData;
+    }
+  }
+
+  startTimer(totalTime: number) {
+    const intervalNum = 10;
+    const intervalObj = setInterval(() => {
+      this.timer += 0.01;
+      if (this.timer > totalTime) {
+        console.log(this.timer > totalTime);
+        clearInterval(intervalObj);
+      }
+    }, 10);
+  }
 }
 
 export default class Kahoot {
-  games: {
-    pin: string;
-    hostId: string;
-    isLive: boolean;
-    gameData: ILiveGameKahoot;
-  }[];
+  games: GameClass[];
 
-  players: {
-    hostId: string;
-    playerId: string; //socketId
-    name: string;
-    gameData: {
-      gameId: string;
-      score: number;
-      answer: number;
-    };
-  }[];
+  players: PlayerClass[];
 
   constructor() {
     this.games = [];
@@ -65,7 +88,7 @@ export default class Kahoot {
       question: 0,
       playersAnswered: 0,
     };
-    const game = { pin, hostId, isLive, gameData };
+    const game = new GameClass(pin, hostId, gameData);
     this.games.push(game);
     return game;
   }
@@ -89,7 +112,7 @@ export default class Kahoot {
       gameData: {
         gameId,
         score: 0,
-        answer: 0,
+        answer: -1,
       },
     };
     this.players.push(player);
@@ -117,79 +140,14 @@ export default class Kahoot {
   updateRankingBoard(hostId: string) {
     const game = this.getGame(hostId);
 
-    if (!game.gameData.rankingBoard) {
-      game.gameData.rankingBoard = {
-        first: { name: "", score: 0 },
-        second: { name: "", score: 0 },
-        third: { name: "", score: 0 },
-        fourth: { name: "", score: 0 },
-        fifth: { name: "", score: 0 },
-      };
-    }
-    const rankingBoard = game.gameData.rankingBoard;
+    game.gameData!.rankingBoard = this.getPlayersInRoom(hostId);
+    
+    const rankingBoard = game.gameData!.rankingBoard;
 
-    const playersInGame = this.getPlayersInRoom(hostId);
+    rankingBoard.sort((a: PlayerClass, b: PlayerClass) => {
+      return b.gameData.score - a.gameData.score
+    })
 
-    for (let i = 0; i < playersInGame.length; i++) {
-      if (playersInGame[i].gameData.score > rankingBoard.fifth.score) {
-        if (playersInGame[i].gameData.score > rankingBoard.fourth.score) {
-          if (playersInGame[i].gameData.score > rankingBoard.third.score) {
-            if (playersInGame[i].gameData.score > rankingBoard.second.score) {
-              if (playersInGame[i].gameData.score > rankingBoard.first.score) {
-                //First Place
-                rankingBoard.fifth.name = rankingBoard.fourth.name;
-                rankingBoard.fifth.score = rankingBoard.fourth.score;
-
-                rankingBoard.fourth.name = rankingBoard.third.name;
-                rankingBoard.fourth.score = rankingBoard.third.score;
-
-                rankingBoard.third.name = rankingBoard.second.name;
-                rankingBoard.third.score = rankingBoard.second.score;
-
-                rankingBoard.second.name = rankingBoard.first.name;
-                rankingBoard.second.score = rankingBoard.first.score;
-
-                rankingBoard.first.name = playersInGame[i].name;
-                rankingBoard.first.score = playersInGame[i].gameData.score;
-              } else {
-                //Second Place
-                rankingBoard.fifth.name = rankingBoard.fourth.name;
-                rankingBoard.fifth.score = rankingBoard.fourth.score;
-
-                rankingBoard.fourth.name = rankingBoard.third.name;
-                rankingBoard.fourth.score = rankingBoard.third.score;
-
-                rankingBoard.third.name = rankingBoard.second.name;
-                rankingBoard.third.score = rankingBoard.second.score;
-
-                rankingBoard.second.name = playersInGame[i].name;
-                rankingBoard.second.score = playersInGame[i].gameData.score;
-              }
-            } else {
-              //Third Place
-              rankingBoard.fifth.name = rankingBoard.fourth.name;
-              rankingBoard.fifth.score = rankingBoard.fourth.score;
-
-              rankingBoard.fourth.name = rankingBoard.third.name;
-              rankingBoard.fourth.score = rankingBoard.third.score;
-
-              rankingBoard.third.name = playersInGame[i].name;
-              rankingBoard.third.score = playersInGame[i].gameData.score;
-            }
-          } else {
-            //Fourth Place
-            rankingBoard.fifth.name = rankingBoard.fourth.name;
-            rankingBoard.fifth.score = rankingBoard.fourth.score;
-
-            rankingBoard.fourth.name = playersInGame[i].name;
-            rankingBoard.fourth.score = playersInGame[i].gameData.score;
-          }
-        } else {
-          //Fifth Place
-          rankingBoard.fifth.name = playersInGame[i].name;
-          rankingBoard.fifth.score = playersInGame[i].gameData.score;
-        }
-      }
-    }
+    return rankingBoard;
   }
 }

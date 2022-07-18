@@ -1,15 +1,28 @@
 /** @format */
 
-import { Box, Button, Center, Circle, Flex, Heading, Spinner, Square, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Circle,
+  Flex,
+  Heading,
+  Spinner,
+  Square,
+  Text,
+} from "@chakra-ui/react";
 import { FunctionComponent, useState } from "react";
 import { IQuestion } from "../../../../model/interface/question.model";
 import AnswerList from "../AnswerList";
 
-interface ReadyStateProps {}
+interface ReadyStateProps {
+  message: string;
+}
 
-const ReadyState: FunctionComponent<ReadyStateProps> = () => {
+const ReadyState: FunctionComponent<ReadyStateProps> = ({
+  message,
+}: ReadyStateProps) => {
   return (
-    
     <Flex
       minW={"100%"}
       minH="100%"
@@ -17,11 +30,15 @@ const ReadyState: FunctionComponent<ReadyStateProps> = () => {
       justify={"center"}
       align="center"
     >
-      <Spinner size={'lg'} color="#FFF" speed="1s">
-
-      </Spinner>
+      <Spinner
+        thickness="8px"
+        speed="1.5s"
+        color="#FFf"
+        emptyColor="gray.500"
+        size="xl"
+      />
       <Box fontSize={"2xl"} color="#Fff">
-        Get Ready!
+        {message}
       </Box>
     </Flex>
   );

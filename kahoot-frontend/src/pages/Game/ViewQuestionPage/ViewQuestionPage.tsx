@@ -1,9 +1,19 @@
-import { Box, Button, Center, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Heading,
+  HStack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import React from "react";
 import { FunctionComponent, useState } from "react";
 import Socket from "../../../api/socket";
 import { IQuestion } from "../../../model/interface/question.model";
 import AnswerList from "./AnswerList";
+import ReadyState from "./PlayerGamePage/ReadyState";
 
 interface ViewQuestionPageProps {}
 
@@ -41,43 +51,55 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
-  const handleTimeOut = () => {
-    setIsPlaying(false);
-  };
+  const [timeLeft, setTimeLeft] = React.useState(0);
 
-  const handleNext = () => {
-    if (currentIndex < data.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setIsPlaying(true);
-    } else {
-      console.log("game end. leaderboards");
-    }
-  };
+  const [answered, setAnswered] = React.useState(0);
 
-  const handleClick = () => {
-    setIsPlaying(false);
-    console.log("clicked on parent");
-  };
+  const handleTimeOut = () => {};
+
+  const handleNext = () => {};
+
+  const handleClick = (num: number) => {};
   const [currentQuestion, setCurrentQuestion] =
     React.useState<IQuestion | null>(null);
 
   React.useEffect(() => {
+    let interval: NodeJS.Timeout;
     Socket.getInstance().registerListener(
       "question",
-      ({ question, answers }: any) => {
+      ({ question, answers, timeUp }: any) => {
         setCurrentQuestion({
           id: "",
           question: question,
           multipleChoice: answers,
           answer: -1,
-          time: "20000",
+          time: timeUp,
         });
+        setTimeLeft(timeUp);
+      }
+    );
+    Socket.getInstance().registerListener(
+      "updatePlayersAnswered",
+      ({ playersInGame, playersAnswered }: any) => {
+        setAnswered(playersAnswered);
       }
     );
     return () => {
+      clearInterval(interval);
       Socket.getInstance().removeRegisteredListener("question");
+      Socket.getInstance().removeRegisteredListener("updatePlayersAnswered");
     };
   }, []);
+
+  React.useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (timeLeft > 0) {
+      timeout = setTimeout(() => {
+        setTimeLeft(timeLeft - 1);
+      }, 1000);
+    }
+    return () => clearTimeout(timeout);
+  }, [timeLeft]);
   return (
     <>
       {currentQuestion ? (
@@ -87,17 +109,67 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
               {currentQuestion.question}
             </Heading>
           </Box>
-          <Button mt="4" hidden={isPlaying} onClick={handleNext}>
-            Next
-          </Button>
+          <Box width={"100%"}>
+            <Flex mt={1} position="relative">
+              <Flex
+                direction={"column"}
+                width={"100%"}
+                alignItems="center"
+                justify={"center"}
+              >
+                <Heading size="lg" color="white" textAlign="center">
+                  {timeLeft}
+                </Heading>
+                <Box color={"white"} margin="0">
+                  Second
+                </Box>
+              </Flex>
+
+              <img
+                alt="background"
+                width={"400px"}
+                height="20px"
+                src="https://images.ctfassets.net/hrltx12pl8hq/1fR5Y7KaK9puRmCDaIof7j/09e2b2b9eaf42d450aba695056793607/vector1.jpg"
+              />
+
+              <Flex
+                direction={"column"}
+                width={"100%"}
+                alignItems="center"
+                justify={"center"}
+              >
+                <Heading size="lg" color="white" textAlign="center">
+                  {answered}
+                </Heading>
+                <Box color={"white"} margin="0">
+                  Answered
+                </Box>
+              </Flex>
+              <Button
+                right={0}
+                position="absolute"
+                mt="4"
+                minW="100px"
+                onClick={handleNext}
+              >
+                Next
+              </Button>
+            </Flex>
+          </Box>
+
           <AnswerList
             answers={currentQuestion.multipleChoice}
             correct={currentQuestion.answer}
-            handleClick={handleClick}
+            handleClick={void 0}
             isPlaying={isPlaying}
+            displayAnswer
           />
         </>
-      ) : null}
+      ) : (
+        <Center w="100%" h="100vh">
+          <ReadyState message="Get Ready!" />
+        </Center>
+      )}
     </>
   );
 };

@@ -17,6 +17,10 @@ const questionSchema: JSONSchemaType<IQuestionKahoot> = {
     answer: {
       type: "number",
     },
+    timeUp: {
+      type: "integer",
+      default: 10,
+    }
   },
   required: ["answer", "question", "solution"],
   additionalProperties: false,

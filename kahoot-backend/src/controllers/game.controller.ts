@@ -10,6 +10,7 @@ interface IGame {
     question: string;
     solution: string[];
     answer: number;
+    timeUp: number;
   }[];
 }
 

@@ -4,6 +4,7 @@ interface IQuestion {
   question: string;
   solution: string[];
   answer: number;
+  timeUp: number;
 }
 
 interface IGame {
@@ -42,6 +43,10 @@ const GameSchema = new Schema<IGame, GameModel, IGameMethods>({
           required: [true, "Please provide all solution description"],
         },
       ],
+      timeUp: {
+        type: Number,
+        default: 10,
+      }
     },
   ],
 });
