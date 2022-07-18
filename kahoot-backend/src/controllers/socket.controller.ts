@@ -194,7 +194,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         //Question has been ended since players all answered
         game.isLive = false;
         const playerData = kahoot.getPlayersInRoom(game.hostId);
-        io.to(game.pin).emit("questionOver", playerData, correctAnswer);
+        io.to(game.pin).emit("questionOver",{ playerData, correctAnswer});
       } else {
         //update host screen of num players answered
         io.to(game.pin).emit("updatePlayersAnswered", {

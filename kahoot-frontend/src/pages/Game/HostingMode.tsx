@@ -47,6 +47,13 @@ const HostingMode = (props: any) => {
         setIsPlaying(true)
       }
     );
+    Socket.getInstance().registerListener(
+      "questionOver",
+      ({ playerData, correctAnswer} : any) => {
+        console.log("playerData", playerData)
+        console.log("correctAnswer", correctAnswer)
+      }
+    );
     return () => {
       Socket.getInstance().removeRegisteredListener("updatePlayerLobby");
       Socket.getInstance().removeRegisteredListener("gameStarted");
