@@ -79,7 +79,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
       }
     );
     Socket.getInstance().registerListener(
-      "updatePlayerAnswered",
+      "updatePlayersAnswered",
       ({ playersInGame, playersAnswered }: any) => {
         setAnswered(playersAnswered);
       }
@@ -87,7 +87,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     return () => {
       clearInterval(interval);
       Socket.getInstance().removeRegisteredListener("question");
-      Socket.getInstance().removeRegisteredListener("updatePlayerAnswered");
+      Socket.getInstance().removeRegisteredListener("updatePlayersAnswered");
     };
   }, []);
 

@@ -58,6 +58,7 @@ class GameClass {
     const intervalObj = setInterval(() => {
       this.timer += 0.01;
       if (this.timer > totalTime) {
+        console.log(this.timer > totalTime);
         clearInterval(intervalObj);
       }
     }, 10);
