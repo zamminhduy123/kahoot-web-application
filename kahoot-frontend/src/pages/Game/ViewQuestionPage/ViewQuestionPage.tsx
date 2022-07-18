@@ -53,6 +53,8 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
 
   const [timeLeft, setTimeLeft] = React.useState(0);
 
+  const [answered, setAnswered] = React.useState(0);
+
   const handleTimeOut = () => {};
 
   const handleNext = () => {};
@@ -65,20 +67,27 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     let interval: NodeJS.Timeout;
     Socket.getInstance().registerListener(
       "question",
-      ({ question, answers }: any) => {
+      ({ question, answers, timeUp }: any) => {
         setCurrentQuestion({
           id: "",
           question: question,
           multipleChoice: answers,
           answer: -1,
-          time: "20000",
+          time: timeUp,
         });
         setTimeLeft(20);
+      }
+    );
+    Socket.getInstance().registerListener(
+      "updatePlayerAnswer",
+      ({ playersInGame, playersAnswered }: any) => {
+        setAnswered(playersAnswered);
       }
     );
     return () => {
       clearInterval(interval);
       Socket.getInstance().removeRegisteredListener("question");
+      Socket.getInstance().removeRegisteredListener("updatePlayerAnswer");
     };
   }, []);
 
@@ -130,7 +139,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
                 justify={"center"}
               >
                 <Heading size="lg" color="white" textAlign="center">
-                  2
+                  {answered}
                 </Heading>
                 <Box color={"white"} margin="0">
                   Answered
