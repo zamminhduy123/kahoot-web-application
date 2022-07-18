@@ -199,7 +199,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         //Question has been ended since players all answered
         game.isLive = false;
         const playerData = kahoot.updateRankingBoard(game.hostId);
-        
+        console.log(playerData);
         io.to(game.hostId).emit("questionOver", playerData, correctAnswer);
       } else {
         //update host screen of num players answered
@@ -217,7 +217,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     //Reset players current answer to 0
     for (let i = 0; i < kahoot.players.length; i++) {
       if (kahoot.players[i].hostId == socket.id) {
-        kahoot.players[i].gameData.answer = 0;
+        kahoot.players[i].gameData.answer = -1;
       }
     }
 

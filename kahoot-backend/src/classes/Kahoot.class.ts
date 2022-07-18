@@ -112,7 +112,7 @@ export default class Kahoot {
       gameData: {
         gameId,
         score: 0,
-        answer: 0,
+        answer: -1,
       },
     };
     this.players.push(player);
