@@ -75,7 +75,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
           answer: -1,
           time: timeUp,
         });
-        setTimeLeft(20);
+        setTimeLeft(timeUp);
       }
     );
     Socket.getInstance().registerListener(
