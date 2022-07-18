@@ -62,7 +62,8 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({question,users} : L
 							m="3vmin auto 1.5vmin"
 						/>
 						
-						{users.length >= 2 ? `${users[1].name} : ${users[1].score}`: ""} points
+						
+						{users[0].name} : {users[0].score} points
 					</Box>
 					<Box
 						bg="yellow.500"
@@ -83,7 +84,7 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({question,users} : L
 							h="12.5vmin"
 							m="3vmin auto 1.5vmin"
 						/>
-						{users[0].name} : {users[0].score} points
+						{users.length >= 2 ? `${users[1].name} : ${users[1].score}`: ""} points
 					</Box>
 					<Box
 						bg="blue.500"

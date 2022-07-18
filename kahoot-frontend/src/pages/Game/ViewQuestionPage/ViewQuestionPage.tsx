@@ -107,12 +107,14 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
             })
           )
         );
+        console.log( playerData, correctAnswer )
         setCorrectAnswer(correctAnswer);
       }
     );
     return () => {
       clearInterval(interval);
       Socket.getInstance().removeRegisteredListener("question");
+      Socket.getInstance().removeRegisteredListener("questionOver");
       Socket.getInstance().removeRegisteredListener("updatePlayersAnswered");
     };
   }, []);
@@ -128,6 +130,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
   }, [timeLeft]);
 
   const { players } = useAppSelector((state) => state.game);
+
   return (
     <Box h="100vh" w="100%">
       {currentQuestion ? (

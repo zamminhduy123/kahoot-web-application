@@ -35,7 +35,7 @@ export const gameSlice = createSlice({
       state.totalQuestions = action.payload.totalQuestions;
     },
     setPlayerLists(state, action: PayloadAction<IPlayer[]>) {
-      state.players = action.payload;
+      state.players = [...action.payload];
     },
   },
 });
