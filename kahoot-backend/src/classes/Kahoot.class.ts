@@ -54,12 +54,13 @@ class GameClass {
   }
 
   startTimer(totalTime: number) {
+    const intervalNum = 10;
     const intervalObj = setInterval(() => {
-      this.timer += 0.1;
+      this.timer += 0.01;
       if (this.timer > totalTime) {
         clearInterval(intervalObj);
       }
-    }, totalTime / 10);
+    }, 10);
   }
 }
 

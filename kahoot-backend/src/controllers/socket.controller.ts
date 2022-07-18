@@ -167,7 +167,10 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         answers,
         timeUp
       });
+      
+      game.startTimer(timeUp);
     }, 5000);
+
   };
 
   const onPlayerAnswer = function (payload: { num: number }) {
@@ -191,12 +194,6 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         // socket.emit("answerResult", true);
       }
 
-      //update host screen of num players answered
-      io.to(game.hostId).emit("updatePlayersAnswered", {
-        playersInGame: playerNum.length,
-        playersAnswerd: game.gameData.playersAnswered,
-      });
-
       //Check if all players answered
       if (game.gameData.playersAnswered == playerNum.length) {
         //Question has been ended since players all answered
@@ -207,7 +204,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         //update host screen of num players answered
         io.to(game.hostId).emit("updatePlayersAnswered", {
           playersInGame: playerNum.length,
-          playersAnswerd: game.gameData.playersAnswered,
+          playersAnswered: game.gameData.playersAnswered,
         });
       }
     }
