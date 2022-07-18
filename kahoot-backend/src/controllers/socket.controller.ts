@@ -149,6 +149,9 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
     const _gameDoc = await GameModel.findById(game.gameData.gameId).lean();
     game.gameData.game = _gameDoc!.game;
+    game.EmitEventAfterGameOver = () => {
+      console.log('Hello');
+    }
 
     //Tell player and host that game has started
     io.to(socket.id).emit("gameStarted");
@@ -189,7 +192,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
       //Check player answer with correct answer
       if (num == correctAnswer) {
-        player.gameData.score += 100;
+        player.gameData.score += 100 + (game.gameData.game[gameQuestion].timeUp - game.timer);
         // io.to(game.pin).emit("getTime", socket.id);
         // socket.emit("answerResult", true);
       }
@@ -201,6 +204,9 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         const playerData = kahoot.updateRankingBoard(game.hostId);
         console.log(playerData);
         io.to(game.hostId).emit("questionOver", {playerData, correctAnswer});
+        clearInterval(game.intervalObj);
+        io.to(game.hostId)
+
       } else {
         //update host screen of num players answered
         io.to(game.hostId).emit("updatePlayersAnswered", {

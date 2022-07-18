@@ -35,10 +35,13 @@ class GameClass {
   isLive: boolean;
   gameData: ILiveGameKahoot;
   timer: number;
+  intervalObj?: NodeJS.Timer;
+  EmitEventAfterGameOver: Function;
+
 
   constructor(pin?: string, hostId?: string, gameData?: ILiveGameKahoot) {
-    this.pin = pin? pin: "";
-    this.hostId = hostId? hostId : "";
+    this.pin = pin ? pin : "";
+    this.hostId = hostId ? hostId : "";
     this.isLive = false;
     this.timer = 0;
     this.gameData = {
@@ -47,21 +50,22 @@ class GameClass {
       playersAnswered: 0,
       title: "",
       game: [],
-    }
+    };
     if (gameData) {
       this.gameData = gameData;
     }
+    this.EmitEventAfterGameOver = () => {}
   }
 
   startTimer(totalTime: number) {
     const intervalNum = 10;
-    const intervalObj = setInterval(() => {
+    this.intervalObj = setInterval(() => {
       this.timer += 0.01;
       if (this.timer > totalTime) {
-        console.log(this.timer > totalTime);
-        clearInterval(intervalObj);
+        this.EmitEventAfterGameOver();
+        clearInterval(this.intervalObj);
       }
-    }, 10);
+    }, intervalNum);
   }
 }
 
@@ -141,12 +145,12 @@ export default class Kahoot {
     const game = this.getGame(hostId);
 
     game.gameData!.rankingBoard = this.getPlayersInRoom(hostId);
-    
+
     const rankingBoard = game.gameData!.rankingBoard;
 
     rankingBoard.sort((a: PlayerClass, b: PlayerClass) => {
-      return b.gameData.score - a.gameData.score
-    })
+      return b.gameData.score - a.gameData.score;
+    });
 
     return rankingBoard;
   }
