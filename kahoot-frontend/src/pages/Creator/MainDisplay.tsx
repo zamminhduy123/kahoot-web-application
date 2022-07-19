@@ -16,6 +16,7 @@ const MainDisplay = ({}: MainDisplayProps) => {
 	const { list, selected } = useAppSelector((state) => state.newQuiz)
 	const question = { ...list[selected] }
 	const dispatch = useAppDispatch()
+	
 	return (
 		<Flex w="100%" h="100%" minHeight="80vh" padding="12px 32px">
 			<Flex

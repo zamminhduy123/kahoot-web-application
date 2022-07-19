@@ -15,7 +15,7 @@ interface NewQuiz {
 const placeHolderQuestion: IQuestion = {
 	id: "1",
 	question: "",
-	multipleChoice: [],
+	multipleChoice: ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
 	answer: 0,
 	time: "20",
 }

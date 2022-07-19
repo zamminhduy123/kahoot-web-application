@@ -1,13 +1,23 @@
 /** @format */
 
 import { StarIcon, TriangleUpIcon } from "@chakra-ui/icons"
-import { Box, Circle, Flex, Input, Square } from "@chakra-ui/react"
+import {
+	Box,
+	Circle,
+	Flex,
+	Input,
+	Radio,
+	RadioGroup,
+	Square,
+} from "@chakra-ui/react"
 import { FunctionComponent, useState } from "react"
 import { BiTargetLock } from "react-icons/bi"
 import { useAppDispatch } from "../../hook"
 import { IMultipleChoice, IQuestion } from "../../model/interface"
 import { editQuestionAtIndex } from "../../model/reducers/newQuiz.reducer"
 import cloneDeep from "lodash/cloneDeep"
+import React from "react"
+import { useEffect } from "react"
 
 interface AnsListProps {
 	question: IQuestion
@@ -66,53 +76,77 @@ const CAnswerList: FunctionComponent<AnsListProps> = (props) => {
 		dispatch(editQuestionAtIndex(question))
 	}
 
+	const [value, setValue] = React.useState("0")
+
+	useEffect(() => {
+		console.log("change value to" + value)
+		question.answer = Number(value)
+		dispatch(editQuestionAtIndex(question))
+	}, [value])
+
 	return (
-		<Flex
+		<RadioGroup
+			key={question.id + "radiogroup"}
 			width="100%"
 			height="100%"
-			flex="4 1 0%"
-			wrap="wrap"
-			alignItems="stretch"
-			alignContent="stretch"
-			py="4"
+			onChange={setValue}
+			value={question.answer.toString()}
 		>
-			<Answer key="inp1" question={props.question} color="red.400">
-				<Flex flex="1" justifyContent={"center"} alignItems="center">
-					<TriangleUpIcon width={"32px"} height={"40px"} marginX="8px" />
-				</Flex>
-				<Input
-					defaultValue={multipleChoice[0]}
-					onChange={(event) => handleChange(event, 0)}
-				></Input>
-			</Answer>
-			<Answer key="inp2" question={props.question} color="yellow.600">
-				<Flex flex="1" justifyContent={"center"} alignItems="center">
-					<Square size={"24px"} marginX="10px" bgColor="#FFF" />
-				</Flex>
-				<Input
-					defaultValue={multipleChoice[1]}
-					onChange={(event) => handleChange(event, 1)}
-				></Input>
-			</Answer>
-			<Answer key="inp3" question={props.question} color="blue.400">
-				<Flex flex="1" justifyContent={"center"} alignItems="center">
-					<Circle size={"24px"} marginX="10px" bgColor="#FFF" />
-				</Flex>
-				<Input
-					defaultValue={multipleChoice[2]}
-					onChange={(event) => handleChange(event, 2)}
-				></Input>
-			</Answer>
-			<Answer key="inp4" question={props.question} color="green.500">
-				<Flex flex="1" justifyContent={"center"} alignItems="center">
-					<StarIcon width={"24px"} height={"24px"} marginX="10px" />
-				</Flex>
-				<Input
-					defaultValue={multipleChoice[3]}
-					onChange={(event) => handleChange(event, 3)}
-				></Input>
-			</Answer>
-		</Flex>
+			<Flex
+				width="100%"
+				height="100%"
+				flex="4 1 0%"
+				wrap="wrap"
+				alignItems="stretch"
+				alignContent="stretch"
+				py="4"
+			>
+				<Answer key="inp1" question={props.question} color="red.400">
+					<Radio key={question.id + "radio0"} value="0"></Radio>
+					<Flex flex="1" justifyContent={"center"} alignItems="center">
+						<TriangleUpIcon width={"32px"} height={"40px"} marginX="8px" />
+					</Flex>
+					<Input
+						key={question.id + "0"}
+						defaultValue={multipleChoice[0]}
+						onChange={(event) => handleChange(event, 0)}
+					></Input>
+				</Answer>
+				<Answer key="inp2" question={props.question} color="yellow.600">
+					<Radio key={question.id + "radio1"} value="1"></Radio>
+					<Flex flex="1" justifyContent={"center"} alignItems="center">
+						<Square size={"24px"} marginX="10px" bgColor="#FFF" />
+					</Flex>
+					<Input
+						key={question.id + "0"}
+						defaultValue={multipleChoice[1]}
+						onChange={(event) => handleChange(event, 1)}
+					></Input>
+				</Answer>
+				<Answer key="inp3" question={props.question} color="blue.400">
+					<Radio key={question.id + "radio2"} value="2"></Radio>
+					<Flex flex="1" justifyContent={"center"} alignItems="center">
+						<Circle size={"24px"} marginX="10px" bgColor="#FFF" />
+					</Flex>
+					<Input
+						key={question.id + "0"}
+						defaultValue={multipleChoice[2]}
+						onChange={(event) => handleChange(event, 2)}
+					></Input>
+				</Answer>
+				<Answer key="inp4" question={props.question} color="green.500">
+					<Radio key={question.id + "radio3"} value="3"></Radio>
+					<Flex flex="1" justifyContent={"center"} alignItems="center">
+						<StarIcon width={"24px"} height={"24px"} marginX="10px" />
+					</Flex>
+					<Input
+						key={question.id + "0"}
+						defaultValue={multipleChoice[3]}
+						onChange={(event) => handleChange(event, 3)}
+					></Input>
+				</Answer>
+			</Flex>
+		</RadioGroup>
 	)
 }
 

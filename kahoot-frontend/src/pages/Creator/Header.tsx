@@ -24,6 +24,7 @@ import { IconType } from "react-icons"
 import { Dispatch, SetStateAction } from "react"
 import { addNewGame } from "../../api/api"
 import logo from "../../assets/logo.png"
+import { useAppSelector } from "../../hook"
 
 export interface PublicHeaderProps {
 	onSettingClick: Function
@@ -31,24 +32,29 @@ export interface PublicHeaderProps {
 }
 
 const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
+	const { list } = useAppSelector((state) => state.newQuiz)
+
 	const onSave = () => {
+		console.log("add game")
+		const arr = list.map(function (element: any) {
+			return {
+				question: element.question,
+				solution: element.multipleChoice,
+				answer: element.answer,
+				timeUp: Number(element.time),
+			}
+		})
 		let newGame = {
-			title: "newGame",
-			gameQuestions: [
-				{
-					question: "abc",
-					solution: ["1", "2", "3", "4"],
-					answer: 1,
-				},
-			],
+			title: title,
+			game: arr,
 		}
 		try {
-			addNewGame(newGame.title, newGame.gameQuestions)
+			console.log(list)
+			console.log(newGame)
+			addNewGame(newGame.title, newGame.game)
 		} catch (error) {
 			console.log(error)
 		}
-
-		console.log("add game")
 	}
 
 	return (
