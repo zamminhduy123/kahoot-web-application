@@ -149,15 +149,15 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
         >
           {correctAnswer >= 0 ? (
             <Flex
-              w="60%"
+              w="100%"
               maxH={'70%'}
               align={"center"}
               justify={"center"}
-              flex={"1 0 auto"}
+              flex={"1 0 70%"}
               marginBottom="20px"
               direction={"column"}
             >
-              <Box
+              {/* <Box
                 fontSize={"3xl"}
                 fontWeight="600"
                 color="white"
@@ -165,8 +165,9 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
                 textAlign="center"
               >
                 SCORE BOARD
-              </Box>
-              <Box
+              </Box> */}
+              <Leaderboards question={currentQuestion.question} users={players}></Leaderboards>
+              {/* <Box
                 h="fit-content"
                 w="100%"
                 bgColor="brand.500"
@@ -174,10 +175,11 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
                 padding="20px 10px"
                 maxH={'60%'}
               >
-                <PlayerList list={players}></PlayerList>
-              </Box>
+                { <PlayerList list={players}></PlayerList>}
+               
+              </Box> */}
               <Button
-                mt="4"
+                mt="6"
                 minW="100px"
                 onClick={handleNext}
               >
