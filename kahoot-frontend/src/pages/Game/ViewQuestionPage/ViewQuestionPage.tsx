@@ -65,7 +65,9 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
 
   const handleTimeOut = () => {};
 
-  const handleNext = () => {};
+  const handleNext = () => {
+    Socket.getInstance().emit('next-question',{})
+  };
 
   const handleClick = (num: number) => {};
   const [currentQuestion, setCurrentQuestion] =
@@ -148,40 +150,39 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
           {correctAnswer >= 0 ? (
             <Flex
               w="60%"
+              maxH={'70%'}
               align={"center"}
               justify={"center"}
-              flex={"1 0 60%"}
+              flex={"1 0 auto"}
               marginBottom="20px"
               direction={"column"}
             >
-                              <Box
-                  fontSize={"3xl"}
-                  fontWeight='600'
-                  color="white"
-                  width={"100%"}
-                  textAlign="center"
-                >
-                  SCORE BOARD
-                </Box>
+              <Box
+                fontSize={"3xl"}
+                fontWeight="600"
+                color="white"
+                width={"100%"}
+                textAlign="center"
+              >
+                SCORE BOARD
+              </Box>
               <Box
                 h="fit-content"
                 w="100%"
                 bgColor="brand.500"
                 borderRadius={"10px"}
                 padding="20px 10px"
+                maxH={'60%'}
               >
-
                 <PlayerList list={players}></PlayerList>
               </Box>
               <Button
-                    right={100}
-                    position="absolute"
-                    mt="4"
-                    minW="100px"
-                    onClick={handleNext}
-                  >
-                    Next
-                  </Button>
+                mt="4"
+                minW="100px"
+                onClick={handleNext}
+              >
+                Next
+              </Button>
             </Flex>
           ) : (
             <>

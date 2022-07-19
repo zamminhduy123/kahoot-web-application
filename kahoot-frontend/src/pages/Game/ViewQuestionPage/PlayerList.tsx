@@ -27,7 +27,7 @@ interface PlayerListProps {
 
 const PlayerList = ({ list }: PlayerListProps) => {
   return (
-    <TableContainer width={"100%"} color="white" overflowY={"hidden"}>
+    <TableContainer width={"100%"} h='100%' color="white" overflowY={"hidden"}>
       <Table variant="stripe" colorScheme="brand">
         <Thead color={"white"}>
           <Tr>
@@ -39,6 +39,43 @@ const PlayerList = ({ list }: PlayerListProps) => {
           {list.slice(0, Math.min(list.length, 10)).map((player: IPlayer) => {
             return <PlayerListItem player={player} />;
           })}
+          <Tr>
+      <Td fontWeight={600} fontSize='2xl'>asdasd</Td>
+      <Td fontWeight={600} fontSize='2xl' isNumeric textAlign={'right'}>{Number(123).toFixed(0)}</Td>
+    </Tr>
+    <Tr>
+      <Td fontWeight={600} fontSize='2xl'>asdasd</Td>
+      <Td fontWeight={600} fontSize='2xl' isNumeric textAlign={'right'}>{Number(123).toFixed(0)}</Td>
+    </Tr>
+    <Tr>
+      <Td fontWeight={600} fontSize='2xl'>asdasd</Td>
+      <Td fontWeight={600} fontSize='2xl' isNumeric textAlign={'right'}>{Number(123).toFixed(0)}</Td>
+    </Tr>
+    <Tr>
+      <Td fontWeight={600} fontSize='2xl'>asdasd</Td>
+      <Td fontWeight={600} fontSize='2xl' isNumeric textAlign={'right'}>{Number(123).toFixed(0)}</Td>
+    </Tr>
+    <Tr>
+      <Td fontWeight={600} fontSize='2xl'>asdasd</Td>
+      <Td fontWeight={600} fontSize='2xl' isNumeric textAlign={'right'}>{Number(123).toFixed(0)}</Td>
+    </Tr>
+    <Tr>
+      <Td fontWeight={600} fontSize='2xl'>asdasd</Td>
+      <Td fontWeight={600} fontSize='2xl' isNumeric textAlign={'right'}>{Number(123).toFixed(0)}</Td>
+    </Tr>
+    <Tr>
+      <Td fontWeight={600} fontSize='2xl'>asdasd</Td>
+      <Td fontWeight={600} fontSize='2xl' isNumeric textAlign={'right'}>{Number(123).toFixed(0)}</Td>
+    </Tr>
+    <Tr>
+      <Td fontWeight={600} fontSize='2xl'>asdasd</Td>
+      <Td fontWeight={600} fontSize='2xl' isNumeric textAlign={'right'}>{Number(123).toFixed(0)}</Td>
+    </Tr>
+    <Tr>
+      <Td fontWeight={600} fontSize='2xl'>asdasd</Td>
+      <Td fontWeight={600} fontSize='2xl' isNumeric textAlign={'right'}>{Number(123).toFixed(0)}</Td>
+    </Tr>
+    
         </Tbody>
       </Table>
     </TableContainer>
