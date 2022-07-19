@@ -58,6 +58,7 @@ class GameClass {
   }
 
   startTimer(totalTime: number) {
+    this.timer = 0;
     const intervalNum = 10;
     this.intervalObj = setInterval(() => {
       this.timer += 0.01;

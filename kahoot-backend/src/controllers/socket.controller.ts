@@ -236,20 +236,20 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       let questionNum = game.gameData.question;
       const question = game.gameData.game[questionNum].question;
       const answers = game.gameData.game[questionNum].solution;
-      const correctAnswer = game.gameData.game[questionNum].answer;
+      const timeUp = game.gameData.game[questionNum].timeUp || 10;
+      game.gameData.game[questionNum].timeUp = timeUp;
 
-      socket.emit("gameQuestions", {
+      io.to(game.hostId).emit("question", {
         question,
         answers,
-        correct: correctAnswer,
-        playersInGame: playerData.length,
+        timeUp
       });
+
+      game.startTimer(timeUp);
     } else {
       kahoot.updateRankingBoard(game.hostId);
-      io.to(game.pin).emit("GameOver", game.gameData.rankingBoard);
+      io.to(game.hostId).emit("GameOver", game.gameData.rankingBoard);
     }
-
-    io.to(game.pin).emit("nextQuestionPlayer");
   };
 
   const onTimeUp = function () {
