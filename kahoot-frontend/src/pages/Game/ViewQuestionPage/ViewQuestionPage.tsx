@@ -18,6 +18,7 @@ import Leaderboards from "../Leaderboards";
 import AnswerList from "./AnswerList";
 import CurrentResult from "./CurrentResult";
 import ReadyState from "./PlayerGamePage/ReadyState";
+import PlayerList from "./PlayerList";
 
 interface ViewQuestionPageProps {}
 
@@ -107,7 +108,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
             })
           )
         );
-        console.log( playerData, correctAnswer )
+        console.log(playerData, correctAnswer);
         setCorrectAnswer(correctAnswer);
       }
     );
@@ -126,7 +127,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
         setTimeLeft(timeLeft - 1);
       }, 1000);
     } else {
-      Socket.getInstance().emit('time-up',{});
+      Socket.getInstance().emit("time-up", {});
     }
     return () => clearTimeout(timeout);
   }, [timeLeft]);
@@ -136,17 +137,45 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
   return (
     <Box h="100vh" w="100%">
       {currentQuestion ? (
-        <Flex h="100%" w="100%" justify={'center'} direction='column' align={'center'}>
+        <Flex
+          h="100%"
+          w="100%"
+          justify={"center"}
+          direction="column"
+          align={"center"}
+        >
           {correctAnswer >= 0 ? (
-            <Flex w="100%" justify={'center'} flex={'1 0 60%'} marginBottom='20px'>
-              <Leaderboards
-                question={currentQuestion.question}
-                users={players}
-              ></Leaderboards>
+            <Flex
+              w="60%"
+              align={"center"}
+              justify={"center"}
+              flex={"1 0 60%"}
+              marginBottom="20px"
+              direction={"column"}
+            >
+                              <Box
+                  fontSize={"3xl"}
+                  fontWeight='600'
+                  color="white"
+                  width={"100%"}
+                  textAlign="center"
+                >
+                  SCORE BOARD
+                </Box>
+              <Box
+                h="fit-content"
+                w="100%"
+                bgColor="brand.500"
+                borderRadius={"10px"}
+                padding="20px 10px"
+              >
+
+                <PlayerList list={players}></PlayerList>
+              </Box>
             </Flex>
           ) : (
             <>
-              <Box bg="white" w="100%" boxShadow="base" >
+              <Box bg="white" w="100%" boxShadow="base">
                 <Heading
                   size="lg"
                   color="black"
