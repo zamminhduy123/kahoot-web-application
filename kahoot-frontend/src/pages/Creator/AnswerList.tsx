@@ -49,6 +49,8 @@ const CAnswerList: FunctionComponent<AnsListProps> = (props) => {
 
 	const dispatch = useAppDispatch()
 
+	const question = { ...props.question }
+
 	const handleChange = (
 		event: React.ChangeEvent<HTMLInputElement>,
 		index: number
@@ -56,12 +58,12 @@ const CAnswerList: FunctionComponent<AnsListProps> = (props) => {
 		const value = event.target.value.trim()
 		if (value) {
 			console.log(value)
-			const arr = cloneDeep(props.question.multipleChoice)
+			const arr = [...multipleChoice]
 			arr[index] = value
-			props.question.multipleChoice = arr
+			question.multipleChoice = arr
 		}
 
-		dispatch(editQuestionAtIndex(props.question))
+		dispatch(editQuestionAtIndex(question))
 	}
 
 	return (

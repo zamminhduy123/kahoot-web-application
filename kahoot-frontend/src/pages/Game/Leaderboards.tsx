@@ -20,14 +20,14 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
         display="flex"
         flexDirection="column"
         justifyContent="flex-end"
-		mb='2'
+        mb="2"
       >
         <Text
           textColor="white"
           fontWeight="bold"
           fontSize="2xl"
           textAlign="center"
-		  mb='2'
+          mb="2"
         >
           Leaderboards
         </Text>
@@ -49,8 +49,8 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
             flexDirection="column"
             justifyContent="flex-start"
             mb="-3vmin"
-            height="calc(100% - 25vh)"
-            order="4"
+            height="calc(100% - 15vh)"
+            order="1"
             zIndex="4"
             flex="0 1 33%"
             borderRadius="2xl"
@@ -59,7 +59,10 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
               <span>
                 {`${users[3].name}`}
                 <br />
-                {`${Number(users[3].score).toFixed(0)} points`}{" "}
+                <Text fontSize="xl" color="white">{`${Number(
+                  users[3].score
+                ).toFixed(0)}`}</Text>
+                {`points`}{" "}
               </span>
             ) : (
               ""
@@ -73,7 +76,7 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
             justifyContent="flex-start"
             mb="-3vmin"
             height="calc(100% + 3vh)"
-            order="2"
+            order="3"
             zIndex="2"
             flex="0 1 33%"
             shadow="dark-lg"
@@ -85,15 +88,15 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
               h="12.5vmin"
               m="3vmin auto 1.5vmin"
             />
-            {users.length >= 1 ? (
-              <span>
-                {`${users[0].name}`}
-                <br />
-                {`${Number(users[0].score).toFixed(0)} points`}{" "}
-              </span>
-            ) : (
-              ""
-            )}
+
+            <span>
+              {`${users[0].name}`}
+              <br />
+              <Text fontSize="4xl" color="white">{`${Number(
+                users[0].score
+              ).toFixed(0)}`}</Text>
+              {`points`}{" "}
+            </span>
           </Box>
 
           <Box
@@ -103,8 +106,8 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
             flexDirection="column"
             justifyContent="flex-start"
             mb="-3vmin"
-            height="calc(100% - 5vh)"
-            order="1"
+            height="calc(100% - 2vh)"
+            order="2"
             flex="0 1 33%"
             zIndex="1"
             borderRadius="2xl"
@@ -119,7 +122,10 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
               <span>
                 {`${users[1].name}`}
                 <br />
-                {`${Number(users[1].score).toFixed(0)} points`}{" "}
+                <Text fontSize="3xl" color="white">{`${Number(
+                  users[1].score
+                ).toFixed(0)}`}</Text>
+                {`points`}{" "}
               </span>
             ) : (
               ""
@@ -132,8 +138,8 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
             flexDirection="column"
             justifyContent="flex-start"
             mb="-3vmin"
-            height="calc(100% - 15vh)"
-            order="3"
+            height="calc(100% - 8vh)"
+            order="4"
             zIndex="3"
             flex="0 1 33%"
             borderRadius="2xl"
@@ -148,7 +154,10 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
               <span>
                 {`${users[2].name}`}
                 <br />
-                {`${Number(users[2].score).toFixed(0)} points`}{" "}
+                <Text fontSize="2xl" color="white">{`${Number(
+                  users[2].score
+                ).toFixed(0)}`}</Text>
+                {`points`}{" "}
               </span>
             ) : (
               ""
@@ -162,7 +171,7 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
             flexDirection="column"
             justifyContent="flex-start"
             mb="-3vmin"
-            height="calc(100% - 35vh)"
+            height="calc(100% - 20vh)"
             order="5"
             zIndex="5"
             flex="0 1 33%"
@@ -172,7 +181,10 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
               <span>
                 {`${users[4].name}`}
                 <br />
-                {`${Number(users[4].score).toFixed(0)} points`}{" "}
+                <Text fontSize="xl" color="white">{`${Number(
+                  users[4].score
+                ).toFixed(0)}`}</Text>
+                {`points`}{" "}
               </span>
             ) : (
               ""
