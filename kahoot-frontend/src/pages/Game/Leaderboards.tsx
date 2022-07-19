@@ -6,12 +6,10 @@ import { IPlayer } from "../../model/interface/player.model";
 import { IUser } from "../../model/interface/user.model";
 
 interface LeaderboardsProps {
-  question: string;
   users: IPlayer[]; //3rd place, 2ndplace, 1st place
 }
 
 const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
-  question,
   users,
 }: LeaderboardsProps) => {
   return (

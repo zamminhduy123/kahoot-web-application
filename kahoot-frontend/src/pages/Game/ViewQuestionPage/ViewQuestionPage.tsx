@@ -55,7 +55,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
 
   const dispatch = useAppDispatch();
 
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [gameOver, setGameOver] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
   const [timeLeft, setTimeLeft] = React.useState(0);
@@ -66,7 +66,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
   const handleTimeOut = () => {};
 
   const handleNext = () => {
-    Socket.getInstance().emit('next-question',{})
+    Socket.getInstance().emit("next-question", {});
   };
 
   const handleClick = (num: number) => {};
@@ -96,6 +96,20 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
         setAnswered(playersAnswered);
       }
     );
+
+    Socket.getInstance().registerListener("gameOver", ({ playerData }: any) => {
+      setIsPlaying(false);
+      dispatch(
+        setPlayerLists(
+          playerData.map((player: any) => {
+            return {
+              name: player.name,
+              score: player.gameData.score,
+            };
+          })
+        )
+      );
+    });
 
     Socket.getInstance().registerListener(
       "questionOver",
@@ -139,7 +153,20 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
 
   return (
     <Box h="100vh" w="100%">
-      {currentQuestion ? (
+      {gameOver ? (
+        <>
+          <Box
+            fontSize={"3xl"}
+            fontWeight="600"
+            color="white"
+            width={"100%"}
+            textAlign="center"
+          >
+            GAME OVER
+          </Box>
+          <Leaderboards users={players}></Leaderboards>
+        </>
+      ) : currentQuestion ? (
         <Flex
           h="100%"
           w="100%"
@@ -150,7 +177,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
           {correctAnswer >= 0 ? (
             <Flex
               w="100%"
-              maxH={'70%'}
+              maxH={"70%"}
               align={"center"}
               justify={"center"}
               flex={"1 0 70%"}
@@ -166,7 +193,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
               >
                 SCORE BOARD
               </Box> */}
-              <Leaderboards question={currentQuestion.question} users={players}></Leaderboards>
+              <Leaderboards users={players}></Leaderboards>
               {/* <Box
                 h="fit-content"
                 w="100%"
@@ -178,11 +205,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
                 { <PlayerList list={players}></PlayerList>}
                
               </Box> */}
-              <Button
-                mt="6"
-                minW="100px"
-                onClick={handleNext}
-              >
+              <Button mt="6" minW="100px" onClick={handleNext}>
                 Next
               </Button>
             </Flex>
