@@ -65,6 +65,7 @@ const LoginForm = ({ loginSuccess }: LoginFormProps) => {
         throw new Error("Login failed!");
       }
     } catch (err: any) {
+      console.log(err);
       if (err.response) {
         if (err.response.status === 401) {
           setLoginFailure("Wrong email or password");

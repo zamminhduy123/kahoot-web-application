@@ -77,6 +77,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
       "question",
       ({ question, answers, timeUp }: any) => {
         setCorrectAnswer(-1);
+        setIsPlaying(true);
         setCurrentQuestion({
           id: "",
           question: question,
@@ -172,6 +173,15 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
 
                 <PlayerList list={players}></PlayerList>
               </Box>
+              <Button
+                    right={100}
+                    position="absolute"
+                    mt="4"
+                    minW="100px"
+                    onClick={handleNext}
+                  >
+                    Next
+                  </Button>
             </Flex>
           ) : (
             <>

@@ -1,7 +1,7 @@
 /** @format */
 
 import { Box, Button, Center, Heading, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useRef } from "react";
 import { FunctionComponent, useState } from "react";
 import Socket from "../../../../api/socket";
 import {
@@ -26,7 +26,7 @@ const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
     points: 0,
     rank: -1,
   });
-  const [lastAnswer, setLastAnswer] = useState<number>(0);
+  const lastAnswer = useRef<number>(0);
   const [right, setRight] = useState<boolean>(false);
 
   /**
@@ -44,7 +44,7 @@ const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
 
   const handleClick = (num: number) => {
     setPhase(1);
-    setLastAnswer(num);
+    lastAnswer.current = num;
     Socket.getInstance().emit("player-answer", { num });
   };
 
@@ -67,7 +67,7 @@ const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
         const playerIndex = playerData.findIndex(
           (data: any) => data.playerId === Socket.getInstance().getId()
         );
-        setRight(+correctAnswer === +lastAnswer);
+        setRight(+correctAnswer === +lastAnswer.current);
         setPlayerState({
           points: playerData[playerIndex].gameData.score,
           rank: playerIndex + 1,
