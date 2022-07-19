@@ -56,6 +56,7 @@ const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
     Socket.getInstance().registerListener(
       "question",
       ({ question, answers }: any) => {
+        lastAnswer.current = -1;
         setPhase(0);
         setAnswers(answers);
       }
