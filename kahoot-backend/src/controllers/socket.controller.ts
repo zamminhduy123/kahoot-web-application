@@ -232,7 +232,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     game.isLive = true;
     game.gameData.question += 1;
 
-    if (game.gameData.game.length >= game.gameData.question) {
+    if (game.gameData.game.length > game.gameData.question) {
       let questionNum = game.gameData.question;
       const question = game.gameData.game[questionNum].question;
       const answers = game.gameData.game[questionNum].solution;
@@ -248,7 +248,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       game.startTimer(timeUp);
     } else {
       kahoot.updateRankingBoard(game.hostId);
-      io.to(game.hostId).emit("GameOver", game.gameData.rankingBoard);
+      io.to(game.hostId).emit("gameOver", game.gameData.rankingBoard);
     }
   };
 
