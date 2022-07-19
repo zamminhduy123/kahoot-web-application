@@ -254,12 +254,14 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
   const onTimeUp = function () {
     const game = kahoot.getGame(socket.id);
-    game.isLive = false;
-    const playerData = kahoot.updateRankingBoard(game.hostId);
-    const gameQuestion = game.gameData.question;
-
-    const correctAnswer = game.gameData.game[gameQuestion].answer;
-    io.to(game.hostId).emit("questionOver", {playerData, correctAnswer});
+    if(game) {
+      game.isLive = false;
+      const playerData = kahoot.updateRankingBoard(game.hostId);
+      const gameQuestion = game.gameData.question;
+  
+      const correctAnswer = game.gameData.game[gameQuestion].answer;
+      io.to(game.hostId).emit("questionOver", {playerData, correctAnswer});
+    }
   };
 
   const onDisconnect = function (payload: string) {
