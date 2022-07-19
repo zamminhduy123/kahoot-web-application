@@ -54,7 +54,7 @@ const PlayingMode = (props: any) => {
       <Container
         minWidth="100%"
         minH={"100vh"}
-        py="1"
+        p='0'
         centerContent
         position={"relative"}
       >

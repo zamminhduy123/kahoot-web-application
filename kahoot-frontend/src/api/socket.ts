@@ -34,6 +34,11 @@ class Socket {
     });
   }
 
+  getId()
+  {
+    return this.socket.id;
+  }
+
   constructor(){ 
     this.createNewSocket();
   }

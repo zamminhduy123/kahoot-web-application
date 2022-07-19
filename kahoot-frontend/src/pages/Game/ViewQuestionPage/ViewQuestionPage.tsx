@@ -125,6 +125,8 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
       timeout = setTimeout(() => {
         setTimeLeft(timeLeft - 1);
       }, 1000);
+    } else {
+      Socket.getInstance().emit('time-up',{});
     }
     return () => clearTimeout(timeout);
   }, [timeLeft]);
