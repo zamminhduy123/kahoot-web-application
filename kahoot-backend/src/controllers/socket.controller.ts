@@ -150,7 +150,6 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     const _gameDoc = await GameModel.findById(game.gameData.gameId).lean();
     game.gameData.game = _gameDoc!.game;
     game.EmitEventAfterGameOver = () => {
-      //console.log('Hello');
     }
 
     //Tell player and host that game has started
@@ -205,10 +204,8 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         //Question has been ended since players all answered
         game.isLive = false;
         const playerData = kahoot.updateRankingBoard(game.hostId);
-        console.log(playerData);
         io.to(game.hostId).emit("questionOver", {playerData, correctAnswer});
         clearInterval(game.intervalObj);
-        io.to(game.hostId)
 
       } else {
         //update host screen of num players answered
@@ -255,14 +252,14 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
     io.to(game.pin).emit("nextQuestionPlayer");
   };
 
-  const onTimeUp = function (payload: string) {
+  const onTimeUp = function () {
     const game = kahoot.getGame(socket.id);
     game.isLive = false;
     const playerData = kahoot.getPlayersInRoom(game.hostId);
     const gameQuestion = game.gameData.question;
 
     const correctAnswer = game.gameData.game[gameQuestion].answer;
-    io.to(game.pin).emit("questionOver", playerData, correctAnswer);
+    io.to(game.hostId).emit("questionOver", {playerData, correctAnswer});
   };
 
   const onDisconnect = function (payload: string) {
