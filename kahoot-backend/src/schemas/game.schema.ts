@@ -23,7 +23,7 @@ const questionSchema: JSONSchemaType<IQuestionKahoot> = {
     }
   },
   required: ["answer", "question", "solution"],
-  additionalProperties: false,
+  additionalProperties: true,
 };
 
 const schema: JSONSchemaType<IGameKahoot> = {
