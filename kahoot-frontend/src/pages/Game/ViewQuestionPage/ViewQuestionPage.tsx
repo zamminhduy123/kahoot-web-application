@@ -114,6 +114,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     Socket.getInstance().registerListener(
       "questionOver",
       ({ playerData, correctAnswer }: any) => {
+        if (!gameOver) {
         setIsPlaying(false);
         dispatch(
           setPlayerLists(
@@ -127,6 +128,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
         );
         console.log(playerData, correctAnswer);
         setCorrectAnswer(correctAnswer);
+          }
       }
     );
     return () => {
@@ -144,7 +146,8 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
         setTimeLeft(timeLeft - 1);
       }, 1000);
     } else {
-      Socket.getInstance().emit("time-up", {});
+      if (!gameOver)
+        Socket.getInstance().emit("time-up", {});
     }
     return () => clearTimeout(timeout);
   }, [timeLeft]);
