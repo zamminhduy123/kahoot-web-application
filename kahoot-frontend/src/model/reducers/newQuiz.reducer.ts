@@ -2,6 +2,7 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { IQuestion } from "../interface"
+import cloneDeep from "lodash/cloneDeep"
 
 // Define a type for the slice state
 interface NewQuiz {
@@ -14,7 +15,7 @@ interface NewQuiz {
 const placeHolderQuestion: IQuestion = {
 	id: "1",
 	question: "",
-	multipleChoice: ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
+	multipleChoice: [],
 	answer: 0,
 	time: "20",
 }
@@ -32,11 +33,15 @@ export const authSlice = createSlice({
 		addNewQuestion(state: NewQuiz) {
 			state.list.push({
 				...placeHolderQuestion,
+				multipleChoice: ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
 				id: `${state.list.length + 1}`,
 			})
 		},
 		editQuestionAtIndex(state: NewQuiz, action: PayloadAction<IQuestion>) {
-			state.list[state.selected] = action.payload
+			state.list[state.selected] = {
+				...state.list[state.selected],
+				...action.payload,
+			}
 		},
 		deleteQuestionAtIndex(state: NewQuiz, action: PayloadAction<number>) {
 			if (state.list.length > 1) state.list.splice(action.payload, 1)

@@ -15,15 +15,16 @@ interface QInfoProps {
 const QuestionInformation = (props: QInfoProps) => {
 	const dispatch = useAppDispatch()
 	const { time } = props.question
+	const question = { ...props.question }
 
 	const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const value = event.target.value.trim()
 		if (value) {
 			console.log(value)
 		}
-		props.question.time = value
-		console.log(props.question)
-		dispatch(editQuestionAtIndex(props.question))
+		question.time = value
+		console.log(question)
+		dispatch(editQuestionAtIndex(question))
 	}
 
 	return (
