@@ -247,8 +247,8 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
       game.startTimer(timeUp);
     } else {
-      kahoot.updateRankingBoard(game.hostId);
-      io.to(game.hostId).emit("gameOver", game.gameData.rankingBoard);
+      const rankingBoard = kahoot.updateRankingBoard(game.hostId);
+      io.to(game.hostId).emit("gameOver", {playerData: rankingBoard});
     }
   };
 
