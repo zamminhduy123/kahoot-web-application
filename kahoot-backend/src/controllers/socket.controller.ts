@@ -192,7 +192,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
       //Check player answer with correct answer
       if (num == correctAnswer) {
-        player.gameData.score += 100 + (game.gameData.game[gameQuestion].timeUp - game.timer);
+        player.gameData.score += Math.round((100 + (game.gameData.game[gameQuestion].timeUp - game.timer)) * 100)/ 100;
         console.log(game.gameData.game[gameQuestion].timeUp);
         console.log(game.timer);
         // io.to(game.pin).emit("getTime", socket.id);
@@ -255,7 +255,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
   const onTimeUp = function () {
     const game = kahoot.getGame(socket.id);
     game.isLive = false;
-    const playerData = kahoot.getPlayersInRoom(game.hostId);
+    const playerData = kahoot.updateRankingBoard(game.hostId);
     const gameQuestion = game.gameData.question;
 
     const correctAnswer = game.gameData.game[gameQuestion].answer;

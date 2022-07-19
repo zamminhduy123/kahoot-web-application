@@ -148,10 +148,10 @@ export default class Kahoot {
 
     const rankingBoard = game.gameData!.rankingBoard;
 
-    rankingBoard.sort((a: PlayerClass, b: PlayerClass) => {
+    const result = rankingBoard.sort((a: PlayerClass, b: PlayerClass) => {
       return b.gameData.score - a.gameData.score;
     });
 
-    return rankingBoard;
+    return result;
   }
 }
