@@ -258,7 +258,10 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       game.isLive = false;
       const playerData = kahoot.updateRankingBoard(game.hostId);
       const gameQuestion = game.gameData.question;
-  
+      
+      if(gameQuestion >= game.gameData.game.length) {
+        return;
+      }
       const correctAnswer = game.gameData.game[gameQuestion].answer;
       io.to(game.hostId).emit("questionOver", {playerData, correctAnswer});
     }
