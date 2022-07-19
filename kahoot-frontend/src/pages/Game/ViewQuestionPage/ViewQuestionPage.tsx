@@ -98,7 +98,9 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     );
 
     Socket.getInstance().registerListener("gameOver", ({ playerData }: any) => {
+      console.log("playerData",playerData)
       setIsPlaying(false);
+      setGameOver(true);
       dispatch(
         setPlayerLists(
           playerData.map((player: any) => {
