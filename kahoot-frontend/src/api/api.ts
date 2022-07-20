@@ -102,3 +102,29 @@ export const addNewGame = async (
       });
   });
 };
+
+export const uploadFile = async (
+  file: File | Blob,
+  extraConfig?: AxiosRequestConfig<File>,
+) => {
+  const axiosClient = axios.create({
+    baseURL: "http://localhost:5000/api/v1",
+  });
+
+  const getSignedUrl = () => {
+    const url = `/upload`
+    return axiosClient.get(url);
+  }
+
+  const response: any = await getSignedUrl();
+  const signedURL = response.url;
+
+  const config: AxiosRequestConfig<File> = {
+    ...extraConfig,
+    headers: {
+      'Content-Type': file.type,
+    },
+  };
+  return axiosClient.put(signedURL, file, config);
+  
+};

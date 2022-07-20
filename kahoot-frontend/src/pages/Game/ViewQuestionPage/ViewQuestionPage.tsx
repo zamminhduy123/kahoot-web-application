@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FunctionComponent, useState } from "react";
+import { Link } from "react-router-dom";
 import Socket from "../../../api/socket";
 import { useAppDispatch, useAppSelector } from "../../../hook";
 import { IQuestion } from "../../../model/interface/question.model";
@@ -98,7 +99,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     );
 
     Socket.getInstance().registerListener("gameOver", ({ playerData }: any) => {
-      console.log("playerData",playerData)
+      console.log("playerData", playerData);
       setIsPlaying(false);
       setGameOver(true);
       dispatch(
@@ -117,20 +118,20 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
       "questionOver",
       ({ playerData, correctAnswer }: any) => {
         if (!gameOver) {
-        setIsPlaying(false);
-        dispatch(
-          setPlayerLists(
-            playerData.map((player: any) => {
-              return {
-                name: player.name,
-                score: player.gameData.score,
-              };
-            })
-          )
-        );
-        console.log(playerData, correctAnswer);
-        setCorrectAnswer(correctAnswer);
-          }
+          setIsPlaying(false);
+          dispatch(
+            setPlayerLists(
+              playerData.map((player: any) => {
+                return {
+                  name: player.name,
+                  score: player.gameData.score,
+                };
+              })
+            )
+          );
+          console.log(playerData, correctAnswer);
+          setCorrectAnswer(correctAnswer);
+        }
       }
     );
     return () => {
@@ -148,8 +149,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
         setTimeLeft(timeLeft - 1);
       }, 1000);
     } else {
-      if (!gameOver)
-        Socket.getInstance().emit("time-up", {});
+      if (!gameOver) Socket.getInstance().emit("time-up", {});
     }
     return () => clearTimeout(timeout);
   }, [timeLeft]);
@@ -159,7 +159,13 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
   return (
     <Box h="100vh" w="100%">
       {gameOver ? (
-        <Flex w={'100%'} h='100%' justifyContent={'center'} align='center' direction={'column'}>
+        <Flex
+          w={"100%"}
+          h="100%"
+          justifyContent={"center"}
+          align="center"
+          direction={"column"}
+        >
           <Box
             fontSize={"3xl"}
             fontWeight="600"
@@ -169,6 +175,10 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
           >
             GAME OVER
           </Box>
+          <Link to="/login">
+            <Button position={'absolute'} right='50' width={'100px'}>Back</Button>
+          </Link>
+
           <Leaderboards users={players}></Leaderboards>
         </Flex>
       ) : currentQuestion ? (

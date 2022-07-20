@@ -17,7 +17,7 @@ const AnswerResult = ({points, right, rank,behindName,behindPoint} : AnswerResul
         <Icon boxSize={'40'} as={right ? RiCheckFill : RiCloseFill}></Icon>
         <Box>Current Point : {points.toFixed(0)} points</Box>
         <Box>You are in {rank} place</Box>
-        {rank > 1 && <Box>Only {behindName} behind {Math.abs(behindPoint-points).toFixed(0)}</Box>}
+        {rank > 1 && <Box>Only {Math.abs(behindPoint-points).toFixed(0)} behind {behindName}</Box>}
       </Flex>
     </Center>
   )

@@ -154,7 +154,7 @@ const JoinRoomPage: FunctionComponent<JoinRoomPageProps> = () => {
             </FormControl>
             <Box marginBlockStart={"10px"} textAlign="center">
               Create your own Game?
-              <Link to="/">
+              <Link to="/login">
                 <Text fontWeight={600}>QuizShare.com</Text>
               </Link>
             </Box>

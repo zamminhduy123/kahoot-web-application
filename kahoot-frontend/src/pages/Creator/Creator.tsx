@@ -31,6 +31,7 @@ import QuestionInformation from "./QuestionInformation"
 import { HiOutlineMail } from "react-icons/hi"
 import { useAppDispatch, useAppSelector } from "../../hook"
 import { setTitle } from "../../model/reducers/newQuiz.reducer"
+import Footer from "../../components/Footer/Footer"
 
 const Creator = () => {
 	const { title, list, selected } = useAppSelector((state) => state.newQuiz)
@@ -87,7 +88,7 @@ const Creator = () => {
 			</Modal>
 			<Flex
 				w={"100%"}
-				style={{ minHeight: "100vh", maxHeight: "100vh" }}
+				h='100%'
 				direction={"column"}
 			>
 				<Header onSettingClick={onOpen} title={title} />

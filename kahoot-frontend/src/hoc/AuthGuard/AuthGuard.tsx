@@ -12,7 +12,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
 
   if (id) return <>{children}</>;
   else {
-    return <Navigate to={"/login"} />;
+    return <Navigate to={"/join"} />;
   }
 };
 
