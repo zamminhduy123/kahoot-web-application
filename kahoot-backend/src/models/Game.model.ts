@@ -5,6 +5,7 @@ interface IQuestion {
   solution: string[];
   answer: number;
   timeUp: number;
+  image?: string;
 }
 
 interface IGame {
@@ -46,6 +47,9 @@ const GameSchema = new Schema<IGame, GameModel, IGameMethods>({
       timeUp: {
         type: Number,
         default: 10,
+      },
+      image: {
+        type: String,
       }
     },
   ],

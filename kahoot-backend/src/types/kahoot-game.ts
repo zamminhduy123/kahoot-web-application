@@ -3,6 +3,7 @@ export interface IQuestionSchema {
   solution: string[];
   answer: number;
   timeUp: number;
+  image?: string;
 }
 
 export interface IGameSchema {
