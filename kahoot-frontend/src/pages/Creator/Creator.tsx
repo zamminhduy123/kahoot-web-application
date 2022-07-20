@@ -62,6 +62,7 @@ const Creator = () => {
 									ref={titleInputRef}
 									type="text"
 									placeholder={title || "Enter QuizShare title"}
+									defaultValue={title || "Untitled"}
 									color={"black"}
 									_focus={{ boxShadow: "none", borderColor: "semiHeading" }}
 								/>
@@ -86,11 +87,7 @@ const Creator = () => {
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
-			<Flex
-				w={"100%"}
-				h='100%'
-				direction={"column"}
-			>
+			<Flex w={"100%"} h="100%" direction={"column"}>
 				<Header onSettingClick={onOpen} title={title} />
 				<Flex direction={"row"} width={"100%"} flex={1} minHeight="0px">
 					<Show above="lg">

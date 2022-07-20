@@ -91,7 +91,7 @@ const CAnswerList: FunctionComponent<AnsListProps> = (props) => {
 			width="100%"
 			height="100%"
 			onChange={setValue}
-			value={question.answer.toString()}
+			value={question?.answer?.toString()}
 			p="4"
 			colorScheme={"blackAlpha"}
 		>
@@ -111,7 +111,7 @@ const CAnswerList: FunctionComponent<AnsListProps> = (props) => {
 					</Flex>
 					<Input
 						key={question.id + "0"}
-						defaultValue={multipleChoice[0]}
+						defaultValue={multipleChoice[0] || undefined}
 						onChange={(event) => handleChange(event, 0)}
 					></Input>
 				</Answer>
@@ -122,7 +122,7 @@ const CAnswerList: FunctionComponent<AnsListProps> = (props) => {
 					</Flex>
 					<Input
 						key={question.id + "0"}
-						defaultValue={multipleChoice[1]}
+						defaultValue={multipleChoice[1] || undefined}
 						onChange={(event) => handleChange(event, 1)}
 					></Input>
 				</Answer>
@@ -133,7 +133,7 @@ const CAnswerList: FunctionComponent<AnsListProps> = (props) => {
 					</Flex>
 					<Input
 						key={question.id + "0"}
-						defaultValue={multipleChoice[2]}
+						defaultValue={multipleChoice[2] || undefined}
 						onChange={(event) => handleChange(event, 2)}
 					></Input>
 				</Answer>

@@ -1,124 +1,108 @@
-import {
-  border,
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  InputLeftElement,
-  Spacer,
-  Stack,
-  useRadioGroup,
-} from "@chakra-ui/react";
-import React from "react";
-import RadioCard from "../../components/RadioCard";
-import LibraryItem from "./LibraryItem";
-import { RiSearchLine } from "react-icons/ri";
-import { SearchIcon } from "@chakra-ui/icons";
+/** @format */
 
-interface LibraryListProps {
- 
+import {
+	border,
+	Box,
+	Container,
+	Flex,
+	Heading,
+	HStack,
+	Icon,
+	Input,
+	InputGroup,
+	InputLeftAddon,
+	InputLeftElement,
+	Spacer,
+	Stack,
+	useRadioGroup,
+	Text,
+} from "@chakra-ui/react"
+import React, { useEffect, useState } from "react"
+import RadioCard from "../../components/RadioCard"
+import LibraryItem from "./LibraryItem"
+import { RiSearchLine } from "react-icons/ri"
+import { SearchIcon } from "@chakra-ui/icons"
+import { IQuestion } from "../../model/interface/question.model"
+import { getAllGames } from "../../api/api"
+
+interface LibraryListProps {}
+
+const LibraryList = ({}: LibraryListProps) => {
+	const [games, setGames] = useState<any>([])
+
+	//fetch data here
+	useEffect(() => {
+		const fetchGames = async () => {
+			const res = await getAllGames()
+
+			console.log(res.data.games)
+			setGames(res.data.games)
+		}
+		fetchGames()
+	}, [])
+
+	const fakeData = [
+		{
+			name: "Kahoot_1",
+			totalQuestion: 5,
+		},
+	]
+
+	const options = ["Recents", "Favorite"]
+
+	const { getRootProps, getRadioProps } = useRadioGroup({
+		name: "Filter",
+		defaultValue: "Recents",
+		onChange: console.log,
+	})
+	const group = getRootProps()
+
+	return (
+		<Container maxW="container.lg">
+			<Stack justifyContent="center">
+				<Flex direction={"row"} margin="10px 0px">
+					<Text fontSize="2xl" fontWeight={"600"}>
+						My Library
+					</Text>
+					{/* 
+					<HStack {...group} p="0">
+						{options.map((value, index) => {
+							const radio = getRadioProps({ value })
+							return (
+								<RadioCard key={index} radioProps={radio}>
+									{value}
+								</RadioCard>
+							)
+						})}
+					</HStack> */}
+					<Spacer />
+					<Box>
+						<InputGroup>
+							<InputLeftElement
+								pointerEvents="none"
+								children={<SearchIcon color="gray.300" />}
+							/>
+							<Input
+								focusBorderColor="brand.500"
+								variant="outline"
+								placeholder={`Search`}
+							/>
+						</InputGroup>
+					</Box>
+				</Flex>
+				{games.map((data: any, index: number) => {
+					return (
+						<LibraryItem
+							id={data._id}
+							key={`${data._id}-${index}`}
+							name={data.title}
+							totalQuestion={data.game.length}
+						/>
+					)
+				})}
+			</Stack>
+		</Container>
+	)
 }
 
-const LibraryList = ({} : LibraryListProps) => {
-  //fetch data here
-  const fakeData = [
-    {
-      name: "Kahoot_1",
-      totalQuestion: 5,
-      last_modified: new Date(),
-    },
-    {
-      name: "Kahoot_2",
-      totalQuestion: 2,
-      last_modified: new Date(),
-    },
-    {
-      name: "Kahoot_23",
-      totalQuestion: 3,
-      last_modified: new Date(),
-    },
-    {
-      name: "Kahoot_5",
-      totalQuestion: 4,
-      last_modified: new Date(),
-    },
-    {
-      name: "Kahoot_5",
-      totalQuestion: 4,
-      last_modified: new Date(),
-    },
-    {
-      name: "Kahoot_5",
-      totalQuestion: 4,
-      last_modified: new Date(),
-    },
-    {
-      name: "Kahoot_5",
-      totalQuestion: 4,
-      last_modified: new Date(),
-    },
-    {
-      name: "Kahoot_5",
-      totalQuestion: 4,
-      last_modified: new Date(),
-    },
-    {
-      name: "Kahoot_5",
-      totalQuestion: 4,
-      last_modified: new Date(),
-    },
-  ];
-
-  const options = ["Recents", "Favorite"];
-
-  const { getRootProps, getRadioProps } = useRadioGroup({
-    name: "Filter",
-    defaultValue: "Recents",
-    onChange: console.log,
-  });
-  const group = getRootProps();
-
-  return (
-    <Stack w="100%" maxW={"1280px"} justifyContent='center'>
-      <Flex direction={"row"} margin="10px 0px">
-        <HStack {...group} p="0">
-          {options.map((value, index) => {
-            const radio = getRadioProps({ value });
-            return (
-              <RadioCard key={index} radioProps={radio}>
-                {value}
-              </RadioCard>
-            );
-          })}
-        </HStack>
-        <Spacer />
-        <Box>
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<SearchIcon color="gray.300" />}
-            />
-            <Input   focusBorderColor='brand.500' variant="outline" placeholder={`Search`} />
-          </InputGroup>
-        </Box>
-      </Flex>
-      {fakeData.map((data, index) => {
-        return (
-          <LibraryItem
-            id={index}
-            key={`${data.name}-${index}`}
-            name={data.name}
-            totalQuestion={data.totalQuestion}
-            last_modified={data.last_modified}
-          />
-        );
-      })}
-    </Stack>
-  );
-};
-
-export default LibraryList;
+export default LibraryList
