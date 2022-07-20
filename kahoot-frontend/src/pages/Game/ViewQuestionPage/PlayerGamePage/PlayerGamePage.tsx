@@ -139,14 +139,14 @@ const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
           points={playerState.points}
           right={right}
           rank={playerState.rank}
-          behindName={frontPlayerState.points}
+          behindName={frontPlayerState.name}
           behindPoint={frontPlayerState.points}
         />
       );
       break;
     case 3:
       component = (
-        <GameResult score={playerState.points} rank={playerState.rank} behindScore={frontPlayerState.points} behindName={frontPlayerState.rank} />
+        <GameResult score={playerState.points} rank={playerState.rank} behindScore={frontPlayerState.points} behindName={frontPlayerState.name} />
       )
       break;
   }

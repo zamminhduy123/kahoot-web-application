@@ -102,6 +102,7 @@ const Header = (props: PublicHeaderProps) => {
       color={useColorModeValue("gray.600", "white")}
       zIndex={100}
       position="relative"
+      top="0"
     >
       <Stack>
         <Flex
