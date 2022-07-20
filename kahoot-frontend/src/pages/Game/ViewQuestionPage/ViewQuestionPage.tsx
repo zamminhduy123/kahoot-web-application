@@ -159,7 +159,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
   return (
     <Box h="100vh" w="100%">
       {gameOver ? (
-        <>
+        <Flex w={'100%'} h='100%' justifyContent={'center'} align='center' direction={'column'}>
           <Box
             fontSize={"3xl"}
             fontWeight="600"
@@ -170,7 +170,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
             GAME OVER
           </Box>
           <Leaderboards users={players}></Leaderboards>
-        </>
+        </Flex>
       ) : currentQuestion ? (
         <Flex
           h="100%"

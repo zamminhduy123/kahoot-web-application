@@ -4,12 +4,14 @@ import { Box, Button, Center, Heading, Text } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { FunctionComponent, useState } from "react";
 import Socket from "../../../../api/socket";
+import { IPlayer } from "../../../../model/interface/player.model";
 import {
   IMultipleChoice,
   IQuestion,
 } from "../../../../model/interface/question.model";
 import AnswerList from "../AnswerList";
 import AnswerResult from "./AnswerResult";
+import GameResult from "./GameResult";
 import ReadyState from "./ReadyState";
 
 interface ViewQuestionPageProps {}
@@ -26,6 +28,11 @@ const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
     points: 0,
     rank: -1,
   });
+  
+  const [frontPlayerState,setFrontPlayerState] = React.useState<any>({
+    name: '',
+    points: -1,
+  })
   const lastAnswer = useRef<number>(0);
   const [right, setRight] = useState<boolean>(false);
 
@@ -33,6 +40,7 @@ const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
    * 0: selecting
    * 1: waiting for other player
    * 2: view result
+   * 3: game over
    */
   const [phase, setPhase] = useState<number>(0);
 
@@ -73,12 +81,39 @@ const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
           points: playerData[playerIndex].gameData.score,
           rank: playerIndex + 1,
         });
+        if (playerIndex >0) {
+          setFrontPlayerState({
+            points: playerData[playerIndex-1].gameData.score,
+            name: playerData[playerIndex-1].name,
+          });
+        }
         setPhase(2);
+      }
+    );
+
+    Socket.getInstance().registerListener(
+      "gameOver",
+      ({ playerData }: any) => {
+        setPhase(3);
+        const playerIndex = playerData.findIndex(
+          (data: any) => data.playerId === Socket.getInstance().getId()
+        );
+        setPlayerState({
+          points: Number(playerData[playerIndex].gameData.score),
+          rank: playerIndex + 1,
+        });
+        if (playerIndex >0) {
+          setFrontPlayerState({
+            points: playerData[playerIndex-1].gameData.score,
+            name: playerData[playerIndex-1].name,
+          });
+        }
       }
     );
 
     return () => Socket.getInstance().removeRegisteredListener("question");
   }, []);
+
   let component;
   switch (phase) {
     case 0:
@@ -104,8 +139,15 @@ const PlayerGamePage: FunctionComponent<ViewQuestionPageProps> = () => {
           points={playerState.points}
           right={right}
           rank={playerState.rank}
+          behindName={frontPlayerState.points}
+          behindPoint={frontPlayerState.points}
         />
       );
+      break;
+    case 3:
+      component = (
+        <GameResult score={playerState.points} rank={playerState.rank} behindScore={frontPlayerState.points} behindName={frontPlayerState.rank} />
+      )
       break;
   }
   return <>{answers ? component : <ReadyState message="Get Ready!" />}</>;
