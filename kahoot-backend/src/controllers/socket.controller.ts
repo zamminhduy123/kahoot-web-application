@@ -283,8 +283,8 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
           kahoot.removePlayer(playersToRemove[i].playerId); //Removing each player from player class
         }
 
-        io.to(game.pin).emit("hostDisconnect"); //Send player back to 'join' screen
-        socket.leave(game.pin); //Socket is leaving room
+        io.to(game.hostId).emit("hostDisconnect"); //Send player back to 'join' screen
+        socket.leave(game.hostId); //Socket is leaving room
       }
     } else {
       //No game has been found, so it is a player socket that has disconnected
@@ -299,8 +299,8 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
           kahoot.removePlayer(socket.id); //Removes player from players class
           const playersInGame = kahoot.getPlayersInRoom(hostId); //Gets remaining players in game
 
-          io.to(pin).emit("updatePlayerLobby", playersInGame); //Sends data to host to update screen
-          socket.leave(pin); //Player is leaving the room
+          io.to(hostId).emit("updatePlayerLobby", playersInGame); //Sends data to host to update screen
+          socket.leave(hostId); //Player is leaving the room
         }
       }
     }
