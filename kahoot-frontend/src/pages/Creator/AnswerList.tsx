@@ -31,8 +31,9 @@ const Answer = (props: any) => {
 			position="relative"
 			display="flex"
 			flex={"1 0 auto"}
-			width="calc(50% - 3rem)"
-			minH="2.25rem"
+			width={{ sm: "90%", lg: "calc(50% - 3rem)" }}
+			height={"100%"}
+			minH="7rem"
 			maxW="100%"
 			mr="0.5rem"
 			mb="0.5rem"
@@ -91,6 +92,8 @@ const CAnswerList: FunctionComponent<AnsListProps> = (props) => {
 			height="100%"
 			onChange={setValue}
 			value={question.answer.toString()}
+			p="4"
+			colorScheme={"blackAlpha"}
 		>
 			<Flex
 				width="100%"

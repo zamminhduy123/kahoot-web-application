@@ -18,6 +18,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
+	Show,
 	useDisclosure,
 } from "@chakra-ui/react"
 import React from "react"
@@ -91,15 +92,17 @@ const Creator = () => {
 			>
 				<Header onSettingClick={onOpen} title={title} />
 				<Flex direction={"row"} width={"100%"} flex={1} minHeight="0px">
-					<Flex
-						direction={"column"}
-						flex={"0 192px"}
-						minH="0"
-						boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;"
-						zIndex={10}
-					>
-						<NewQuestionList list={list} />
-					</Flex>
+					<Show above="lg">
+						<Flex
+							direction={"column"}
+							flex={"0 192px"}
+							minH="0"
+							boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;"
+							zIndex={10}
+						>
+							<NewQuestionList list={list} />
+						</Flex>
+					</Show>
 					<Box flexGrow={"1"} h="100%" backgroundColor={"white"}>
 						<MainDisplay question={undefined} />
 					</Box>

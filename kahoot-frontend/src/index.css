@@ -4,7 +4,8 @@ html,
 body,
 #root {
 	height: 100%;
-	overflow: hidden;
+	overflow-wrap: break-word;
+	overflow: auto;
 }
 
 body {

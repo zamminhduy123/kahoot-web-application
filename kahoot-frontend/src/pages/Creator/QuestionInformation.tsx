@@ -1,7 +1,24 @@
 /** @format */
 
-import { Box, Divider, Flex, Heading, Icon, Select } from "@chakra-ui/react"
-import React from "react"
+import {
+	Box,
+	Button,
+	Divider,
+	Drawer,
+	DrawerBody,
+	DrawerCloseButton,
+	DrawerContent,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerOverlay,
+	Flex,
+	Heading,
+	Icon,
+	Input,
+	Select,
+	useDisclosure,
+} from "@chakra-ui/react"
+import React, { RefObject } from "react"
 import { RiQuestionnaireLine, RiTimerLine, RiMedalLine } from "react-icons/ri"
 import { IQuestion } from "../../model/interface/question.model"
 
@@ -28,8 +45,9 @@ const QuestionInformation = (props: QInfoProps) => {
 	}
 
 	return (
-		<Flex direction={"column"} width={"256px"}>
-			{/** 
+		<>
+			<Flex direction={"column"}>
+				{/** 
 			<Flex direction={"column"}>
         
 				<Heading as="h5" size="sm" color="gray.700">
@@ -48,28 +66,29 @@ const QuestionInformation = (props: QInfoProps) => {
 				/>
 			</Flex>
       */}
-			<Flex direction={"column"}>
-				<Heading as="h5" size="sm" color="gray.700">
-					<Icon marginRight={"5px"} as={RiTimerLine}></Icon>Time limit
-				</Heading>
-				<Select marginTop="10px" onChange={handleTimeChange} value={time}>
-					<option value="10">10 seconds</option>
-					<option value="20">20 seconds</option>
-					<option value="30">30 seconds</option>
-					<option value="60">60 seconds</option>
-				</Select>
+				<Flex direction={"column"}>
+					<Heading as="h5" size="sm" color="gray.700">
+						<Icon marginRight={"5px"} as={RiTimerLine}></Icon>Time limit
+					</Heading>
+					<Select marginTop="10px" onChange={handleTimeChange} value={time}>
+						<option value="10">10 seconds</option>
+						<option value="20">20 seconds</option>
+						<option value="30">30 seconds</option>
+						<option value="60">60 seconds</option>
+					</Select>
+				</Flex>
+				<Flex direction={"column"} marginTop="20px">
+					<Heading as="h5" size="sm" color="gray.700">
+						<Icon marginRight={"5px"} as={RiMedalLine}></Icon>Points
+					</Heading>
+					<Select marginTop="10px">
+						<option value="option1">100</option>
+						<option value="option2">200</option>
+						<option value="option3">300</option>
+					</Select>
+				</Flex>
 			</Flex>
-			<Flex direction={"column"} marginTop="20px">
-				<Heading as="h5" size="sm" color="gray.700">
-					<Icon marginRight={"5px"} as={RiMedalLine}></Icon>Points
-				</Heading>
-				<Select marginTop="10px">
-					<option value="option1">100</option>
-					<option value="option2">200</option>
-					<option value="option3">300</option>
-				</Select>
-			</Flex>
-		</Flex>
+		</>
 	)
 }
 

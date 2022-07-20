@@ -16,6 +16,7 @@ import {
 	InputGroup,
 	Input,
 	InputRightElement,
+	ButtonGroup,
 } from "@chakra-ui/react"
 import { Link as ReachLink } from "react-router-dom"
 import { IUser } from "../../model/interface/user.model"
@@ -25,6 +26,7 @@ import { Dispatch, SetStateAction } from "react"
 import { addNewGame } from "../../api/api"
 import logo from "../../assets/logo.png"
 import { useAppSelector } from "../../hook"
+import { Navigate } from "react-router-dom"
 
 export interface PublicHeaderProps {
 	onSettingClick: Function
@@ -67,88 +69,89 @@ const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
 			color={useColorModeValue("gray.600", "white")}
 			zIndex={100}
 			position="relative"
+			px="16px"
+			py={{ base: "16px", lg: "0" }}
 		>
-			<Stack>
-				<Flex
-					w="100%"
-					minH="60px"
-					flex={{ base: 1 }}
-					justify={{ base: "center", md: "start" }}
-				>
-					<Link href="/">
-						<Center h="100%">
-							<Image w="100px" p="4" src={logo} />
-						</Center>
-					</Link>
-					<Flex
-						justifyContent="center"
-						alignItems="center"
-						ml={10}
-						onClick={() => onSettingClick()}
-					>
-						<Flex
-							padding={"5px 10px"}
-							border="1px solid"
-							borderColor={"gray.200"}
-							borderRadius="4px"
-						>
-							<Box
-								minW={"100px"}
-								paddingTop={"4px"}
-								fontWeight={"600"}
-								_hover={{
-									cursor: "pointer",
-								}}
-								marginRight="10px"
-							>
-								{title || "Enter QuizShare title..."}
-							</Box>
-							<Button
-								h="1.75rem"
-								size="sm"
-								fontWeight={"600"}
-								color={"gray.700"}
-								backgroundColor={"gray.200"}
-								_hover={{
-									backgroundColor: "gray.200",
-								}}
-							>
-								Settings
-							</Button>
-						</Flex>
-					</Flex>
-					<Spacer />
-
-					<Center marginRight="10px">
-						<HStack>
-							<Button
-								w="100px"
-								variant="solid"
-								color={"gray.700"}
-								backgroundColor={"gray.200"}
-								_hover={{
-									backgroundColor: "gray.300",
-								}}
-								fontSize={"sm"}
-								fontWeight={"bold"}
-								onClick={() => {}}
-							>
-								Exit
-							</Button>
-							<Button
-								w="100px"
-								variant="solid"
-								colorScheme={"brand"}
-								fontSize={"sm"}
-								fontWeight={"bold"}
-								onClick={onSave}
-							>
-								Save
-							</Button>
-						</HStack>
+			<Flex
+				w="100%"
+				minH="60px"
+				flex={{ base: 1 }}
+				justify={{ base: "center", md: "start" }}
+			>
+				<Link href="/" display={{ base: "none", md: "flex" }}>
+					<Center h="100%">
+						<Image w="100px" p="4" src={logo} />
 					</Center>
+				</Link>
+				<Flex
+					justifyContent="center"
+					alignItems="center"
+					ml={{ md: "4" }}
+					onClick={() => onSettingClick()}
+				>
+					<Flex
+						padding={"5px 10px"}
+						border="1px solid"
+						borderColor={"gray.200"}
+						borderRadius="4px"
+					>
+						<Box
+							minW={"100px"}
+							paddingTop={"4px"}
+							fontWeight={"600"}
+							_hover={{
+								cursor: "pointer",
+							}}
+							marginRight={{ md: "10px" }}
+						>
+							{title || "Enter title..."}
+						</Box>
+						<Button
+							h="1.75rem"
+							size="sm"
+							fontWeight={"600"}
+							color={"gray.700"}
+							backgroundColor={"gray.200"}
+							_hover={{
+								backgroundColor: "gray.200",
+							}}
+						>
+							Edit
+						</Button>
+					</Flex>
 				</Flex>
-			</Stack>
+				<Spacer />
+
+				<Flex flexWrap="wrap" alignItems={"center"} justifyContent="right">
+					<Link href="/">
+						<Button
+							w="100px"
+							variant="solid"
+							color={"gray.700"}
+							backgroundColor={"gray.200"}
+							_hover={{
+								backgroundColor: "gray.300",
+							}}
+							fontSize={"sm"}
+							fontWeight={"bold"}
+							onClick={() => {}}
+						>
+							Exit
+						</Button>
+					</Link>
+					<Button
+						w="100px"
+						variant="solid"
+						colorScheme={"brand"}
+						fontSize={"sm"}
+						fontWeight={"bold"}
+						onClick={onSave}
+						ml="4"
+					>
+						Save
+					</Button>
+				</Flex>
+			</Flex>
 		</Box>
 	)
 }
