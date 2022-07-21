@@ -40,10 +40,14 @@ const schema: JSONSchemaType<IGameKahoot> = {
     },
     title: {
       type: "string",
+    },
+    image: {
+      type: "string",
+      nullable: true,
     }
   },
   required: ["game", "title"],
-  additionalProperties: false,
+  additionalProperties: true,
 };
 
 export default schema;

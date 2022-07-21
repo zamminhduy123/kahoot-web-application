@@ -10,6 +10,7 @@ interface IQuestion {
 
 interface IGame {
   owner: Types.ObjectId;
+  image?: string;
   title: string;
   game: IQuestion[];
 }
@@ -27,6 +28,9 @@ const GameSchema = new Schema<IGame, GameModel, IGameMethods>({
   title: {
     type: String,
     required: [true, "Please provide quiz name"],
+  },
+  image: {
+    type: String,
   },
   game: [
     {
