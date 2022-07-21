@@ -9,7 +9,11 @@ import React from "react";
 import * as API from "../../../api";
 import { useAppDispatch, useAppSelector } from "../../../hook";
 import { useNavigate } from "react-router-dom";
-import { authFailure, authStart, authSuccess } from "../../../model/reducers/auth.reducer";
+import {
+  authFailure,
+  authStart,
+  authSuccess,
+} from "../../../model/reducers/auth.reducer";
 import { IUser } from "../../../model/interface";
 
 export interface LoginProps {}
@@ -33,24 +37,26 @@ const Login = (props: LoginProps) => {
       window.localStorage.setItem("refreshToken", data.refreshToken);
 
       //dispatch action login success
-      dispatch(authSuccess({ ...loginedUser, accessToken: data.accessToken, id: data._id }));
-      console.log(
-        data
-      )
+      dispatch(
+        authSuccess({
+          ...loginedUser,
+          accessToken: data.accessToken,
+          id: data._id,
+        })
+      );
+      navigate("/");
     },
     [navigate]
   );
 
-  const {id,name} = useAppSelector((state) => state.auth)
+  const { id, name } = useAppSelector((state) => state.auth);
 
   React.useEffect(() => {
-    if(id) {
-      navigate(
-        '/'
-      )
+    if (id) {
+      navigate("/");
     } else {
-      dispatch(authStart())
-      // console.log("AUTO",id,name,isAutoLogin)
+      dispatch(authStart());
+      console.log("start auto");
       API.autoLogin()
         .then((response) => {
           const data = response.data;
@@ -58,18 +64,15 @@ const Login = (props: LoginProps) => {
             loginSuccess(data);
           } else {
             setIsAutoLogin(false);
-            dispatch(authFailure())
+            dispatch(authFailure());
           }
         })
         .catch((err) => {
           setIsAutoLogin(false);
-          dispatch(authFailure())
+          dispatch(authFailure());
         });
     }
-    return () => {
-      // console.log("UNMOUNT",id,name,isAutoLogin)
-    }
-  }, [id]);
+  }, []);
   return (
     <AccountPageLayout>
       <Box w={{ base: "80%", md: "400px" }} maxW="400px">
@@ -86,13 +89,13 @@ const Login = (props: LoginProps) => {
           {!isAutoLogin ? "Sign in to QuizShare" : "Auto sign in"}
         </Heading>
 
-        <SlideFade in={true} offsetY={100} unmountOnExit={true}>
-          {isAutoLogin ? (
-            <Spinner color={"brand.500"}></Spinner>
-          ) : (
+        {isAutoLogin ? (
+          <Spinner color={"brand.500"}></Spinner>
+        ) : (
+          <SlideFade in={true} offsetY={100}>
             <LoginForm loginSuccess={loginSuccess} />
-          )}
-        </SlideFade>
+          </SlideFade>
+        )}
       </Box>
     </AccountPageLayout>
   );

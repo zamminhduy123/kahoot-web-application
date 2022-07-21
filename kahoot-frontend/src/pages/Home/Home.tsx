@@ -7,14 +7,8 @@ import {
   SlideFade,
   VStack,
 } from "@chakra-ui/react";
-import React from "react";
-import Header from "../../components/Header";
-import { IUser } from "../../model/interface/user.model";
-import { Library } from "../Library";
-import MyKahoot from "../MyKahoot";
 
 import features from "../../assets/feature.png";
-import achievement from "../../assets/achievement.png";
 import { Link } from "react-router-dom";
 
 const Achievement = (props: any) => {
@@ -39,7 +33,7 @@ const Achievement = (props: any) => {
 
 const Home = () => {
   return (
-    <Box paddingTop='20px'>
+    <Box paddingTop='20px' flex={1} w='100%'>
       <Flex direction={"column"} justify={"flex-start"} align="center">
         <Box fontWeight={"900"} textAlign="center" fontSize={"3xl"}>
           New Quiz Features

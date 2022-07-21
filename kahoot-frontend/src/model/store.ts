@@ -3,13 +3,15 @@ import authReducer from './reducers/auth.reducer'
 import newQuizReducer from './reducers/newQuiz.reducer'
 import gameReducer from './reducers/game.reducer'
 import playReducer from './reducers/play.reducer'
+import libraryReducer from './reducers/library.reducer'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     newQuiz: newQuizReducer,
     game: gameReducer,
-    play: playReducer
+    play: playReducer,
+    library: libraryReducer
   }
 })
 
