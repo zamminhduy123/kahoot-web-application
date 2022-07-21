@@ -22,7 +22,8 @@ const Layout = ({ children, header = true }: LayoutProps) => {
 
         <Suspense fallback={<FallbackUI />}>{children}</Suspense>
 
-        <Footer />
+        {header && <Footer />}
+        
       </VStack>
     </AuthGuard>
   );
