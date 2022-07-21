@@ -303,7 +303,9 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
           kahoot.removePlayer(socket.id); //Removes player from players class
           const playersInGame = kahoot.getPlayersInRoom(hostId); //Gets remaining players in game
 
-          io.to(hostId).emit("updatePlayerLobby", playersInGame); //Sends data to host to update screen
+          io.to(hostId).emit("playerLeave", {
+            name: player.name
+          }); //Sends data to host to update screen
           socket.leave(hostId); //Player is leaving the room
         }
       }
