@@ -48,7 +48,7 @@ export const getYourGames = async (req: IUserRequest, res: Response) => {
 
 export const deleteYourGame = async(req: IUserRequest, res: Response) => {
   const owner = req.user?.userId;
-  const {id} = req.query;
+  const {id} = req.params;
 
   try {
     await GameModel.deleteOne({_id: id});
