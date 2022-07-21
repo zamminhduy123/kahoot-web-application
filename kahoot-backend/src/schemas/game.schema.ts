@@ -47,7 +47,7 @@ const schema: JSONSchemaType<IGameKahoot> = {
     }
   },
   required: ["game", "title"],
-  additionalProperties: false,
+  additionalProperties: true,
 };
 
 export default schema;
