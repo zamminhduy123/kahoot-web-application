@@ -24,6 +24,7 @@ const Achievement = (props: any) => {
       boxShadow={
         "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px"
       }
+      overflowWrap={'normal'}
       textAlign={"center"}
     >
       {props.text}
@@ -74,7 +75,7 @@ const Home = () => {
               players a year
             </Box>
           </Box>
-          <Flex w="60%" h="100px">
+          <Flex w="60%" maxH="200px" minH='100px'>
             <Achievement text="Easy to create!" color="red" />
             <Achievement text="Easy to host!" color="blue" />
             <Achievement text="Let make quiz more fun" color="orange" />
