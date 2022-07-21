@@ -18,6 +18,7 @@ import {
 	MenuItem,
 	MenuList,
 	IconButton,
+	Image,
 } from "@chakra-ui/react"
 import React from "react"
 import { RiPencilFill, RiMore2Fill } from "react-icons/ri"
@@ -27,10 +28,10 @@ interface LibraryItemProps {
 	id: number
 	name: string
 	totalQuestion: number
-	image?:string
+	image?: string
 }
 
-const LibraryItem = ({ id, name, totalQuestion,image }: LibraryItemProps) => {
+const LibraryItem = ({ id, name, totalQuestion, image }: LibraryItemProps) => {
 	const navigate = useNavigate()
 	return (
 		<Flex
@@ -54,10 +55,15 @@ const LibraryItem = ({ id, name, totalQuestion,image }: LibraryItemProps) => {
 				<Checkbox />
 			</Flex> */}
 			<Flex w="170px" marginRight={"5px"}>
-				<img
+				<Image
 					style={{ width: "170px" }}
-					src={image || "https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"}
+					maxH="100px"
+					src={
+						image ||
+						"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
+					}
 					alt="cover"
+					objectFit={"cover"}
 				/>
 			</Flex>
 			<Flex grow={"1"} direction={"column"}>

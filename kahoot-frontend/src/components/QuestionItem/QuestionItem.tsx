@@ -11,6 +11,7 @@ import {
 	Spacer,
 	Stack,
 	useColorModeValue,
+	Image,
 } from "@chakra-ui/react"
 import React from "react"
 import { RiPencilFill, RiMore2Fill } from "react-icons/ri"
@@ -20,7 +21,7 @@ interface QIProps {
 	question: IQuestion
 }
 
-const QuestionItem = ({question}: QIProps) => {
+const QuestionItem = ({ question }: QIProps) => {
 	console.log(question.multipleChoice[0])
 	return (
 		<Flex
@@ -68,8 +69,10 @@ const QuestionItem = ({question}: QIProps) => {
 					</Flex>
 				</Flex>
 				<Flex w="170px" marginRight={"5px"}>
-					<img
+					<Image
 						style={{ width: "170px" }}
+						maxH="100px"
+						objectFit="cover"
 						src={
 							question.image ||
 							"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"

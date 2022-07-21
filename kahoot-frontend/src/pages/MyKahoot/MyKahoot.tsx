@@ -18,6 +18,7 @@ import {
 	Toast,
 	useToast,
 	VStack,
+	Image,
 } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
@@ -115,18 +116,20 @@ const MyKahoot = ({}: MyKahootProps) => {
 						boxShadow={"rgb(0 0 0 / 5%) 0.25rem 0px 0.5rem 0px"}
 						direction={"column"}
 					>
-						<Center margin="4">
-							<img
+						<Center>
+							<Image
 								style={{ width: "16rem" }}
+								maxH="10rem"
 								src={
 									image ||
 									"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
 								}
 								alt="logo"
+								objectFit={"cover"}
 							/>
 						</Center>
 						<Flex
-							p={2}
+							p={4}
 							w="100%"
 							justify={"flex-start"}
 							direction="column"
