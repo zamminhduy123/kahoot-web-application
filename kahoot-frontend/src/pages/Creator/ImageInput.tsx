@@ -41,15 +41,24 @@ const ImageInput: FunctionComponent<ImageInputProps> = (props) => {
 		/* 
 		const url = URL.createObjectURL(file)
 		setImgPrev(url) */
+		try {
+			const res = await uploadFile(file)
 
+			const imageUrl = res.split("?")[0]
+			/* 
 		const reader = new FileReader()
 		reader.readAsDataURL(file)
-
 		reader.onload = () => {
-			setImage(reader.result)
-			question.image = image as string
+			//setImage(reader.result)
+			//question.image = image as string
+			
+		} */
+
+			question.image = imageUrl
 			console.log(question)
 			dispatch(editQuestionAtIndex(question))
+		} catch (err) {
+			console.log(err)
 		}
 	}
 
