@@ -8,6 +8,7 @@ interface Game {
   title: string;
   ownerName: string;
   totalQuestions: number;
+  image : string
 }
 
 // Define the initial state using that type
@@ -17,6 +18,7 @@ const initialState: Game = {
   title: "",
   ownerName: "",
   totalQuestions: 0,
+  image: ''
 };
 
 export const gameSlice = createSlice({
@@ -33,6 +35,7 @@ export const gameSlice = createSlice({
       state.title = action.payload.title;
       state.ownerName = action.payload.ownerName;
       state.totalQuestions = action.payload.totalQuestions;
+      state.image = action.payload.image;
     },
     setPlayerLists(state, action: PayloadAction<IPlayer[]>) {
       state.players = [...action.payload];
