@@ -176,7 +176,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
             GAME OVER
           </Box>
           <Link to="/login">
-            <Button position={'absolute'} right='50' width={'100px'}>Back</Button>
+            <Button position={'absolute'} right='50' width={'100px'} onClick={()=>{Socket.remove()}}>Back</Button>
           </Link>
 
           <Leaderboards users={players}></Leaderboards>
