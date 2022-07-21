@@ -16,7 +16,11 @@ import React from "react"
 import { RiPencilFill, RiMore2Fill } from "react-icons/ri"
 import { IQuestion } from "../../model/interface"
 
-const QuestionItem = (props: any) => {
+interface QIProps {
+	question: IQuestion
+}
+
+const QuestionItem = ({question}: QIProps) => {
 	return (
 		<Flex
 			w="100%"
@@ -43,7 +47,7 @@ const QuestionItem = (props: any) => {
 					>
 						<Center>
 							<Box margin={"16px"} fontWeight={"bold"}>
-								{props.question}
+								{question.question}
 							</Box>
 						</Center>
 					</Flex>
@@ -57,7 +61,7 @@ const QuestionItem = (props: any) => {
 					>
 						<Center>
 							<Box margin={"16px"} fontWeight={"bold"}>
-								Time: {props.timeUp}
+								Time: {question.time} seconds
 							</Box>
 						</Center>
 					</Flex>
@@ -66,7 +70,7 @@ const QuestionItem = (props: any) => {
 					<img
 						style={{ width: "170px" }}
 						src={
-							props.image ||
+							question.image ||
 							"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
 						}
 						alt="question cover"
@@ -74,12 +78,12 @@ const QuestionItem = (props: any) => {
 				</Flex>
 			</Flex>
 			<Flex h={"30"} direction={"row"} flex="1" padding="16px">
-				<Flex flex="1">{`A. ${props.solution[0]}`}</Flex>
-				<Flex flex="1">{`B. ${props.solution[1]}`}</Flex>
+				<Flex flex="1">{`A. ${question.multipleChoice[0]}`}</Flex>
+				<Flex flex="1">{`B. ${question.multipleChoice[1]}`}</Flex>
 			</Flex>
 			<Flex h={"30"} direction={"row"} flex="1" padding="16px">
-				<Flex flex="1">{`C. ${props.solution[2]}`}</Flex>
-				<Flex flex="1">{`D. ${props.solution[3]}`}</Flex>
+				<Flex flex="1">{`C. ${question.multipleChoice[2]}`}</Flex>
+				<Flex flex="1">{`D. ${question.multipleChoice[3]}`}</Flex>
 			</Flex>
 		</Flex>
 	)

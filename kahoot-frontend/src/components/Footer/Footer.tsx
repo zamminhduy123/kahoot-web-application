@@ -8,7 +8,7 @@ const Footer = () => {
     <Flex w="100%" h="100px" justify={"space-between"} align='center' padding='0px 20px' bottom='0'>
       <Box>Copyright © 2022, QuizShare! All Rights Reserved.</Box>
       <Box>
-        <img height="100px" width={'80px'} src={logo} style={{objectFit: 'cover'}} />
+        <img height='auto' width={'80px'} src={logo} style={{objectFit: 'cover'}} />
       </Box>
     </Flex>
   );

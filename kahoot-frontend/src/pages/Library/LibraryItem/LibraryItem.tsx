@@ -34,7 +34,7 @@ const LibraryItem = ({ id, name, totalQuestion }: LibraryItemProps) => {
 	return (
 		<Flex
 			onClick={() => {
-				navigate(`../details/${id}`, { replace: true })
+				navigate(`./${id}`, { replace: true })
 			}}
 			w="100%"
 			direction={"row"}

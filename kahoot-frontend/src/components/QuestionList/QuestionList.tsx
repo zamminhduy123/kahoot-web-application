@@ -11,15 +11,7 @@ interface QuestionListProps {
 
 const QuestionList: FunctionComponent<QuestionListProps> = (props) => {
 	const { questions } = props
-	const fakeQuestions: IQuestion[] = [
-		{
-			id: "123",
-			question: "Whajt asdjasd asd asd",
-			multipleChoice: [],
-			answer: 0,
-			time: new Date().toLocaleDateString(),
-		},
-	]
+	console.log(questions	)
 	return (
 		<Flex direction={"column"} w={"100%"} h="100%">
 			<Flex
@@ -41,7 +33,7 @@ const QuestionList: FunctionComponent<QuestionListProps> = (props) => {
 			>
 				<Box>
 					{questions.map((q, id) => {
-						return <QuestionItem key={"q.id" + id} {...q} />
+						return <QuestionItem key={"q.id" + id} question={q}/>
 					})}
 				</Box>
 			</Flex>

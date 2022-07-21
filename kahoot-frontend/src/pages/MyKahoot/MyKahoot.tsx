@@ -22,22 +22,35 @@ import React, { useEffect, useState } from "react"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
 import Socket from "../../api/socket"
 import QuestionList from "../../components/QuestionList"
-import { useAppDispatch } from "../../hook"
+import { useAppDispatch, useAppSelector } from "../../hook"
 import { setNewGame } from "../../model/reducers/game.reducer"
 import logo from "../../assets/logo.png"
 import { getGameById } from "../../api"
 import { ChevronDownIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons"
 import { deleteGame } from "../../api/api"
-interface MyKahootProps {}
+import { deleteGameById } from "../../model/reducers/library.reducer"
+import { Game } from "../../model/interface/game.model"
+
+interface MyKahootProps {
+
+}
 
 const MyKahoot = ({}: MyKahootProps) => {
-	const { id } = useParams()
-	const [game, setGame] = useState<any>([])
-	const [title, setTitle] = useState<string>("")
-	const dispatch = useAppDispatch()
+	const {games} = useAppSelector((state)=>state.library)
 	const navigate = useNavigate()
-	const [gameId, setGameId] = useState<any>("")
+	const {id} = useParams()
+	
 	const toast = useToast()
+
+	const dispatch = useAppDispatch()
+	const data : Game | undefined = games.find(g => g._id === id)
+	console.log(data);
+	if (data === undefined){
+		navigate('../login')
+		return<></>
+	}
+	const {_id ,questionList,title} = data
+
 
 	const gameHostSuccess = (payload: {
 		pin: string
@@ -55,44 +68,34 @@ const MyKahoot = ({}: MyKahootProps) => {
 	const startGame = () => {
 		Socket.getInstance().emit(
 			"host-join",
-			{ id: "62cdc28797a048b061cc295f" },
+			{ id: id },
 			gameHostSuccess
 		)
 	}
 
-	//fetch data here
-	useEffect(() => {
-		console.log(id)
-
-		const fetchQuestions = async () => {
-			const res = await getGameById(id as string)
-
-			console.log(res)
-			setGame(res.game)
-			setTitle(res.title)
-			setGameId(res._id)
-		}
-		if (id) {
-			fetchQuestions()
-		}
-	}, [id])
-
 	//delete
 	const deleteItem = async () => {
 		try {
-			const res = await deleteGame(gameId)
+			const res = await deleteGame(id!)
 			console.log(res)
-
+			dispatch(deleteGameById(id!))
 			toast({
 				title: "Deleted",
 				description: "Game deleted.",
 				status: "success",
-				duration: 9000,
+				duration: 2000,
 				isClosable: true,
 			})
 			navigate("/my-library", { replace: true })
 		} catch (error) {
 			console.log(error)
+			toast({
+				title: "Deleted Error",
+				description: "Something went wrong!",
+				status: "error",
+				duration: 2000,
+				isClosable: true,
+			})
 		}
 	}
 
@@ -188,7 +191,7 @@ const MyKahoot = ({}: MyKahootProps) => {
 						</HStack>
 					</VStack>
 				</Hide>
-				<QuestionList questions={game} />
+				<QuestionList questions={questionList} />
 			</VStack>
 		</Flex>
 	)

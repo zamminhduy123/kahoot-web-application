@@ -31,7 +31,7 @@ function App() {
 						element={<PrivateRoutesLayout children={<Library />} />}
 					/>
 					<Route
-						path="details/:id"
+						path="my-library/:id"
 						element={<PrivateRoutesLayout children={<MyKahoot />} />}
 					/>
 					<Route

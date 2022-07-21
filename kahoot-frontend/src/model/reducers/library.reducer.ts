@@ -20,8 +20,17 @@ export const librarySlice = createSlice({
     setNewLibrary(state : Library, action: PayloadAction<Game[]>){
         state.games = action.payload
     },
+    deleteGameById(state:Library,action: PayloadAction<string>){
+        const index = state.games.findIndex(g => g._id === action.payload)
+        if (index >= -1) {
+            state.games = [
+                ...state.games.slice(0,index),
+                ...state.games.slice(index+1)
+            ]
+        }
+    },
   },
 });
 
-export const { setNewLibrary } = librarySlice.actions;
+export const { setNewLibrary,deleteGameById} = librarySlice.actions;
 export default librarySlice.reducer;
