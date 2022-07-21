@@ -9,4 +9,5 @@ export interface IQuestionSchema {
 export interface IGameSchema {
   title: string;
   game: IQuestionSchema[];
+  image?: string;
 }
