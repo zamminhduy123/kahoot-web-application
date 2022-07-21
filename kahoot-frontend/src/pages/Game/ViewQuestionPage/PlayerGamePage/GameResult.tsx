@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
+import Socket from "../../../../api/socket";
 
 import congratulation from "../../../../assets/congratulation.png";
 
@@ -70,7 +71,7 @@ const GameResult = ({
         </Box>
         <Center w="100%" mt="3">
           <Link to="/join">
-            <Button minW={'200px'} bgColor="green" _hover={{ backgroundColor: "green.500" }}>
+            <Button minW={'200px'} bgColor="green" _hover={{ backgroundColor: "green.500" }} onClick={()=>{Socket.getInstance().disconnect();Socket.remove();}}>
               Back
             </Button>
           </Link>

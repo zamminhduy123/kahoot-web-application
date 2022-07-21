@@ -29,7 +29,7 @@ class Socket {
     });
 
     this.socket.on("connect", () => {
-      // console.log("Socket establish", this.socket);
+      console.log("Socket establish", this.socket.id);
       this._connectSuccessCB.forEach((cb: Function) => cb());
     });
   }
@@ -78,6 +78,10 @@ class Socket {
 
   removeRegisteredListener(eventName: string) {
     this.socket.removeAllListeners(eventName);
+  }
+
+  static remove(){
+    this._instance = null;
   }
 
   disconnect() {
