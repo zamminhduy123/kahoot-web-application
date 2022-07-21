@@ -229,7 +229,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     
                   <img
                     alt="background"
-                    style={{maxWidth:'300px',maxHeight: '400px',minHeight: '100px'}}
+                    style={{maxWidth:'300px',maxHeight: '300px',minHeight: '100px'}}
                     src={currentQuestion.image || "https://images.ctfassets.net/hrltx12pl8hq/1fR5Y7KaK9puRmCDaIof7j/09e2b2b9eaf42d450aba695056793607/vector1.jpg"}
                   />
 
