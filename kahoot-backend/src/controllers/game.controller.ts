@@ -31,6 +31,7 @@ export const createGame = async (req: IUserRequest, res: Response) => {
     game,
     owner,
     title,
+    image,
     accessToken: req.user?.accessToken,
   });
 };
