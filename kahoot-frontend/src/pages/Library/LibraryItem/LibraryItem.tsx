@@ -55,7 +55,7 @@ const LibraryItem = ({ id, name, totalQuestion }: LibraryItemProps) => {
 			<Flex w="170px" marginRight={"5px"}>
 				<img
 					style={{ width: "170px" }}
-					src="https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
+					src={"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"}
 					alt="cover"
 				/>
 			</Flex>
@@ -75,13 +75,13 @@ const LibraryItem = ({ id, name, totalQuestion }: LibraryItemProps) => {
 
 					<Spacer />
 					<HStack>
-						<IconButton
+						{/* <IconButton
 							_hover={{ color: "brand.600", cursor: "pointer" }}
 							boxSize={6}
 							icon={<DeleteIcon />}
 							aria-label="Delete question"
 							colorScheme="gray"
-						></IconButton>
+						></IconButton> */}
 					</HStack>
 				</Flex>
 				<Spacer />

@@ -65,7 +65,10 @@ const QuestionItem = (props: any) => {
 				<Flex w="170px" marginRight={"5px"}>
 					<img
 						style={{ width: "170px" }}
-						src="https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
+						src={
+							props.image ||
+							"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
+						}
 						alt="question cover"
 					/>
 				</Flex>

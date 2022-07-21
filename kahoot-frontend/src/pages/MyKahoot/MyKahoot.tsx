@@ -106,7 +106,13 @@ const MyKahoot = ({}: MyKahootProps) => {
 					direction={"column"}
 				>
 					<Center margin="4">
-						<img style={{ width: "16rem" }} src={logo} alt="logo" />
+						<img
+							style={{ width: "16rem" }}
+							src={
+								"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
+							}
+							alt="logo"
+						/>
 					</Center>
 					<Flex
 						p={2}
