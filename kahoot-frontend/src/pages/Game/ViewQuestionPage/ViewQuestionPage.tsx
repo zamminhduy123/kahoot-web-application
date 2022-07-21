@@ -297,7 +297,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
         </Flex>
       ) : (
         <Center w="100%" h="100vh">
-          <ReadyState message="Get Ready!" />
+          <ReadyState message="Get Ready!" time={5}/>
         </Center>
       )}
     </Box>
