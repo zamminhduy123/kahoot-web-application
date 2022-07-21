@@ -2,7 +2,6 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { IQuestion } from "../interface"
-import cloneDeep from "lodash/cloneDeep"
 
 // Define a type for the slice state
 interface NewQuiz {
@@ -46,6 +45,11 @@ export const authSlice = createSlice({
 		deleteQuestionAtIndex(state: NewQuiz, action: PayloadAction<number>) {
 			if (state.list.length > 1) {
 				state.list.splice(action.payload, 1)
+			}
+			if (state.selected > 0) {
+				state.selected = state.selected - 1
+			} else {
+				state.selected = 0
 			}
 		},
 		dublicateQuestionAtIndex(state: NewQuiz, action: PayloadAction<number>) {
