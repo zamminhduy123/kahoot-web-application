@@ -13,6 +13,7 @@ import {
 	MenuButton,
 	MenuItem,
 	MenuList,
+	Progress,
 	Show,
 	Toast,
 	useToast,
@@ -31,26 +32,24 @@ import { deleteGame } from "../../api/api"
 import { deleteGameById } from "../../model/reducers/library.reducer"
 import { Game } from "../../model/interface/game.model"
 
-interface MyKahootProps {
-
-}
+interface MyKahootProps {}
 
 const MyKahoot = ({}: MyKahootProps) => {
-	const {games} = useAppSelector((state)=>state.library)
+	const { games } = useAppSelector((state) => state.library)
 	const navigate = useNavigate()
-	const {id} = useParams()
-	
+	const { id } = useParams()
+	const [progress, setProgress] = useState("none")
+
 	const toast = useToast()
 
 	const dispatch = useAppDispatch()
-	const data : Game | undefined = games.find(g => g._id === id)
-	console.log(data);
-	if (data === undefined){
-		navigate('../login')
-		return<></>
+	const data: Game | undefined = games.find((g) => g._id === id)
+	console.log(data)
+	if (data === undefined) {
+		navigate("../login")
+		return <></>
 	}
-	const {_id ,questionList,title} = data
-
+	const { _id, questionList, title } = data
 
 	const gameHostSuccess = (payload: {
 		pin: string
@@ -60,17 +59,16 @@ const MyKahoot = ({}: MyKahootProps) => {
 	}) => {
 		console.log("GAME CREATED")
 		dispatch(setNewGame({ ...payload, players: [] }))
-		navigate("../../host")
-		console.log("NAVIGATED")
+		setTimeout(() => {
+			navigate("../../host")
+			console.log("NAVIGATED")
+		}, 2400)
 	}
 
 	//host game
 	const startGame = () => {
-		Socket.getInstance().emit(
-			"host-join",
-			{ id: id },
-			gameHostSuccess
-		)
+		setProgress("flex")
+		Socket.getInstance().emit("host-join", { id: id }, gameHostSuccess)
 	}
 
 	//delete
@@ -100,100 +98,113 @@ const MyKahoot = ({}: MyKahootProps) => {
 	}
 
 	return (
-		<Flex w={"100%"} h="100%" direction={"row"}>
-			<Show above="md">
-				<Flex
-					w="23rem"
-					h={"100%"}
-					boxShadow={"rgb(0 0 0 / 5%) 0.25rem 0px 0.5rem 0px"}
-					direction={"column"}
-				>
-					<Center margin="4">
-						<img
-							style={{ width: "16rem" }}
-							src={
-								"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
-							}
-							alt="logo"
-						/>
-					</Center>
+		<>
+			<Progress
+				size="md"
+				w="100%"
+				minH="8px"
+				colorScheme="pink"
+				isIndeterminate
+				display={progress}
+			/>
+			<Flex w={"100%"} h="100%" direction={"row"}>
+				<Show above="md">
 					<Flex
-						p={2}
-						w="100%"
-						justify={"flex-start"}
-						direction="column"
-						flexGrow={"1"}
+						w="23rem"
+						h={"100%"}
+						boxShadow={"rgb(0 0 0 / 5%) 0.25rem 0px 0.5rem 0px"}
+						direction={"column"}
 					>
-						<Heading margin="10px 0px">{title}</Heading>
-						<HStack margin="10px 0px">
-							<Button
-								variant="solid"
-								colorScheme={"brand"}
-								onClick={() => startGame()}
-							>
-								START
-							</Button>
-							<Menu>
-								<MenuButton
-									as={IconButton}
-									aria-label="Options"
-									icon={<ChevronDownIcon />}
-									variant="outline"
-								/>
-								<MenuList>
-									<MenuItem icon={<EditIcon />}>Edit</MenuItem>
-									<MenuItem icon={<DeleteIcon />} onClick={() => deleteItem()}>
-										Delete
-									</MenuItem>
-								</MenuList>
-							</Menu>
-						</HStack>
-						{/* 
+						<Center margin="4">
+							<img
+								style={{ width: "16rem" }}
+								src={
+									"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
+								}
+								alt="logo"
+							/>
+						</Center>
+						<Flex
+							p={2}
+							w="100%"
+							justify={"flex-start"}
+							direction="column"
+							flexGrow={"1"}
+						>
+							<Heading margin="10px 0px">{title}</Heading>
+							<HStack margin="10px 0px">
+								<Button
+									variant="solid"
+									colorScheme={"brand"}
+									onClick={() => startGame()}
+								>
+									START
+								</Button>
+								<Menu>
+									<MenuButton
+										as={IconButton}
+										aria-label="Options"
+										icon={<ChevronDownIcon />}
+										variant="outline"
+									/>
+									<MenuList>
+										<MenuItem icon={<EditIcon />}>Edit</MenuItem>
+										<MenuItem
+											icon={<DeleteIcon />}
+											onClick={() => deleteItem()}
+										>
+											Delete
+										</MenuItem>
+									</MenuList>
+								</Menu>
+							</HStack>
+							{/* 
 					<Box margin="10px 0px" color={"gray.500"}>
 						Status
 					</Box>
 					<Box margin="10px 0px" color={"gray.500"}>
 						Updated ...
 					</Box> */}
+						</Flex>
 					</Flex>
-				</Flex>
-			</Show>
-			<VStack
-				w="100%"
-				bg={"gray.100"}
-				p={"16px"}
-				style={{ height: "calc(100%-60px)" }}
-			>
-				<Hide above="md">
-					<VStack>
-						<img style={{ width: "10rem" }} src={logo} alt="logo" />
-						<Heading margin="10px 0px">{title}</Heading>
-						<HStack margin="10px 0px">
-							<Button
-								variant="solid"
-								colorScheme={"brand"}
-								onClick={() => startGame()}
-							>
-								START
-							</Button>
-							<Menu>
-								<MenuButton
-									as={IconButton}
-									aria-label="Options"
-									icon={<ChevronDownIcon />}
-									variant="outline"
-								/>
-								<MenuList>
-									<MenuItem icon={<EditIcon />}>Edit</MenuItem>
-									<MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
-								</MenuList>
-							</Menu>
-						</HStack>
-					</VStack>
-				</Hide>
-				<QuestionList questions={questionList} />
-			</VStack>
-		</Flex>
+				</Show>
+				<VStack
+					w="100%"
+					bg={"gray.100"}
+					p={"16px"}
+					style={{ height: "calc(100%-60px)" }}
+				>
+					<Hide above="md">
+						<VStack>
+							<img style={{ width: "10rem" }} src={logo} alt="logo" />
+							<Heading margin="10px 0px">{title}</Heading>
+							<HStack margin="10px 0px">
+								<Button
+									variant="solid"
+									colorScheme={"brand"}
+									onClick={() => startGame()}
+								>
+									START
+								</Button>
+								<Menu>
+									<MenuButton
+										as={IconButton}
+										aria-label="Options"
+										icon={<ChevronDownIcon />}
+										variant="outline"
+									/>
+									<MenuList>
+										<MenuItem icon={<EditIcon />}>Edit</MenuItem>
+										<MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
+									</MenuList>
+								</Menu>
+							</HStack>
+						</VStack>
+					</Hide>
+					<QuestionList questions={questionList} />
+				</VStack>
+			</Flex>
+		</>
 	)
 }
 
