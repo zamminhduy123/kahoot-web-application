@@ -7,4 +7,5 @@ export interface IQuestion {
 	multipleChoice: string[]
 	answer: number
 	time: string
+	image?: string
 }

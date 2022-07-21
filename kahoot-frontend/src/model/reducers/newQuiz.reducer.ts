@@ -53,7 +53,9 @@ export const authSlice = createSlice({
 			}
 		},
 		dublicateQuestionAtIndex(state: NewQuiz, action: PayloadAction<number>) {
-			state.list.splice(action.payload + 1, 0, state.list[action.payload])
+			let duplicateQ = { ...state.list[action.payload] }
+			duplicateQ.id = (Number(duplicateQ.id) + 1).toString()
+			state.list.splice(action.payload + 1, 0, duplicateQ)
 		},
 		selectQuestion(state: NewQuiz, action: PayloadAction<number>) {
 			state.selected = action.payload

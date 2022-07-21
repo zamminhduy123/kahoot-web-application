@@ -7,7 +7,7 @@ import {
   RiDeleteBinLine,
   RiCheckboxMultipleBlankLine,
 } from "react-icons/ri";
-import { useAppDispatch } from "../../hook";
+import { useAppDispatch, useAppSelector } from "../../hook";
 import {
   addNewQuestion,
   deleteQuestionAtIndex,
@@ -20,6 +20,7 @@ interface NewQuestionListProps {
 }
 
 const NewQuestionList = ({ list }: NewQuestionListProps) => {
+  const { selected } = useAppSelector((state) => state.newQuiz)
   const dispatch = useAppDispatch();
   const deleteCheck = (index: number) => {
     if (list.length <= 1) {
