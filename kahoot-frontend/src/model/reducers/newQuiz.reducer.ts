@@ -8,6 +8,7 @@ interface NewQuiz {
 	list: IQuestion[]
 	title: string
 	selected: number
+	image: string
 }
 
 // Define the initial state using that type
@@ -22,6 +23,7 @@ const initialState: NewQuiz = {
 	list: [placeHolderQuestion],
 	title: "Untitled",
 	selected: 0,
+	image: "",
 }
 
 export const authSlice = createSlice({
@@ -63,6 +65,9 @@ export const authSlice = createSlice({
 		setTitle(state: NewQuiz, action: PayloadAction<string>) {
 			state.title = action.payload
 		},
+		setImage(state: NewQuiz, action: PayloadAction<string>) {
+			state.image = action.payload
+		},
 	},
 })
 
@@ -73,5 +78,6 @@ export const {
 	dublicateQuestionAtIndex,
 	selectQuestion,
 	setTitle,
+	setImage,
 } = authSlice.actions
 export default authSlice.reducer

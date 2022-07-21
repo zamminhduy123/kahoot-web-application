@@ -30,8 +30,9 @@ import QuestionInformation from "./QuestionInformation"
 
 import { HiOutlineMail } from "react-icons/hi"
 import { useAppDispatch, useAppSelector } from "../../hook"
-import { setTitle } from "../../model/reducers/newQuiz.reducer"
+import { setImage, setTitle } from "../../model/reducers/newQuiz.reducer"
 import Footer from "../../components/Footer/Footer"
+import { uploadFile } from "../../api"
 
 const Creator = () => {
 	const { title, list, selected } = useAppSelector((state) => state.newQuiz)
@@ -42,6 +43,23 @@ const Creator = () => {
 	const onSubmit = () => {
 		if (titleInputRef.current && titleInputRef.current.value != "") {
 			dispatch(setTitle(titleInputRef.current.value))
+		}
+	}
+
+	const inputImg = async (e: any) => {
+		const file = e.target.files[0]
+
+		if (!file.type.startsWith("image/")) {
+			return
+		}
+
+		try {
+			const res = await uploadFile(file)
+			const imageUrl = res.split("?")[0]
+			console.log(imageUrl)
+			dispatch(setImage(imageUrl))
+		} catch (err) {
+			console.log(err)
 		}
 	}
 
@@ -67,6 +85,24 @@ const Creator = () => {
 									_focus={{ boxShadow: "none", borderColor: "semiHeading" }}
 								/>
 							</InputGroup>
+						</FormControl>
+						<FormControl id="quiz-title">
+							<FormLabel
+								fontSize="sm"
+								color="muted"
+								fontWeight="normal"
+								pl={2}
+								mt="4"
+							>
+								Quiz Image
+							</FormLabel>
+							<Input
+								name="image"
+								id={"image"}
+								type="file"
+								onChange={(e) => inputImg(e)}
+								accept="image/*"
+							/>
 						</FormControl>
 					</ModalBody>
 

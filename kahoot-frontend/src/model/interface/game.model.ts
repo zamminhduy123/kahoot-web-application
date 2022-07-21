@@ -5,4 +5,5 @@ export interface Game {
     owner: string;
     title: string;
     questionList: IQuestion[];
+    image?: string
 }
