@@ -9,7 +9,7 @@ const DEFAULT_URL = "http://localhost:5000/api/v1"
 const requestHeader = () => {
 	const acc = window.localStorage.getItem("accessToken"),
 		ref = window.localStorage.getItem("refreshToken")
-	console.log(acc,ref);
+	console.log(acc, ref)
 	return {
 		authorization: `Bearer ${acc || ""}`,
 		refresh: ref || "",
@@ -83,7 +83,8 @@ export const signUp = async (
 
 export const addNewGame = async (
 	title: string,
-	gameQuestions: any[]
+	gameQuestions: any[],
+	image: string
 ): Promise<AxiosResponse> => {
 	return new Promise<AxiosResponse>(async (resolve, reject) => {
 		const requestOptions = {
@@ -92,6 +93,7 @@ export const addNewGame = async (
 			data: {
 				title,
 				game: gameQuestions,
+				image,
 			},
 			headers: requestHeader(),
 		}

@@ -35,7 +35,7 @@ export interface PublicHeaderProps {
 }
 
 const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
-	const { list } = useAppSelector((state) => state.newQuiz)
+	const { list, image } = useAppSelector((state) => state.newQuiz)
 	const toast = useToast()
 	let navigate = useNavigate()
 
@@ -62,9 +62,11 @@ const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
 		const newGame = {
 			title: title,
 			game: arr,
+			image: image,
 		}
+		console.log("adding new game:", newGame)
 		try {
-			await addNewGame(newGame.title, newGame.game)
+			await addNewGame(newGame.title, newGame.game, newGame.image as string)
 			toast({
 				title: "Add game successfully",
 				status: "success",

@@ -49,7 +49,7 @@ const MyKahoot = ({}: MyKahootProps) => {
 		navigate("../login")
 		return <></>
 	}
-	const { _id, questionList, title } = data
+	const { _id, questionList, title, image } = data
 
 	const gameHostSuccess = (payload: {
 		pin: string
@@ -119,6 +119,7 @@ const MyKahoot = ({}: MyKahootProps) => {
 							<img
 								style={{ width: "16rem" }}
 								src={
+									image ||
 									"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
 								}
 								alt="logo"
