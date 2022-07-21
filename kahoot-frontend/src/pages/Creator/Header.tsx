@@ -47,6 +47,7 @@ const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
 				solution: element.multipleChoice,
 				answer: element.answer,
 				timeUp: Number(element.time),
+				image: element.image,
 			}
 		})
 		if (!title) {

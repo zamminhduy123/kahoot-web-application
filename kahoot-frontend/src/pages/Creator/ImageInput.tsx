@@ -11,21 +11,24 @@ import {
 	Button,
 	Icon,
 } from "@chakra-ui/react"
-import { FunctionComponent, useRef, useState } from "react"
+import { FunctionComponent, useEffect, useRef, useState } from "react"
 import { BsFillFileEarmarkImageFill } from "react-icons/bs"
 import { IQuestion } from "../../model/interface"
 import { uploadFile } from "../../api/api"
+import { useAppDispatch } from "../../hook"
+import { editQuestionAtIndex } from "../../model/reducers/newQuiz.reducer"
 
 interface ImageInputProps {
 	question: IQuestion
 }
 
 const ImageInput: FunctionComponent<ImageInputProps> = (props) => {
+	const question = { ...props.question }
 	const imageInput = useRef<HTMLInputElement>(null)
 
 	const [image, setImage] = useState<null | ArrayBuffer | string>("")
 	const [error, setError] = useState("")
-	const [imgPrev, setImgPrev] = useState("")
+	const dispatch = useAppDispatch()
 
 	const handleChange = async (e: any) => {
 		const file = e.target.files[0]
@@ -35,25 +38,18 @@ const ImageInput: FunctionComponent<ImageInputProps> = (props) => {
 			return
 		}
 
+		/* 
 		const url = URL.createObjectURL(file)
-		setImgPrev(url)
+		setImgPrev(url) */
 
-		console.log(url)
 		const reader = new FileReader()
 		reader.readAsDataURL(file)
 
-		/* 
 		reader.onload = () => {
 			setImage(reader.result)
-
-			console.log(reader.result)
-		} */
-		try {
-			const res = await uploadFile(file)
-
-			console.log(res)
-		} catch (err) {
-			console.log(err)
+			question.image = image as string
+			console.log(question)
+			dispatch(editQuestionAtIndex(question))
 		}
 	}
 
@@ -70,8 +66,8 @@ const ImageInput: FunctionComponent<ImageInputProps> = (props) => {
 					Upload an image
 				</Button>
 				<Input
-					name="image"
 					display="none"
+					name="image"
 					id={"image"}
 					key={props.question.id + "image"}
 					type="file"
@@ -80,10 +76,10 @@ const ImageInput: FunctionComponent<ImageInputProps> = (props) => {
 					ref={imageInput}
 				/>
 
-				{imgPrev && (
+				{question.image && (
 					<Image
 						className="preview-image"
-						src={imgPrev as string}
+						src={question.image as string}
 						alt="Preview"
 						boxSize="100%"
 						maxH="400px"
