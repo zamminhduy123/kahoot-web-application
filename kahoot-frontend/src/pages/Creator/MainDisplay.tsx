@@ -12,6 +12,7 @@ import {
 	DrawerOverlay,
 	Flex,
 	HStack,
+	Icon,
 	Input,
 	useDisclosure,
 	VStack,
@@ -23,6 +24,8 @@ import { editQuestionAtIndex } from "../../model/reducers/newQuiz.reducer"
 import CAnswerList from "./AnswerList"
 import NewQuestionList from "./NewQuestionList"
 import QuestionInformation from "./QuestionInformation"
+import { BsFillFileEarmarkImageFill } from "react-icons/bs"
+import ImageInput from "./ImageInput"
 
 interface MainDisplayProps {
 	question?: IQuestion
@@ -49,59 +52,51 @@ const MainDisplay = ({}: MainDisplayProps) => {
 				minHeight="80vh"
 				padding={{ sm: "12px", lg: "12px 32px" }}
 			>
-				<Box w={"90%"} mb="2">
-					<Input
-						key={question.id + "title"}
-						height={"60px"}
-						fontSize="1.5em"
-						defaultValue={question.question || "Your question title.."}
-						textAlign={"center"}
-						boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px"
-						onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-							const value = event.target.value.trim()
-							if (value) {
-								question.question = value
-							} else {
-								question.question = "Your question title"
-							}
-							dispatch(editQuestionAtIndex(question))
-						}}
-					/>
-				</Box>
-				<HStack>
-					<Button
-						display={{ base: "flex", lg: "none" }}
-						ref={btnQListRef as any}
-						colorScheme="brand"
-						onClick={onQListOpen}
-						size="md"
-					>
-						Questions
-					</Button>
-					<Button
-						display={{ base: "flex", lg: "none" }}
-						ref={btnRef as any}
-						colorScheme="blue"
-						onClick={onOpen}
-						size="md"
-					>
-						Settings
-					</Button>
-				</HStack>
+				<VStack w="100%" p="4">
+					<Box w="100%" mb="2">
+						<Input
+							key={question.id + "title"}
+							height={"60px"}
+							fontSize="1.5em"
+							defaultValue={question.question || "Your question title.."}
+							textAlign={"center"}
+							boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px"
+							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+								const value = event.target.value.trim()
+								if (value) {
+									question.question = value
+								} else {
+									question.question = "Your question title"
+								}
+								dispatch(editQuestionAtIndex(question))
+							}}
+						/>
+					</Box>
+					<HStack>
+						<Button
+							display={{ base: "flex", lg: "none" }}
+							ref={btnQListRef as any}
+							colorScheme="brand"
+							onClick={onQListOpen}
+							size="md"
+						>
+							Questions
+						</Button>
+						<Button
+							display={{ base: "flex", lg: "none" }}
+							ref={btnRef as any}
+							colorScheme="blue"
+							onClick={onOpen}
+							size="md"
+						>
+							Settings
+						</Button>
+					</HStack>
 
-				<Center w="100%" margin="22px 0px">
-					<Center
-						minH="4rem"
-						width="80%"
-						h={"20rem"}
-						border="1px solid"
-						borderRadius={"10px"}
-						borderColor={"gray.200"}
-						boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;"
-					>
-						<Button></Button>
+					<Center p="4" w="100%" minH="4rem">
+						<ImageInput question={question} />
 					</Center>
-				</Center>
+				</VStack>
 				<CAnswerList question={question} />
 			</VStack>
 			<Flex

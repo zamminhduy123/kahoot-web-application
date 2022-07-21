@@ -152,3 +152,21 @@ export const getGameById = async (id: string) => {
 	const gameAtId = res?.data?.games[id]
 	return gameAtId
 }
+
+export const deleteGame = async (id: string): Promise<AxiosResponse> => {
+	console.log("deleting game ", id)
+	return new Promise<AxiosResponse>(async (resolve, reject) => {
+		const requestOptions = {
+			method: "DELETE",
+			url: `${DEFAULT_URL}/game/${id}`,
+			headers: requestHeader(),
+		}
+		axios(requestOptions)
+			.then((response: AxiosResponse) => {
+				resolve(response)
+			})
+			.catch((err: AxiosError) => {
+				reject(err)
+			})
+	})
+}
