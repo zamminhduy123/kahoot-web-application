@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 import Socket from "../../api/socket";
 import { useAppDispatch, useAppSelector } from "../../hook";
 import { IQuestion } from "../../model/interface";
-import { newPlayerJoin, setPlayerLists } from "../../model/reducers/game.reducer";
+import { newPlayerJoin, playerLeave, setPlayerLists } from "../../model/reducers/game.reducer";
 import Leaderboards from "./Leaderboards";
 import ViewQuestionPage from "./ViewQuestionPage/ViewQuestionPage";
 import WaitingRoom from "./WaitingRoom";
@@ -42,6 +42,16 @@ const HostingMode = (props: any) => {
       }
     );
     Socket.getInstance().registerListener(
+      "playerLeave",
+      (player: any) => {
+        dispatch(
+          playerLeave(
+            player.name
+          )
+        );
+      }
+    );
+    Socket.getInstance().registerListener(
       "gameStarted",
       () => {
         setIsPlaying(true)
@@ -49,6 +59,7 @@ const HostingMode = (props: any) => {
     );
     return () => {
       Socket.getInstance().removeRegisteredListener("updatePlayerLobby");
+      Socket.getInstance().removeRegisteredListener("playerLeave");
       Socket.getInstance().removeRegisteredListener("gameStarted");
     }
 

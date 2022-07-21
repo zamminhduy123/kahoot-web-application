@@ -37,8 +37,11 @@ export const gameSlice = createSlice({
     setPlayerLists(state, action: PayloadAction<IPlayer[]>) {
       state.players = [...action.payload];
     },
+    playerLeave(state, action: PayloadAction<string>) {
+      state.players = state.players.filter(p => p.name === action.payload)
+    },
   },
 });
 
-export const { newPlayerJoin, setNewGame,setPlayerLists } = gameSlice.actions;
+export const { newPlayerJoin, setNewGame,setPlayerLists,playerLeave } = gameSlice.actions;
 export default gameSlice.reducer;
