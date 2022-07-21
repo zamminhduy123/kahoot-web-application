@@ -37,7 +37,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       const gameId = game.gameData.gameId;
 
       //Sending game pin to host so they can display it for players to join
-      onSuccess({ pin: game.pin, ownerName, totalQuestions, title });
+      onSuccess({ pin: game.pin, ownerName, totalQuestions, title, image: game.gameData.image });
     } else {
       socket.emit("noGameFound");
     }
