@@ -30,9 +30,11 @@ import { BiArrowBack } from "react-icons/bi";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { IUser } from "../../model/interface/user.model";
 
+
 const LogOutAction = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef(null);
+  const history = useNavigate();
 
   return (
     <>
@@ -61,7 +63,10 @@ const LogOutAction = () => {
             <Button ref={cancelRef.current} onClick={onClose}>
               No
             </Button>
-            <Button colorScheme="red" ml={3} onClick={() => {}}>
+            <Button colorScheme="red" ml={3} onClick={() => {
+              window.localStorage.clear();
+              history('/login')
+            }}>
               Yes
             </Button>
           </AlertDialogFooter>
@@ -150,12 +155,12 @@ const RightSideDrawer = ({ user }: { user: IUser | null }) => {
                 <Box>{user?.email}</Box>
 
                 <VStack align="stretch" mt={6} spacing={4}>
-                  <Button
+                  {/* <Button
                     onClick={() => toResetPassword()}
                     rightIcon={<Icon as={ArrowForwardIcon} />}
                   >
                     Change Password
-                  </Button>
+                  </Button> */}
                 </VStack>
               </Box>
               <LogOutAction />
