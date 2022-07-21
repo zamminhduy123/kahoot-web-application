@@ -27,9 +27,10 @@ interface LibraryItemProps {
 	id: number
 	name: string
 	totalQuestion: number
+	image?:string
 }
 
-const LibraryItem = ({ id, name, totalQuestion }: LibraryItemProps) => {
+const LibraryItem = ({ id, name, totalQuestion,image }: LibraryItemProps) => {
 	const navigate = useNavigate()
 	return (
 		<Flex
@@ -55,7 +56,7 @@ const LibraryItem = ({ id, name, totalQuestion }: LibraryItemProps) => {
 			<Flex w="170px" marginRight={"5px"}>
 				<img
 					style={{ width: "170px" }}
-					src={"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"}
+					src={image || "https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"}
 					alt="cover"
 				/>
 			</Flex>

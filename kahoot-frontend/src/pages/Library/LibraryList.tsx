@@ -46,6 +46,7 @@ const LibraryList = ({}: LibraryListProps) => {
 					dispatch(
 						setNewLibrary(
 							res.data.games.map((d: any) => {
+								console.log(d.image)
 								return {
 									_id: d._id,
 									title: d.title,
@@ -137,6 +138,7 @@ const LibraryList = ({}: LibraryListProps) => {
 								id={data._id}
 								key={`${data._id}-${index}`}
 								name={data.title}
+								image={data.image}
 								totalQuestion={data.questionList.length}
 							/>
 						)

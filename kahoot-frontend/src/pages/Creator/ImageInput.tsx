@@ -73,6 +73,7 @@ const ImageInput: FunctionComponent<ImageInputProps> = (props) => {
 					onClick={() => {
 						imageInput.current?.click()
 					}}
+					boxShadow='2xl'
 					leftIcon={<Icon as={BsFillFileEarmarkImageFill} />}
 				>
 					Upload an image
