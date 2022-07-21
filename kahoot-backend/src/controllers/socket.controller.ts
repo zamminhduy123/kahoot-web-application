@@ -34,7 +34,8 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       const ownerName = gameObj?.toJSON().owner.name;
       const totalQuestions = gameObj?.toJSON().game.length;
       const gameId = game.gameData.gameId;
-      game.gameData = gameObj;
+      game.gameData.image = gameObj.image;
+      game.gameData.title = gameObj.title;
       const title = game.gameData.title;
       
       //Sending game pin to host so they can display it for players to join
