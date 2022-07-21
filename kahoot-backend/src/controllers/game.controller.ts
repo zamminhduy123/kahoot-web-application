@@ -7,6 +7,7 @@ import { CustomError } from "../errors";
 interface IGame {
   owner: string;
   title: string;
+  image?: string;
   game: {
     question: string;
     solution: string[];
@@ -17,18 +18,20 @@ interface IGame {
 
 export const createGame = async (req: IUserRequest, res: Response) => {
   const owner = req.user?.userId;
-  const {game, title} = req.body as IGame;
+  const {game, title, image} = req.body as IGame;
 
   await GameModel.create({
     owner,
     title,
     game,
+    image,
   });
 
   res.json({
     game,
     owner,
     title,
+    image,
     accessToken: req.user?.accessToken,
   });
 };
