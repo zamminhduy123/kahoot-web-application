@@ -2,6 +2,7 @@ import GameModel from "../models/Game.model";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { IUserRequest } from "../types";
+import { CustomError } from "../errors";
 
 interface IGame {
   owner: string;
@@ -42,5 +43,21 @@ export const getYourGames = async (req: IUserRequest, res: Response) => {
   res.json({
     games: games, 
     accessToken: req.user?.accessToken,
+  })
+}
+
+export const deleteYourGame = async(req: IUserRequest, res: Response) => {
+  const owner = req.user?.userId;
+  const {id} = req.query;
+
+  try {
+    await GameModel.deleteOne({_id: id});
+  }
+  catch(error) {
+    throw new CustomError("Something wrong");
+  }
+
+  res.json({
+    msg: "Game deleted"
   })
 }
