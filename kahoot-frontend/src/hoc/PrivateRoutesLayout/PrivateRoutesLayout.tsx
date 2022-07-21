@@ -1,15 +1,10 @@
-import { Box, Flex, SlideFade } from "@chakra-ui/react";
+import { Box, Center, Flex, SlideFade, VStack } from "@chakra-ui/react";
 import React, { Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import FallbackUI from "../../components/FallbackUI";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header";
-import PageTransition from "../../components/PageTransition";
 import { useAppSelector } from "../../hook";
-import { IUser } from "../../model/interface";
-import Home from "../../pages/Home";
-import { Library } from "../../pages/Library";
-import MyKahoot from "../../pages/MyKahoot";
 import AuthGuard from "../AuthGuard";
 
 interface LayoutProps {
@@ -22,13 +17,13 @@ const Layout = ({ children, header = true }: LayoutProps) => {
 
   return (
     <AuthGuard>
-      <Box transition=".3s ease" h="100vh" overflowY={"scroll"}>
+      <VStack transition=".3s ease" w={"100%"} h='100vh'>
         {header && <Header user={user}></Header>}
 
         <Suspense fallback={<FallbackUI />}>{children}</Suspense>
 
         <Footer />
-      </Box>
+      </VStack>
     </AuthGuard>
   );
 };

@@ -138,6 +138,7 @@ const Header = (props: PublicHeaderProps) => {
 
 	return (
 		<HStack
+		w='100%'
 			borderBottom={1}
 			borderStyle={"solid"}
 			borderColor={useColorModeValue("gray.200", "gray.900")}

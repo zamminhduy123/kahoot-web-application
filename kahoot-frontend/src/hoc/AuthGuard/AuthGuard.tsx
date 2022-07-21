@@ -6,9 +6,8 @@ interface AuthGuardProps {
   children: ReactElement | ReactElement[];
 }
 
-const AuthGuard = ({ children }: AuthGuardProps) => {
+const   AuthGuard = ({ children }: AuthGuardProps) => {
   const {id} = useAppSelector(state => state.auth)
-  console.log(id);
 
   if (id) return <>{children}</>;
   else {

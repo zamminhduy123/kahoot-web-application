@@ -34,7 +34,7 @@ import { IUser } from "../../model/interface/user.model";
 const LogOutAction = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef(null);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -65,7 +65,7 @@ const LogOutAction = () => {
             </Button>
             <Button colorScheme="red" ml={3} onClick={() => {
               window.localStorage.clear();
-              history('/login')
+              window.location.replace('/login')
             }}>
               Yes
             </Button>

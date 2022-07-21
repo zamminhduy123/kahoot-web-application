@@ -9,6 +9,7 @@ const DEFAULT_URL = "http://localhost:5000/api/v1"
 const requestHeader = () => {
 	const acc = window.localStorage.getItem("accessToken"),
 		ref = window.localStorage.getItem("refreshToken")
+	console.log(acc,ref);
 	return {
 		authorization: `Bearer ${acc || ""}`,
 		refresh: ref || "",
@@ -126,7 +127,7 @@ export const uploadFile = async (
 	extraConfig?: AxiosRequestConfig<File>
 ) => {
 	const axiosClient = axios.create({
-		baseURL: "http://localhost:5000/api/v1/s3",
+		baseURL: `${DEFAULT_URL}/s3`,
 	})
 
 	const getSignedUrl = () => {
