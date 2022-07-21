@@ -14,6 +14,7 @@ import {
 import { FunctionComponent, useRef, useState } from "react"
 import { BsFillFileEarmarkImageFill } from "react-icons/bs"
 import { IQuestion } from "../../model/interface"
+import { uploadFile } from "../../api/api"
 
 interface ImageInputProps {
 	question: IQuestion
@@ -26,22 +27,33 @@ const ImageInput: FunctionComponent<ImageInputProps> = (props) => {
 	const [error, setError] = useState("")
 	const [imgPrev, setImgPrev] = useState("")
 
-	const handleChange = (e: any) => {
+	const handleChange = async (e: any) => {
 		const file = e.target.files[0]
 
 		if (!file.type.startsWith("image/")) {
 			setError("File must be a picture!")
 			return
 		}
+
 		const url = URL.createObjectURL(file)
 		setImgPrev(url)
+
 		console.log(url)
 		const reader = new FileReader()
 		reader.readAsDataURL(file)
+
+		/* 
 		reader.onload = () => {
 			setImage(reader.result)
 
 			console.log(reader.result)
+		} */
+		try {
+			const res = await uploadFile(file)
+
+			console.log(res)
+		} catch (err) {
+			console.log(err)
 		}
 	}
 
@@ -68,7 +80,7 @@ const ImageInput: FunctionComponent<ImageInputProps> = (props) => {
 					ref={imageInput}
 				/>
 
-				{image && (
+				{imgPrev && (
 					<Image
 						className="preview-image"
 						src={imgPrev as string}
