@@ -23,7 +23,8 @@ const QuizItem: FunctionComponent<QuizItemProps> = (props) => {
 			<Box flexShrink={0}>
 				<Image
 					borderRadius="lg"
-					width="250px"
+					maxH='250px'
+					maxW='250px'
 					src={props.image || "https://bit.ly/2jYM25F"}
 					alt="Woman paying for a purchase"
 				/>
