@@ -17,8 +17,10 @@ import {
 	Input,
 	InputRightElement,
 	ButtonGroup,
+	Toast,
+	useToast,
 } from "@chakra-ui/react"
-import { Link as ReachLink } from "react-router-dom"
+import { Link as ReachLink, useNavigate } from "react-router-dom"
 import { IUser } from "../../model/interface/user.model"
 import { RiAddCircleLine, RiHome4Line, RiListUnordered } from "react-icons/ri"
 import { IconType } from "react-icons"
@@ -26,7 +28,6 @@ import { Dispatch, SetStateAction } from "react"
 import { addNewGame } from "../../api/api"
 import logo from "../../assets/logo.png"
 import { useAppSelector } from "../../hook"
-import { Navigate } from "react-router-dom"
 
 export interface PublicHeaderProps {
 	onSettingClick: Function
@@ -35,8 +36,10 @@ export interface PublicHeaderProps {
 
 const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
 	const { list } = useAppSelector((state) => state.newQuiz)
+	const toast = useToast()
+	let navigate = useNavigate()
 
-	const onSave = () => {
+	const onSave = async () => {
 		console.log("add game")
 		const arr = list.map(function (element: any) {
 			return {
@@ -46,16 +49,36 @@ const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
 				timeUp: Number(element.time),
 			}
 		})
-		let newGame = {
+		if (!title) {
+			toast({
+				title: "Please provide title",
+				status: "error",
+				duration: 9000,
+				isClosable: true,
+			})
+			return
+		}
+		const newGame = {
 			title: title,
 			game: arr,
 		}
 		try {
-			console.log(list)
-			console.log(newGame)
-			addNewGame(newGame.title, newGame.game)
-		} catch (error) {
-			console.log(error)
+			await addNewGame(newGame.title, newGame.game)
+			toast({
+				title: "Add game successfully",
+				status: "success",
+				duration: 9000,
+				isClosable: true,
+			})
+			navigate("/my-library", { replace: true })
+		} catch (err) {
+			console.log(err)
+			toast({
+				title: "There's an error when saving your game.",
+				status: "error",
+				duration: 9000,
+				isClosable: true,
+			})
 		}
 	}
 

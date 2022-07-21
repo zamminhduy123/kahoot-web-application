@@ -14,14 +14,14 @@ interface NewQuiz {
 // Define the initial state using that type
 const placeHolderQuestion: IQuestion = {
 	id: "1",
-	question: "",
+	question: "Your question title",
 	multipleChoice: ["Answer 1", "Answer 2", "Answer 3", "Answer 4"],
 	answer: 0,
 	time: "20",
 }
 const initialState: NewQuiz = {
 	list: [placeHolderQuestion],
-	title: "",
+	title: "Untitled",
 	selected: 0,
 }
 
@@ -44,7 +44,9 @@ export const authSlice = createSlice({
 			}
 		},
 		deleteQuestionAtIndex(state: NewQuiz, action: PayloadAction<number>) {
-			if (state.list.length > 1) state.list.splice(action.payload, 1)
+			if (state.list.length > 1) {
+				state.list.splice(action.payload, 1)
+			}
 		},
 		dublicateQuestionAtIndex(state: NewQuiz, action: PayloadAction<number>) {
 			state.list.splice(action.payload + 1, 0, state.list[action.payload])

@@ -51,9 +51,9 @@ const MainDisplay = ({}: MainDisplayProps) => {
 			>
 				<Box w={"90%"} mb="2">
 					<Input
+						key={question.id + "title"}
 						height={"60px"}
 						fontSize="1.5em"
-						placeholder="Your question title"
 						defaultValue={question.question || "Your question title.."}
 						textAlign={"center"}
 						boxShadow="rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px"
@@ -70,7 +70,7 @@ const MainDisplay = ({}: MainDisplayProps) => {
 				</Box>
 				<HStack>
 					<Button
-						display={{ base: "flex", md: "none" }}
+						display={{ base: "flex", lg: "none" }}
 						ref={btnQListRef as any}
 						colorScheme="brand"
 						onClick={onQListOpen}
@@ -79,7 +79,7 @@ const MainDisplay = ({}: MainDisplayProps) => {
 						Questions
 					</Button>
 					<Button
-						display={{ base: "flex", md: "none" }}
+						display={{ base: "flex", lg: "none" }}
 						ref={btnRef as any}
 						colorScheme="blue"
 						onClick={onOpen}
@@ -105,7 +105,7 @@ const MainDisplay = ({}: MainDisplayProps) => {
 				<CAnswerList question={question} />
 			</VStack>
 			<Flex
-				display={{ base: "none", md: "flex" }}
+				display={{ base: "none", lg: "flex" }}
 				width={"fit-content"}
 				minWidth="16em"
 				height="100%"
