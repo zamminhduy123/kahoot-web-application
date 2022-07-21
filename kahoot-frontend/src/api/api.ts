@@ -146,19 +146,9 @@ export const uploadFile = async (
 	return axiosClient.put(signedURL, file, config)
 }
 
-export const getGameById = async (id: string): Promise<AxiosResponse> => {
-	return new Promise<AxiosResponse>(async (resolve, reject) => {
-		const requestOptions = {
-			method: "GET",
-			url: `${DEFAULT_URL}/game/${id}`,
-			headers: requestHeader(),
-		}
-		axios(requestOptions)
-			.then((response: AxiosResponse) => {
-				resolve(response)
-			})
-			.catch((err: AxiosError) => {
-				reject(err)
-			})
-	})
+export const getGameById = async (id: string) => {
+	console.log("get game by id ", id)
+	const res = await getAllGames()
+	const gameAtId = res?.data?.games[id]
+	return gameAtId
 }

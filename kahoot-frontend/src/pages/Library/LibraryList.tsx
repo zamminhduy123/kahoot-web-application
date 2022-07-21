@@ -34,8 +34,6 @@ const LibraryList = ({}: LibraryListProps) => {
 	useEffect(() => {
 		const fetchGames = async () => {
 			const res = await getAllGames()
-
-			console.log(res.data.games)
 			setGames(res.data.games)
 		}
 		fetchGames()
@@ -93,7 +91,7 @@ const LibraryList = ({}: LibraryListProps) => {
 				{games.map((data: any, index: number) => {
 					return (
 						<LibraryItem
-							id={data._id}
+							id={index}
 							key={`${data._id}-${index}`}
 							name={data.title}
 							totalQuestion={data.game.length}

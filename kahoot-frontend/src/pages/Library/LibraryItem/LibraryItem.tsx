@@ -1,5 +1,6 @@
 /** @format */
 
+import { ChevronDownIcon, DeleteIcon } from "@chakra-ui/icons"
 import {
 	Box,
 	Button,
@@ -12,6 +13,11 @@ import {
 	Stack,
 	useColorModeValue,
 	Text,
+	Menu,
+	MenuButton,
+	MenuItem,
+	MenuList,
+	IconButton,
 } from "@chakra-ui/react"
 import React from "react"
 import { RiPencilFill, RiMore2Fill } from "react-icons/ri"
@@ -43,9 +49,9 @@ const LibraryItem = ({ id, name, totalQuestion }: LibraryItemProps) => {
 				transform: "scale(1.01)",
 			}}
 		>
-			<Flex margin={"0px 10px"}>
+			{/* <Flex margin={"0px 10px"}>
 				<Checkbox />
-			</Flex>
+			</Flex> */}
 			<Flex w="170px" marginRight={"5px"}>
 				<img
 					style={{ width: "170px" }}
@@ -69,32 +75,34 @@ const LibraryItem = ({ id, name, totalQuestion }: LibraryItemProps) => {
 
 					<Spacer />
 					<HStack>
-						<Icon
+						<IconButton
 							_hover={{ color: "brand.600", cursor: "pointer" }}
 							boxSize={6}
-							as={RiPencilFill}
-						></Icon>
-						<Icon
-							_hover={{ color: "brand.600", cursor: "pointer" }}
-							boxSize={6}
-							as={RiMore2Fill}
-						></Icon>
+							icon={<DeleteIcon />}
+							aria-label="Delete question"
+							colorScheme="gray"
+						></IconButton>
 					</HStack>
 				</Flex>
 				<Spacer />
-				<Flex alignSelf={"flex-end"} minH={"40px"}>
-					<HStack>
-						<Box>
-							Total questions: <Text fontWeight={"600"}>{totalQuestion}</Text>
-						</Box>
-						<Button
-							colorScheme="brand"
-							color={"white"}
-							_hover={{ backgroundColor: "brand.900" }}
-						>
-							Start
-						</Button>
+				<Flex
+					alignItems={"center"}
+					justifyContent="between"
+					minH={"40px"}
+					w="100%"
+				>
+					<HStack marginX="16px">
+						<Text>{"Total questions:"}</Text>
+						<Text fontWeight={"600"}>{totalQuestion}</Text>
 					</HStack>
+					<Spacer />
+					<Button
+						colorScheme="brand"
+						color={"white"}
+						_hover={{ backgroundColor: "brand.900" }}
+					>
+						Start
+					</Button>
 				</Flex>
 			</Flex>
 		</Flex>
