@@ -163,12 +163,14 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       const question = game.gameData.game[questionNum].question;
       const answers = game.gameData.game[questionNum].solution;
       const timeUp = game.gameData.game[questionNum].timeUp || 10;
+      const image = game.gameData.game[questionNum].image;
       game.gameData.game[questionNum].timeUp = timeUp;
 
       io.to(socket.id).emit("question", {
         question,
         answers,
-        timeUp
+        timeUp,
+        image,
       });
       
       game.startTimer(timeUp);
@@ -237,12 +239,14 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       const question = game.gameData.game[questionNum].question;
       const answers = game.gameData.game[questionNum].solution;
       const timeUp = game.gameData.game[questionNum].timeUp || 10;
+      const image = game.gameData.game[questionNum].image;
       game.gameData.game[questionNum].timeUp = timeUp;
 
       io.to(game.hostId).emit("question", {
         question,
         answers,
-        timeUp
+        timeUp,
+        image
       });
 
       game.startTimer(timeUp);
