@@ -25,8 +25,8 @@ import WaitingRoom from "./WaitingRoom";
 
 const HostingMode = (props: any) => {
   const [isPlaying, setIsPlaying] = React.useState(false);
-  const {title,ownerName,players,totalQuestions,pin} = useAppSelector((state) => state.game)
-
+  const {title,ownerName,players,totalQuestions,pin,image} = useAppSelector((state) => state.game)
+  console.log(image);
   
   const dispatch = useAppDispatch();
   React.useEffect(() => {
@@ -75,7 +75,7 @@ const HostingMode = (props: any) => {
       {isPlaying ? (
         <ViewQuestionPage />
       ) : (
-        <WaitingRoom title={title} ownerName={ownerName} totalQuestions={totalQuestions} players={players} gamePin ={pin} />
+        <WaitingRoom title={title} ownerName={ownerName} totalQuestions={totalQuestions} players={players} gamePin ={pin} image={image}/>
       )}
     </Container>
   );

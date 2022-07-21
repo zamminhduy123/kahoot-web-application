@@ -14,7 +14,8 @@ interface WaitingRoomProps {
   ownerName: string,
   players: IPlayer[],
   totalQuestions: number,
-  gamePin: string
+  gamePin: string,
+  image:string
 }
 
 const WaitingRoom: FunctionComponent<WaitingRoomProps> = (props) => {
@@ -61,7 +62,7 @@ const WaitingRoom: FunctionComponent<WaitingRoomProps> = (props) => {
         justifyContent="center"
         alignItems="center"
       >
-        <QuizItem title={props.title} author={props.ownerName} totalQuestions={props.totalQuestions}></QuizItem>
+        <QuizItem title={props.title} author={props.ownerName} image={props.image} totalQuestions={props.totalQuestions}></QuizItem>
         <Flex direction={'row'}>
         <Badge
           borderRadius="full"

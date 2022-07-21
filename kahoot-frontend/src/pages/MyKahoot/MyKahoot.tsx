@@ -53,12 +53,13 @@ const MyKahoot = ({}: MyKahootProps) => {
 	const { _id, questionList, title, image } = data
 
 	const gameHostSuccess = (payload: {
-		pin: string
-		title: string
-		ownerName: string
-		totalQuestions: number
+		pin: string,
+		title: string,
+		ownerName: string,
+		totalQuestions: number,
+		image: string
 	}) => {
-		console.log("GAME CREATED")
+		console.log("GAME CREATED",payload)
 		dispatch(setNewGame({ ...payload, players: [] }))
 		setTimeout(() => {
 			navigate("../../host")

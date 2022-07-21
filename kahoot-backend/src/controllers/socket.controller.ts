@@ -27,7 +27,6 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
       console.log("Game Created with pin: ", game.pin);
 
-      const title = game.gameData.title;
       const gameObj = (await GameModel.findById(game.gameData.gameId).populate(
         "owner",
         "name"
@@ -35,9 +34,17 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
       const ownerName = gameObj?.toJSON().owner.name;
       const totalQuestions = gameObj?.toJSON().game.length;
       const gameId = game.gameData.gameId;
-
+      game.gameData = gameObj;
+      const title = game.gameData.title;
+      
       //Sending game pin to host so they can display it for players to join
-      onSuccess({ pin: game.pin, ownerName, totalQuestions, title, image: game.gameData.image });
+      onSuccess({
+        pin: game.pin,
+        ownerName,
+        totalQuestions,
+        title,
+        image: game.gameData.image,
+      });
     } else {
       socket.emit("noGameFound");
     }
@@ -149,8 +156,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
     const _gameDoc = await GameModel.findById(game.gameData.gameId).lean();
     game.gameData.game = _gameDoc!.game;
-    game.EmitEventAfterGameOver = () => {
-    }
+    game.EmitEventAfterGameOver = () => {};
 
     //Tell player and host that game has started
     io.to(socket.id).emit("gameStarted");
@@ -172,10 +178,9 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         timeUp,
         image,
       });
-      
+
       game.startTimer(timeUp);
     }, 5000);
-
   };
 
   const onPlayerAnswer = function (payload: { num: number }) {
@@ -194,7 +199,10 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
 
       //Check player answer with correct answer
       if (num == correctAnswer) {
-        player.gameData.score += Math.round((100 + (game.gameData.game[gameQuestion].timeUp - game.timer)) * 100)/ 100;
+        player.gameData.score +=
+          Math.round(
+            (100 + (game.gameData.game[gameQuestion].timeUp - game.timer)) * 100
+          ) / 100;
         console.log(game.gameData.game[gameQuestion].timeUp);
         console.log(game.timer);
         // io.to(game.pin).emit("getTime", socket.id);
@@ -206,9 +214,8 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         //Question has been ended since players all answered
         game.isLive = false;
         const playerData = kahoot.updateRankingBoard(game.hostId);
-        io.to(game.hostId).emit("questionOver", {playerData, correctAnswer});
+        io.to(game.hostId).emit("questionOver", { playerData, correctAnswer });
         clearInterval(game.intervalObj);
-
       } else {
         //update host screen of num players answered
         io.to(game.hostId).emit("updatePlayersAnswered", {
@@ -246,28 +253,28 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
         question,
         answers,
         timeUp,
-        image
+        image,
       });
 
       game.startTimer(timeUp);
     } else {
       const rankingBoard = kahoot.updateRankingBoard(game.hostId);
-      io.to(game.hostId).emit("gameOver", {playerData: rankingBoard});
+      io.to(game.hostId).emit("gameOver", { playerData: rankingBoard });
     }
   };
 
   const onTimeUp = function () {
     const game = kahoot.getGame(socket.id);
-    if(game) {
+    if (game) {
       game.isLive = false;
       const playerData = kahoot.updateRankingBoard(game.hostId);
       const gameQuestion = game.gameData.question;
-      
-      if(gameQuestion >= game.gameData.game.length) {
+
+      if (gameQuestion >= game.gameData.game.length) {
         return;
       }
       const correctAnswer = game.gameData.game[gameQuestion].answer;
-      io.to(game.hostId).emit("questionOver", {playerData, correctAnswer});
+      io.to(game.hostId).emit("questionOver", { playerData, correctAnswer });
     }
   };
 
@@ -304,7 +311,7 @@ export default function (io: Server, socket: Socket, kahoot: Kahoot) {
           const playersInGame = kahoot.getPlayersInRoom(hostId); //Gets remaining players in game
 
           io.to(hostId).emit("playerLeave", {
-            name: player.name
+            name: player.name,
           }); //Sends data to host to update screen
           socket.leave(hostId); //Player is leaving the room
         }

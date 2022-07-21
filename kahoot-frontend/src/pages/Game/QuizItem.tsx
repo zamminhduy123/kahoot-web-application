@@ -7,6 +7,7 @@ interface QuizItemProps {
 	title: string
 	author: string
 	totalQuestions: number
+	image: string
 }
 
 const QuizItem: FunctionComponent<QuizItemProps> = (props) => {
@@ -22,8 +23,9 @@ const QuizItem: FunctionComponent<QuizItemProps> = (props) => {
 			<Box flexShrink={0}>
 				<Image
 					borderRadius="lg"
-					width="120px"
-					src="https://bit.ly/2jYM25F"
+					maxH='250px'
+					maxW='250px'
+					src={props.image || "https://bit.ly/2jYM25F"}
 					alt="Woman paying for a purchase"
 				/>
 			</Box>
@@ -39,8 +41,8 @@ const QuizItem: FunctionComponent<QuizItemProps> = (props) => {
 				>
 					Hosted by {props.author}
 				</Text>
-				<Text mt={2} color="black" noOfLines={2}>
-					{props.title}
+				<Text mt={2} color="brand.500" noOfLines={2} fontWeight={800} >
+					TITLE<br/>{props.title}
 				</Text>
 			</Box>
 		</Box>
