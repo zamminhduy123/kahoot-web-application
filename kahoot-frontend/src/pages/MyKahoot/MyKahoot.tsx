@@ -1,6 +1,21 @@
 /** @format */
 
-import { Box, Button, Flex, Heading, HStack, VStack } from "@chakra-ui/react"
+import {
+	Box,
+	Button,
+	Center,
+	Flex,
+	Heading,
+	Hide,
+	HStack,
+	IconButton,
+	Menu,
+	MenuButton,
+	MenuItem,
+	MenuList,
+	Show,
+	VStack,
+} from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
 import Socket from "../../api/socket"
@@ -9,11 +24,13 @@ import { useAppDispatch } from "../../hook"
 import { setNewGame } from "../../model/reducers/game.reducer"
 import logo from "../../assets/logo.png"
 import { getGameById } from "../../api"
+import { ChevronDownIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons"
 interface MyKahootProps {}
 
 const MyKahoot = ({}: MyKahootProps) => {
 	const { id } = useParams()
 	const [game, setGame] = useState<any>([])
+	const [title, setTitle] = useState<string>("")
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
 
@@ -41,59 +58,110 @@ const MyKahoot = ({}: MyKahootProps) => {
 	//fetch data here
 	useEffect(() => {
 		console.log(id)
-		const fetchGames = async () => {
+
+		const fetchQuestions = async () => {
 			const res = await getGameById(id as string)
 
 			console.log(res)
-			setGame(res.data.games)
+			setGame(res.game)
+			setTitle(res.title)
 		}
-		fetchGames()
+		if (id) {
+			fetchQuestions()
+		}
 	}, [id])
+
+	//delete 
+	const deleteItem = {
+		
+	}
 
 	return (
 		<Flex w={"100%"} h="100%" direction={"row"}>
-			<Flex
-				w="23rem"
-				h={"100%"}
-				boxShadow={"rgb(0 0 0 / 5%) 0.25rem 0px 0.5rem 0px"}
-				direction={"column"}
-			>
-				<img style={{ width: "368px" }} src={logo} alt="logo" />
+			<Show above="md">
 				<Flex
-					p={2}
-					w="100%"
-					justify={"flex-start"}
-					direction="column"
-					flexGrow={"1"}
+					w="23rem"
+					h={"100%"}
+					boxShadow={"rgb(0 0 0 / 5%) 0.25rem 0px 0.5rem 0px"}
+					direction={"column"}
 				>
-					<Heading margin="10px 0px">Kahoot Name</Heading>
-					<HStack margin="10px 0px">
-						<Button
-							variant="solid"
-							colorScheme={"brand"}
-							onClick={() => startGame()}
-						>
-							START
-						</Button>
-						<Button color={"gray.600"} variant="solid"></Button>
-					</HStack>
+					<Center margin="4">
+						<img style={{ width: "16rem" }} src={logo} alt="logo" />
+					</Center>
+					<Flex
+						p={2}
+						w="100%"
+						justify={"flex-start"}
+						direction="column"
+						flexGrow={"1"}
+					>
+						<Heading margin="10px 0px">{title}</Heading>
+						<HStack margin="10px 0px">
+							<Button
+								variant="solid"
+								colorScheme={"brand"}
+								onClick={() => startGame()}
+							>
+								START
+							</Button>
+							<Menu>
+								<MenuButton
+									as={IconButton}
+									aria-label="Options"
+									icon={<ChevronDownIcon />}
+									variant="outline"
+								/>
+								<MenuList>
+									<MenuItem icon={<EditIcon />}>Edit</MenuItem>
+									<MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
+								</MenuList>
+							</Menu>
+						</HStack>
+						{/* 
 					<Box margin="10px 0px" color={"gray.500"}>
 						Status
 					</Box>
 					<Box margin="10px 0px" color={"gray.500"}>
 						Updated ...
-					</Box>
+					</Box> */}
+					</Flex>
 				</Flex>
-			</Flex>
-			<Flex
-				flexGrow={1}
+			</Show>
+			<VStack
+				w="100%"
 				bg={"gray.100"}
-				flex="7 1 0px"
 				p={"16px"}
 				style={{ height: "calc(100%-60px)" }}
 			>
-				<QuestionList questions={[]} />
-			</Flex>
+				<Hide above="md">
+					<VStack>
+						<img style={{ width: "10rem" }} src={logo} alt="logo" />
+						<Heading margin="10px 0px">{title}</Heading>
+						<HStack margin="10px 0px">
+							<Button
+								variant="solid"
+								colorScheme={"brand"}
+								onClick={() => startGame()}
+							>
+								START
+							</Button>
+							<Menu>
+								<MenuButton
+									as={IconButton}
+									aria-label="Options"
+									icon={<ChevronDownIcon />}
+									variant="outline"
+								/>
+								<MenuList>
+									<MenuItem icon={<EditIcon />}>Edit</MenuItem>
+									<MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
+								</MenuList>
+							</Menu>
+						</HStack>
+					</VStack>
+				</Hide>
+				<QuestionList questions={game} />
+			</VStack>
 		</Flex>
 	)
 }

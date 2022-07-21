@@ -10,6 +10,7 @@ interface QuestionListProps {
 }
 
 const QuestionList: FunctionComponent<QuestionListProps> = (props) => {
+	const { questions } = props
 	const fakeQuestions: IQuestion[] = [
 		{
 			id: "123",
@@ -28,7 +29,7 @@ const QuestionList: FunctionComponent<QuestionListProps> = (props) => {
 				align={"center"}
 			>
 				<Box fontWeight={"600"} fontSize="16px">
-					Question ({fakeQuestions.length})
+					Question ({questions.length})
 				</Box>
 			</Flex>
 			<Flex
@@ -39,7 +40,7 @@ const QuestionList: FunctionComponent<QuestionListProps> = (props) => {
 				overflowY="scroll"
 			>
 				<Box>
-					{fakeQuestions.map((q, id) => {
+					{questions.map((q, id) => {
 						return <QuestionItem key={"q.id" + id} {...q} />
 					})}
 				</Box>
