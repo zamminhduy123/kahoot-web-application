@@ -18,6 +18,7 @@ class Socket {
     this.socket.on("disconnect", (reason: string) => {
       if (reason === "io client disconnect") {
         //the reason behind this disconnection is from client kick out
+        Socket.remove();
         return;
       } else {
         console.log(reason);
