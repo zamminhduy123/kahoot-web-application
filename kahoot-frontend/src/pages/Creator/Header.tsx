@@ -146,7 +146,7 @@ const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
 				<Spacer />
 
 				<Flex flexWrap="wrap" alignItems={"center"} justifyContent="right">
-					<Link href="/">
+					<Link>
 						<Button
 							w="100px"
 							variant="solid"
@@ -157,7 +157,9 @@ const Header = ({ onSettingClick, title }: PublicHeaderProps) => {
 							}}
 							fontSize={"sm"}
 							fontWeight={"bold"}
-							onClick={() => {}}
+							onClick={() => {
+								navigate("/my-library", { replace: true })
+							}}
 						>
 							Exit
 						</Button>

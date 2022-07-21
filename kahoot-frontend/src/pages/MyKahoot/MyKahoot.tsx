@@ -14,6 +14,8 @@ import {
 	MenuItem,
 	MenuList,
 	Show,
+	Toast,
+	useToast,
 	VStack,
 } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
@@ -25,6 +27,7 @@ import { setNewGame } from "../../model/reducers/game.reducer"
 import logo from "../../assets/logo.png"
 import { getGameById } from "../../api"
 import { ChevronDownIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons"
+import { deleteGame } from "../../api/api"
 interface MyKahootProps {}
 
 const MyKahoot = ({}: MyKahootProps) => {
@@ -33,6 +36,8 @@ const MyKahoot = ({}: MyKahootProps) => {
 	const [title, setTitle] = useState<string>("")
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
+	const [gameId, setGameId] = useState<any>("")
+	const toast = useToast()
 
 	const gameHostSuccess = (payload: {
 		pin: string
@@ -65,15 +70,30 @@ const MyKahoot = ({}: MyKahootProps) => {
 			console.log(res)
 			setGame(res.game)
 			setTitle(res.title)
+			setGameId(res._id)
 		}
 		if (id) {
 			fetchQuestions()
 		}
 	}, [id])
 
-	//delete 
-	const deleteItem = {
-		
+	//delete
+	const deleteItem = async () => {
+		try {
+			const res = await deleteGame(gameId)
+			console.log(res)
+
+			toast({
+				title: "Deleted",
+				description: "Game deleted.",
+				status: "success",
+				duration: 9000,
+				isClosable: true,
+			})
+			navigate("/my-library", { replace: true })
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
@@ -113,7 +133,9 @@ const MyKahoot = ({}: MyKahootProps) => {
 								/>
 								<MenuList>
 									<MenuItem icon={<EditIcon />}>Edit</MenuItem>
-									<MenuItem icon={<DeleteIcon />}>Delete</MenuItem>
+									<MenuItem icon={<DeleteIcon />} onClick={() => deleteItem()}>
+										Delete
+									</MenuItem>
 								</MenuList>
 							</Menu>
 						</HStack>

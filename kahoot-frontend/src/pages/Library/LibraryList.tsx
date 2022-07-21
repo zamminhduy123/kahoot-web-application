@@ -37,7 +37,7 @@ const LibraryList = ({}: LibraryListProps) => {
 			setGames(res.data.games)
 		}
 		fetchGames()
-	}, [])
+	}, [games])
 
 	const fakeData = [
 		{
