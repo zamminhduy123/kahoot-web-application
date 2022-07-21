@@ -55,7 +55,7 @@ const LibraryList = ({}: LibraryListProps) => {
                       id: question._id,
                       question: question.question,
                       answer: +question.answer,
-                      multipleChoice: [question.solution],
+                      multipleChoice: [...question.solution],
                       time: question.timeUp,
                       image: question.image,
                     };

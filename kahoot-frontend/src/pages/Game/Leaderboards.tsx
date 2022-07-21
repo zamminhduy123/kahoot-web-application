@@ -89,14 +89,18 @@ const Leaderboards: FunctionComponent<LeaderboardsProps> = ({
               m="3vmin auto 1.5vmin"
             />
 
-            <span>
-              {`${users[0].name}`}
-              <br />
-              <Text fontSize="4xl" color="white">{`${Number(
-                users[0].score
-              ).toFixed(0)}`}</Text>
-              {`points`}{" "}
-            </span>
+{users.length >= 1 ? (
+              <span>
+                {`${users[0].name}`}
+                <br />
+                <Text fontSize="xl" color="white">{`${Number(
+                  users[0].score
+                ).toFixed(0)}`}</Text>
+                {`points`}{" "}
+              </span>
+            ) : (
+              ""
+            )}
           </Box>
 
           <Box

@@ -24,35 +24,6 @@ import PlayerList from "./PlayerList";
 interface ViewQuestionPageProps {}
 
 const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
-  let data: any[] = [
-    {
-      id: "1",
-      question:
-        "Surveys help gather information about groups of people. How many surveys does the U.S. Census Bureau conduct each year?",
-      time: "20",
-      multipleChoice: "yes",
-      answer: 1,
-      answers: [
-        "this is not the correct answer",
-        "this is the correct answer",
-        "answer 3 very longg dummy omg",
-        "answer 4 very longg dummy omg",
-      ],
-    },
-    {
-      id: "1",
-      question: "Next question",
-      time: "20",
-      multipleChoice: "yes",
-      answer: 2,
-      answers: [
-        "this is not the correct answer",
-        "this is not the correct answer",
-        "this is the correct answer",
-        "answer 4 very longg dummy omg",
-      ],
-    },
-  ];
 
   const dispatch = useAppDispatch();
 
@@ -78,7 +49,7 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
     let interval: NodeJS.Timeout;
     Socket.getInstance().registerListener(
       "question",
-      ({ question, answers, timeUp }: any) => {
+      ({ question, answers, timeUp ,image}: any) => {
         setCorrectAnswer(-1);
         setIsPlaying(true);
         setCurrentQuestion({
@@ -87,7 +58,9 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
           multipleChoice: answers,
           answer: -1,
           time: timeUp,
+          image: image || ""
         });
+        console.log(image);
         setTimeLeft(timeUp);
       }
     );
@@ -253,12 +226,13 @@ const ViewQuestionPage: FunctionComponent<ViewQuestionPageProps> = () => {
                     </Box>
                   </Flex>
 
+    
                   <img
                     alt="background"
-                    width={"400px"}
-                    height="20px"
-                    src="https://images.ctfassets.net/hrltx12pl8hq/1fR5Y7KaK9puRmCDaIof7j/09e2b2b9eaf42d450aba695056793607/vector1.jpg"
+                    style={{maxWidth:'300px',maxHeight: '400px',minHeight: '100px'}}
+                    src={currentQuestion.image || "https://images.ctfassets.net/hrltx12pl8hq/1fR5Y7KaK9puRmCDaIof7j/09e2b2b9eaf42d450aba695056793607/vector1.jpg"}
                   />
+
 
                   <Flex
                     direction={"column"}

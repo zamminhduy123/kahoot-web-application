@@ -21,6 +21,7 @@ interface QIProps {
 }
 
 const QuestionItem = ({question}: QIProps) => {
+	console.log(question.multipleChoice[0])
 	return (
 		<Flex
 			w="100%"
