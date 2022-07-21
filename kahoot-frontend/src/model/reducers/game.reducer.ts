@@ -38,7 +38,7 @@ export const gameSlice = createSlice({
       state.players = [...action.payload];
     },
     playerLeave(state, action: PayloadAction<string>) {
-      state.players = state.players.filter(p => p.name === action.payload)
+      state.players = state.players.filter(p => p.name !== action.payload)
     },
   },
 });
