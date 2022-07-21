@@ -134,8 +134,13 @@ export const uploadFile = async (
 		return axiosClient.get(url)
 	}
 
-	const response: any = await getSignedUrl()
-	const signedURL = response.url
+	const responseData = await axios({
+		method: "GET",
+		url: `${DEFAULT_URL}/s3/upload`,
+	})
+	
+	const {url} = responseData.data;
+	const signedURL = url
 
 	const config: AxiosRequestConfig<File> = {
 		...extraConfig,
@@ -143,7 +148,8 @@ export const uploadFile = async (
 			"Content-Type": file.type,
 		},
 	}
-	return axiosClient.put(signedURL, file, config)
+	await axiosClient.put(signedURL, file, config);
+	return url;
 }
 
 export const getGameById = async (id: string) => {
