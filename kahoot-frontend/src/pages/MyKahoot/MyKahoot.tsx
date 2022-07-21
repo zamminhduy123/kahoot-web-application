@@ -53,13 +53,13 @@ const MyKahoot = ({}: MyKahootProps) => {
 	const { _id, questionList, title, image } = data
 
 	const gameHostSuccess = (payload: {
-		pin: string,
-		title: string,
-		ownerName: string,
-		totalQuestions: number,
+		pin: string
+		title: string
+		ownerName: string
+		totalQuestions: number
 		image: string
 	}) => {
-		console.log("GAME CREATED",payload)
+		console.log("GAME CREATED", payload)
 		dispatch(setNewGame({ ...payload, players: [] }))
 		setTimeout(() => {
 			navigate("../../host")
@@ -181,7 +181,16 @@ const MyKahoot = ({}: MyKahootProps) => {
 				>
 					<Hide above="md">
 						<VStack>
-							<img style={{ width: "10rem" }} src={logo} alt="logo" />
+							<Image
+								style={{ width: "10rem" }}
+								maxH="10rem"
+								src={
+									image ||
+									"https://assets-cdn.kahoot.it/builder/v2/assets/placeholder-cover-kahoot.dca23b0a.png"
+								}
+								alt="logo"
+								objectFit={"cover"}
+							/>
 							<Heading margin="10px 0px">{title}</Heading>
 							<HStack margin="10px 0px">
 								<Button
