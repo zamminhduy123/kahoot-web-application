@@ -41,8 +41,8 @@ const QuizItem: FunctionComponent<QuizItemProps> = (props) => {
 				>
 					Hosted by {props.author}
 				</Text>
-				<Text mt={2} color="black" noOfLines={2}>
-					{props.title}
+				<Text mt={2} color="brand.500" noOfLines={2} fontWeight={800} >
+					TITLE<br/>{props.title}
 				</Text>
 			</Box>
 		</Box>
